@@ -12,6 +12,7 @@ package model;
  */
 
 import java.sql.*;
+import javax.sql.DataSource;
 
 public class connectivity{
 private final String driver="com.mysql.jdbc.Driver";
@@ -20,8 +21,15 @@ private final String mysqluser="root";
 private final String mysqlpass="";
 private final String mysqlurl="jdbc:mysql:///"+database_name;
 private Connection con=null;
+private DataSource dataSource;
 
-
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+public void setDataSource(DataSource dataSource) {
+      this.dataSource = dataSource;
+     
+   }
 /* Adjust the above two as per the username
  * password combination of your MySql databse */
 
@@ -30,6 +38,8 @@ public connectivity() throws SQLException
 {
 
        try{
+           
+          System.out.println("in connectivity sakina");
             Class.forName(driver);
             con=DriverManager.getConnection(mysqlurl,mysqluser,mysqlpass);
            String[] arr=new String[3];
@@ -43,7 +53,7 @@ public connectivity() throws SQLException
        
             
 }
-protected Connection getCon()
+public Connection getCon()
 {
     return con;
 }

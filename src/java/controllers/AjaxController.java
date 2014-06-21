@@ -11,6 +11,7 @@ import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -36,10 +37,10 @@ public class AjaxController {
     Gson gson=new Gson();
     
      @RequestMapping(value = "/submitPollData", method = RequestMethod.POST)
-   public void submitPollData(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException {
-       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-        
-        Poll_TblJDBCTemplate poll_tblJDBCTemplate=(Poll_TblJDBCTemplate)context.getBean("Poll_TblJDBCTemplate");
+   public void submitPollData(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       //ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
+        //Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate();//(Poll_TblJDBCTemplate)context.getBean("Poll_TblJDBCTemplate");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String detail[]= gson.fromJson(request.getParameter("detailJSON"), String[].class);
@@ -55,11 +56,12 @@ public class AjaxController {
    }
     
    @RequestMapping(value = "/viewPollsData", method = RequestMethod.POST)
-   public void viewPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException {
-       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+   public void viewPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       //ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
         //Poll_TblJDBCTemplate poll_tblJDBCTemplate =(Poll_TblJDBCTemplate)context.getBean("studentJDBCTemplate");
-        Poll_TblJDBCTemplate poll_tblJDBCTemplate=(Poll_TblJDBCTemplate)context.getBean("Poll_TblJDBCTemplate");
-        response.setContentType("text/html;charset=UTF-8");
+        //Poll_TblJDBCTemplate poll_tblJDBCTemplate=(Poll_TblJDBCTemplate)context.getBean("Poll_TblJDBCTemplate");
+       Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
+       response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listPolls();
          ArrayList alist=new ArrayList();

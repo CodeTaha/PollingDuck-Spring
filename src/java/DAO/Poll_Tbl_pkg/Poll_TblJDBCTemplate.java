@@ -5,8 +5,12 @@
  */
 
 package DAO.Poll_Tbl_pkg;
+import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import model.connectivity;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 /**
  *
@@ -15,12 +19,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
-    
-   @Override
+    public Poll_TblJDBCTemplate() throws SQLException
+    {System.out.println("in poll_tbl Taha");
+    ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+    connectivity conn=(connectivity)context.getBean("connectivity");
+      System.out.println("in poll_tbl Taha got beaan properly");
+      this.dataSource=conn.getDataSource();
+      this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+      System.out.println("in poll_tbl Taha got data properly");
+    }
+   /*@Override
    public void setDataSource(DataSource dataSource) {
       this.dataSource = dataSource;
       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-   }
+   }*/
 
    @Override
    public boolean create(int uid, String cid_json, String title, String description, String qtn_json, String ans_json, String poll_link, int reward, String poll_type)

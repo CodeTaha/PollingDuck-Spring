@@ -9,6 +9,11 @@
     </head>
 
     <body>
+        <form action="login" method="post">
+            Login id <input type="text" name="username"><br>
+            password <input type="password" name="password">
+            <input type="submit"/>
+        </form>
         <ul>
             <li>
                 <a href="createPoll">Create</a>
@@ -17,11 +22,14 @@
                 <a href="viewPolls">View</a>
             </li>
         </ul>
-        <p>bhushan! This is the default welcome page for a PollingDuck project.</p>
-        <p><i>To display a different welcome page for this project, modify</i>
-            <tt>index.jsp</tt> <i>, or create your own welcome page then change
-                the redirection in</i> <tt>redirect.jsp</tt> <i>to point to the new
-                welcome page and also update the welcome-file setting in</i>
-            <tt>web.xml</tt>.</p>
     </body>
+    <script>
+        var test=new Array();
+        test.push(1);
+        test.push(2);
+        test.push(3);
+        test.push(4);
+        console.log(JSON.stringify(test));
+        
+    </script>
 </html>
