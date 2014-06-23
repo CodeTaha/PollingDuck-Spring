@@ -78,11 +78,14 @@ public class UrlController {
 	   return "dashboard";
    }
     @RequestMapping(value = "/createPoll", method = RequestMethod.GET)
-   public String createPoll() throws SQLException {
+   public String createPoll(ModelMap model, HttpServletRequest request) throws SQLException {
+      
+        
        Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
             List<Category> category=cat.Category_list();
             String cat_json=gson.toJson(category);
             System.out.println("cat list "+cat_json);
+            model.addAttribute("cat_list", cat_json);
             return "createPoll";
    }
    @RequestMapping(value = "/viewPolls", method = RequestMethod.GET)

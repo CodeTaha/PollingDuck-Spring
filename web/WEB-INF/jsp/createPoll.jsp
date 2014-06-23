@@ -3,6 +3,8 @@
 <title>form</title>
  
 <script src="pages/resources/js/jquery.min.js"></script>
+<link href="pages/resources/select2/select2.css" rel="stylesheet"/>
+    <script src="pages/resources/select2/select2.js"></script>
 </head>
 <body>
 <!--<h1>create poll</h1>-->
@@ -14,13 +16,27 @@ var qtnArray= new Array();
 var ansArray= new Array();
 var count=0;
 var uid=1;
+console.log(${cat_list});
+var cat_json=${cat_list};
+console.log(cat_json[0]['cid']);
+var cat_list=new Array();
 $(document).ready(function(){
-    
- 
+   for(var i=0; i<cat_json.length; i++)
+   {
+       cat_list.push({id:cat_json[i]['cid'], text:cat_json[i]['category_name']});
+   }
+    $("#category").select2({
+        multiple: true,
+  placeholder:"tag poll categories",
+  maximumSelectionSize:5,
+  //allowClear: true,
+  tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
+});
+
   });
   
   function addQuestion()
-    {
+    {//console.log($("#category").val());
         $("#addQuestion").prop("disabled", true);
         $("#d3").append('Question: <input type="text" name="question" id="question"/><br/>Question Type: <select id="Qtype" onchange="createQtn()"><option>Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
     }
@@ -132,12 +148,15 @@ $(document).ready(function(){
             }
             });
     }
+    
+    
 </script>
 <div id='d1'>
  Title:<input type="text" name="t1" id="title"><br/> 
  Description:<textarea name="t1" id="desc"></textarea><br/> 
 </div>
-Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>
+Category :<input id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen">
+<!--Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>-->
 
 <div id='d2'>
 
