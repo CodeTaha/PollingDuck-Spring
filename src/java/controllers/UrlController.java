@@ -31,18 +31,48 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class UrlController {
     private final Gson gson=new Gson();
-    
-    @RequestMapping(value = "", method = RequestMethod.GET)
-   public void index1(HttpServletRequest request,HttpServletResponse response) throws IOException {
-	   response.sendRedirect("index");
-   }
-    public Cookie set_Cookie(String name, String value, int ttl)
-    {
-        Cookie cookie = new Cookie(name, value);
-            cookie.setMaxAge(ttl*60*60);
-            return cookie;
-            //response.addCookie(cookie); 
+    protected User_Detail user_detail;
+    protected boolean loggedin=false;
+    protected int uid=0;
+    protected String handle="";
+    public boolean checklogin(HttpServletRequest request) throws IOException
+   {
+       try{System.out.println("In checklogin()");
+       
+       Cookie[] cookies = request.getCookies();
+   
+       if(user_detail==null)
+       {System.out.println("In checklogin() if");
+        for(int i = 0; i < cookies.length; i++) { 
+            Cookie cookie1 = cookies[i];
+            if(cookie1.getName().equals("handle"))
+            {
+                handle=cookie1.getValue();
+                loggedin = true;
+            }
+            else if(cookie1.getName().equals("uid"))
+            {
+                uid=Integer.parseInt(cookie1.getValue());
+                loggedin = true;
+            }
+            }
+        }
+       else
+       {System.out.println("In checklogin() else");
+           handle=user_detail.getHandle();
+           uid=user_detail.getUid();
+           loggedin=true;
+       }
+               
+       return loggedin;
+       }
+       catch(Exception e)
+       {
+           System.out.println("In checklogin() error occured is"+e);
+           return false;
+       }
     }
+    
     @RequestMapping(value = "/login", method = RequestMethod.POST)
    public void logins(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
@@ -50,7 +80,7 @@ public class UrlController {
         PrintWriter out = response.getWriter();
         String username= request.getParameter("username");
         String password= request.getParameter("password");
-       User_Detail user_detail=user.authenticate(username,password);
+        user_detail=user.authenticate(username,password);
         if(user_detail!=null)
         {
         
@@ -73,6 +103,20 @@ public class UrlController {
            
         }
    }
+   
+   public Cookie set_Cookie(String name, String value, int ttl)
+    {
+        Cookie cookie = new Cookie(name, value);
+            cookie.setMaxAge(ttl*60*60);
+            return cookie;
+            //response.addCookie(cookie); 
+    }
+    @RequestMapping(value = "", method = RequestMethod.GET)
+   public void index1(HttpServletRequest request,HttpServletResponse response) throws IOException {
+	   response.sendRedirect("index");
+   }
+    
+   
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
    public String dashboard() {
 	   return "dashboard";
@@ -119,4 +163,5 @@ public class UrlController {
    public String redirect2() {
      return "redirect:/pages/final.html";
    }
+  
 }
