@@ -20,13 +20,13 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
     public Poll_TblJDBCTemplate() throws SQLException
-    {System.out.println("in poll_tbljdbctemplate Taha");
+    {System.out.println("in poll_tbl Taha");
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
     connectivity conn=(connectivity)context.getBean("connectivity");
-      System.out.println("in poll_tbljdbctemplate got beaan properly");
+      System.out.println("in poll_tbl Taha got beaan properly");
       this.dataSource=conn.getDataSource();
       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-      System.out.println("in poll_tbljdbctemplate got data properly");
+      System.out.println("in poll_tbl Taha got data properly");
     }
    /*@Override
    public void setDataSource(DataSource dataSource) {
@@ -38,7 +38,7 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    public boolean create(int uid, String cid_json, String title, String description, String qtn_json, String ans_json, String poll_link, int reward, String poll_type)
    {
        String SQL = "insert into poll_tbl(uid,cid_json,title,description,qtn_json,ans_json,poll_link,reward,poll_type) values(?,?,?,?,?,?,?,?,?)";
-      System.out.println("create query="+SQL);
+      System.out.println("Taha chal gaya");
       System.out.println(uid + cid_json+title+description+ qtn_json+ poll_link+ reward+ poll_type);
      int ty=jdbcTemplateObject.update( SQL, uid, cid_json,title,description, qtn_json, ans_json,poll_link, reward, poll_type);
         System.out.println("Ty=" +ty);

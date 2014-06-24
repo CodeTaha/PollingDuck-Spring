@@ -20,7 +20,12 @@ Gson gson=new Gson();
                 uid=Integer.parseInt(cookie1.getValue());
                 foundCookie = true;
             }
-            
+            else if(cookie1.getName().equals("User_Obj"))
+            {
+                System.out.println(cookie1.getValue());
+               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
+                foundCookie = true;
+            }
         }  
 
         if (!foundCookie) {
