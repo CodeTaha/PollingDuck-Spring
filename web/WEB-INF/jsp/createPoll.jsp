@@ -24,13 +24,14 @@ $(document).ready(function(){
    for(var i=0; i<cat_json.length; i++)
    {
        cat_list.push({id:cat_json[i]['cid'], text:cat_json[i]['category_name']});
+       $("#category").append("<option value="+cat_json[i]['cid']+">"+cat_json[i]['category_name']+"</option>");
    }
     $("#category").select2({
-        multiple: true,
+       // multiple: true,
   placeholder:"tag poll categories",
   maximumSelectionSize:5,
   //allowClear: true,
-  tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
+  //tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
 });
 
   });
@@ -47,11 +48,11 @@ $(document).ready(function(){
         //$("#d3").empty();
         switch(qtype)
         {
-            case 'mcss': {$("#t1").remove();$("#d3").append('<div id="t1">Answer choices:<textarea id="answers" ></textarea></div>');}break;
-            case 'mcms': {$("#t1").remove();$("#d3").append('<div id="t1">Answer choices:<textarea id="answers" ></textarea></div>');}break;
-            case 'tb': {$("#t1").remove();$("#d3").append('<div id="t1">A textbox will be created for the user to fill in the answer <input type="hidden" id="answers"/></div>');}break;
-            case 'moc': {$("#t1").remove();$("#d3").append('<div id="t1">Enter columns and rows <textarea id="columns" ></textarea><textarea id="rows" ></textarea></div>');}break;
-            case 'momc': {$("#t1").remove();$("#d3").append('<div id="t1">Enter columns and rows <textarea id="columns" ></textarea><textarea id="rows" ></textarea></div>');}break;
+            case 'mcss':    {$("#t1").remove();$("#d3").append('<div id="t1">Answer choices:<textarea id="answers" ></textarea></div>');}break;
+            case 'mcms':    {$("#t1").remove();$("#d3").append('<div id="t1">Answer choices:<textarea id="answers" ></textarea></div>');}break;
+            case 'tb':      {$("#t1").remove();$("#d3").append('<div id="t1">A textbox will be created for the user to fill in the answer <input type="hidden" id="answers"/></div>');}break;
+            case 'moc':     {$("#t1").remove();$("#d3").append('<div id="t1">Enter columns and rows <textarea id="columns" ></textarea><textarea id="rows" ></textarea></div>');}break;
+            case 'momc':    {$("#t1").remove();$("#d3").append('<div id="t1">Enter columns and rows <textarea id="columns" ></textarea><textarea id="rows" ></textarea></div>');}break;
         }
         $("#t1").append('<button onclick="submitQtn()">Submit Question</button>');
     }
@@ -125,7 +126,14 @@ $(document).ready(function(){
         detailArray[0]=uid;
         detailArray[1]=$("#title").val();
         detailArray[2]=$("#desc").val();
-        detailArray[3]=$("#category").val();
+        var category_temp=$("#category").val();
+        detailArray[3]=category_temp[0];
+        for(var i=1; i<category_temp.length;i++)
+        {
+        detailArray[3]=detailArray[3]+","+category_temp[i];    
+        }
+        //detailArray[3]=$("#category").val();
+        
         detailArray[4]=count;
         var detailJSON=JSON.stringify(detailArray);
         var qtnJSON=JSON.stringify(qtnArray);
@@ -155,7 +163,8 @@ $(document).ready(function(){
  Title:<input type="text" name="t1" id="title"><br/> 
  Description:<textarea name="t1" id="desc"></textarea><br/> 
 </div>
-Category :<input id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen">
+Category :<select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select>
+
 <!--Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>-->
 
 <div id='d2'>

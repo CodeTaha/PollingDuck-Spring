@@ -9,10 +9,12 @@ package controllers;
 import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,26 +35,32 @@ import test.StudentJDBCTemplate;
  * @author abc
  */
 @Controller
-public class AjaxController {
+public class AjaxController extends Parent_Controller{
     Gson gson=new Gson();
     
      @RequestMapping(value = "/submitPollData", method = RequestMethod.POST)
    public void submitPollData(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       //ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
-        //Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate();//(Poll_TblJDBCTemplate)context.getBean("Poll_TblJDBCTemplate");
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        String detail[]= gson.fromJson(request.getParameter("detailJSON"), String[].class);
-        String qtn[][]= gson.fromJson(request.getParameter("qtnJSON"), String[][].class);
-        String ans[][]= gson.fromJson(request.getParameter("ansJSON"), String[][].class);
+       try{
+           String detail[]= gson.fromJson(request.getParameter("detailJSON"), String[].class);
+        //String qtn[][]= gson.fromJson(request.getParameter("qtnJSON"), String[][].class);
+        //String ans[][]= gson.fromJson(request.getParameter("ansJSON"), String[][].class);
         String poll_link="pollLink";
         int reward=5;
         String poll_type="free";
+        System.out.println(detail);
+        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
+        
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
         boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),detail[3],detail[1],detail[2],request.getParameter("qtnJSON"),request.getParameter("ansJSON"),poll_link,reward,poll_type);
         // model.addAttribute("name", poll_tbl.getName());
 	   out.println(rslt);
-      
+       }
+       catch(SQLException | IOException | JsonSyntaxException | NumberFormatException e)
+       {
+           System.out.println("error occurred in AJAXController submitPollData() ="+e);
+       }
    }
     
    @RequestMapping(value = "/viewPollsData", method = RequestMethod.POST)
