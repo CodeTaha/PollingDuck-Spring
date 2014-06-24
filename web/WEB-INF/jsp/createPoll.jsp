@@ -44,7 +44,7 @@ $(document).ready(function(){
     function createQtn()
     {
         var qtype=$('#Qtype').val();
-        alert(qtype);
+        //alert(qtype);
         //$("#d3").empty();
         switch(qtype)
         {

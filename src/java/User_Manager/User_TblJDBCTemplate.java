@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class User_TblJDBCTemplate {
     private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
+   String SQL="";
    connectivity conn=null;
     public User_TblJDBCTemplate() throws SQLException
     {
@@ -34,7 +35,7 @@ public class User_TblJDBCTemplate {
     }
 
     public User_Detail authenticate(String username, String password) {
-       String SQL = "select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
+        SQL = "select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
 "OR \n" +
 "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
        User_Detail user_detail;
@@ -49,6 +50,23 @@ public class User_TblJDBCTemplate {
       //return rslt;
         
         return user_detail;
+    }
+    
+    public int[] get_category_list_json(int uid)
+    {
+        SQL="select category_list_json from user_store where uid=?";
+        try
+        {
+            String rslt=jdbcTemplateObject.queryForObject(SQL, new Object[]{uid}, String.class);
+            User_Detail user_detail=new User_Detail();
+            user_detail.setCategory_list_json(rslt);
+            return user_detail.getCategory_list_json();
+        }
+        catch(Exception e)
+        {int fail[]=new int[0];
+            System.out.println("Error occured in User_TblJDBC>get_category_list_json "+e);
+            return fail;
+        }
     }
     
 }
