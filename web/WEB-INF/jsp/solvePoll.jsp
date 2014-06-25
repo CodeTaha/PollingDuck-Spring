@@ -5,6 +5,41 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="User_Manager.User_Detail"%>
+<% 
+Cookie[] cookies = request.getCookies();
+String handle="";
+int uid=0;
+//User_Detail user_detail;
+Gson gson=new Gson();
+        boolean foundCookie = false;
+
+        for(int i = 0; i < cookies.length; i++) { 
+            Cookie cookie1 = cookies[i];
+            if(cookie1.getName().equals("handle"))
+            {
+                handle=cookie1.getValue();
+                foundCookie = true;
+            }
+            else if(cookie1.getName().equals("uid"))
+            {
+                uid=Integer.parseInt(cookie1.getValue());
+                foundCookie = true;
+            }
+            else if(cookie1.getName().equals("User_Obj"))
+            {
+                System.out.println(cookie1.getValue());
+               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
+                foundCookie = true;
+            }
+        }  
+
+        if (!foundCookie) {
+            System.out.println("cookies not found 2");
+            response.sendRedirect("index");
+        }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,6 +65,7 @@
                 var ansJSON;
                 var pid=${pid};
                 var data=${obj};
+                var uid=<%= uid %>
             $(document).ready(function(){
                 
                 
@@ -195,14 +231,14 @@
                       console.log(finalAns);
                   var finalJSON=new Array();
                   finalJSON.push(pid);
-                  finalJSON.push(2);// UID will come here
+                  finalJSON.push(uid);// UID will come here
                   finalJSON.push(finalAns);
                   finalJSON=JSON.stringify(finalJSON);
                   console.log("Final string");
                   console.log(finalJSON);
                   $.ajax({
                                 type: "POST",       // the dNodeNameefault
-                                url: "submitPoll",
+                                url: "submitPollAns",
                                 data: { finalJSON: finalJSON},
                                 success: function(data){alert(data);
                                         if(data)

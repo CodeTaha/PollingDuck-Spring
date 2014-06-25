@@ -5,12 +5,14 @@
  */
 
 package DAO.Poll_Tbl_pkg;
+import com.google.gson.Gson;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import model.connectivity;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 /**
  *
@@ -19,6 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
+   Gson gson=new Gson();
     public Poll_TblJDBCTemplate() throws SQLException
     {System.out.println("in poll_tbl Taha");
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
@@ -50,4 +53,23 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
       List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Poll_Tbl_Mapper());
       return poll_tbl;
    }
+   
+   public boolean submitPoll(String finalJSON) throws SQLException
+    {System.out.println("in model_polls --> submitPoll()");
+        String detail[]= gson.fromJson(finalJSON, String[].class);
+        
+   String SQL = "insert into poll_ans_tbl(pid,uid,ans_json) values(?,?,?)";
+      try
+      {int rslt=jdbcTemplateObject.update( SQL, detail[0], detail[1],detail[2]);
+      System.out.println("Poll ans submitted rslt="+rslt);
+      }
+      catch(DataAccessException e)
+      {
+          System.out.println("error occured in Poll_TblJDBCTemplate>submitPoll "+e);
+      }
+    
+        
+       return true;
+        
+    }
 }

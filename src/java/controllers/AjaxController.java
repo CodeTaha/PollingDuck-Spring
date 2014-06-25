@@ -80,4 +80,16 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("obj", poll_tbl);
 	   return "solvePoll";
    }
+   
+   @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
+   public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       
+        String finalJSON=request.getParameter("finalJSON");
+        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
+        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON);
+        
+	response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();  
+        out.println(rslt);
+   }
 }
