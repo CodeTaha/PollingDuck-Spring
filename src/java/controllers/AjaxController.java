@@ -72,4 +72,12 @@ public class AjaxController extends Parent_Controller{
            response.sendRedirect("index");
        }
    }
+   @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
+   public String solvePoll(ModelMap model, HttpServletRequest request) {
+       int pid= Integer.parseInt(request.getParameter("pid"));
+       String poll_tbl=request.getParameter("obj");
+        model.addAttribute("pid", pid);
+        model.addAttribute("obj", poll_tbl);
+	   return "solvePoll";
+   }
 }

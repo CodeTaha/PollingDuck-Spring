@@ -8,16 +8,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-           <!-- -->
-        <script src="resources/js/jquery.min.js"></script>
-        <script src="resources/js/jquery-ui.js"></script>
-        <link rel="stylesheet" href="resources/css/jquery-ui.css" />
-        <script src="resources/js/ui.core.js"></script>
+            <link rel="stylesheet" href="pages/resources/css/jquery-ui.css">
+            <script src="pages/resources/js/jquery.min.js"></script>
+            <script src="pages/resources/js/jquery-ui.js"></script>
+  
+  
+  
+  
+        <script src="pages/resources/js/ui.core.js"></script>
         
         
-        <link rel="stylesheet" href="resources/css/ui.dropdownchecklist.css" />
+        <link rel="stylesheet" href="pages/resources/css/ui.dropdownchecklist.css" />
         
-          <script src="resources/js/ui.dropdownchecklist.js"></script>
+          <script src="pages/resources/js/ui.dropdownchecklist.js"></script>
        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -26,22 +29,18 @@
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
+                var data=${obj};
             $(document).ready(function(){
                 
-                $.ajax({
-           type: "POST",       // the dNodeNameefault
-           url: "solvePoll",
-           data: { pid:pid, fn:1
-               },
-           success: function(data){
+                
                console.log(data);
-               pollJSON=JSON.parse(data);
+               pollJSON=data;//JSON.parse(data);
                console.log(pollJSON);
-               qtnJSON=JSON.parse(pollJSON[5]);
-               ansJSON=JSON.parse(pollJSON[6]);
+               qtnJSON=JSON.parse(pollJSON['qtn_json']);
+               ansJSON=JSON.parse(pollJSON['ans_json']);
                  //alert(data);
                  
-              $("#pollArea").append('<h1>'+pollJSON[3]+'</h1><h2>'+pollJSON[4]+'</h2>');
+              $("#pollArea").append('<h1>'+pollJSON['title']+'</h1><h2>'+pollJSON['description']+'</h2>');
                   for(var i=0; i<qtnJSON.length; i++)
                   {
                       $("#pollArea").append("<p>Qtn "+qtnJSON[i][0]+":"+qtnJSON[i][2]+"</p>");
@@ -126,10 +125,7 @@
                       }
                   }
                
-            }
             
-            
-            });
             });
             
             function submitAns()
@@ -206,9 +202,8 @@
                   console.log(finalJSON);
                   $.ajax({
                                 type: "POST",       // the dNodeNameefault
-                                url: "solvePoll",
-                                data: { finalJSON: finalJSON, fn:2
-                                    },
+                                url: "submitPoll",
+                                data: { finalJSON: finalJSON},
                                 success: function(data){alert(data);
                                         if(data)
                                         {

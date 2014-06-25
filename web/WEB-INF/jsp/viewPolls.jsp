@@ -14,7 +14,8 @@
   <script src="pages/resources/js/jquery.min.js"></script>
   <script src="pages/resources/js/jquery-ui.js"></script>
         <script>
-            $(document).ready(function(){
+    var pollJSON;        
+    $(document).ready(function(){
                 
                 
                 $.ajax({
@@ -22,8 +23,9 @@
            url: "viewPollsData",
            data: { },
            success: function(data){
-               console.log(data);
-               var pollJSON=JSON.parse(data);
+               //console.log(data);
+               pollJSON=JSON.parse(data);
+               console.log("pollJSON");
                console.log(pollJSON);
                  //alert(data);
                  for(var i=0; i<pollJSON.length;i++)
@@ -44,8 +46,8 @@
             });
             
            function openPoll(pid)
-           {
-               $( "#dialog-modal").load( 'solvePoll', {pid: pid}, function( response, status, xhr ) 
+           {$( "#dialog-modal").empty();
+               $( "#dialog-modal").load( 'solvePoll', {pid: pid, obj:JSON.stringify(pollJSON[pid]), fn:1}, function( response, status, xhr ) 
                {
   if ( status === "error" ) {
     var msg = "Sorry but there was an error: ";

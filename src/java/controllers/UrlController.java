@@ -92,11 +92,7 @@ public class UrlController extends Parent_Controller{
    public String viewPolls() {
 	   return "viewPolls";
    }
-   @RequestMapping(value = "/solvePoll", method = RequestMethod.GET)
-   public String solvePoll(ModelMap model, HttpServletRequest request) {
-        model.addAttribute("pid", "2");
-	   return "solvePoll";
-   }
+   
    
     @RequestMapping(value = "/index", method = RequestMethod.GET)
    public String index() {
