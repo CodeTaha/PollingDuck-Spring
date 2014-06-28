@@ -23,7 +23,7 @@ public class Category_Mapper implements RowMapper<Category>{
       Category category = new Category();
       category.setCid(rs.getInt("cid"));
       category.setCategory_name(rs.getString("category_name"));
-      category.setGroup(rs.getString("group"));
+      category.setGroup(rs.getString("group_name"));
       
       
       return category;
