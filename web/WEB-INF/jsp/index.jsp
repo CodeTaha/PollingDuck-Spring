@@ -10,7 +10,7 @@
 
     <body>
         <form action="login" method="post">
-            Login id <input type="text" name="username"><br>
+            User id <input type="text" name="username"><br>
             password <input type="password" name="password">
             <input type="submit"/>
         </form>
