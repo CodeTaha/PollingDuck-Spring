@@ -35,7 +35,7 @@
                          $("#pid"+pollJSON[i][0]).append('<button onclick="pollResult('+parseInt(pollJSON[i][0])+')">Results</button>');
                          */
                          $("#pollList").append('<div id="pid'+pollJSON[i]["pid"]+'"><h3>'+pollJSON[i]["pid"]+":"+pollJSON[i]["title"]+'</h3></div>');
-                         $("#pid"+pollJSON[i]["pid"]).append('<button onclick="openPoll('+parseInt(pollJSON[i]["pid"])+')">Take Poll</button>');
+                         $("#pid"+pollJSON[i]["pid"]).append('<button onclick="openPoll('+i+')">Take Poll</button>');
                          $("#pid"+pollJSON[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSON[i]["pid"])+')">Results</button>');
                         
                          
@@ -45,9 +45,12 @@
             });
             });
             
-           function openPoll(pid)
+           function openPoll(i)
            {$( "#dialog-modal").empty();
-               $( "#dialog-modal").load( 'solvePoll', {pid: pid, obj:JSON.stringify(pollJSON[pid]), fn:1}, function( response, status, xhr ) 
+               var pollJson_obj=pollJSON[i];
+               console.log("In OpenPoll");
+               console.log(pollJson_obj);
+               $( "#dialog-modal").load( 'solvePoll', {pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1}, function( response, status, xhr ) 
                {
   if ( status === "error" ) {
     var msg = "Sorry but there was an error: ";
