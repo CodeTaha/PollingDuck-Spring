@@ -68,31 +68,29 @@ Gson gson=new Gson();
                 var uid=<%= uid %>
             $(document).ready(function(){
                 
-                console.log("dataIn solvePoll");
-               //console.log(data);
+                
+               console.log(data);
                pollJSON=data;//JSON.parse(data);
                console.log(pollJSON);
-               qtnJSON=pollJSON['qtn_json'];
-               console.log("qtn JSON");
-               console.log(qtnJSON);
-               //ansJSON=JSON.parse(pollJSON['ans_json']);
+               qtnJSON=JSON.parse(pollJSON['qtn_json']);
+               ansJSON=JSON.parse(pollJSON['ans_json']);
                  //alert(data);
                  
               $("#pollArea").append('<h1>'+pollJSON['title']+'</h1><h2>'+pollJSON['description']+'</h2>');
                   for(var i=0; i<qtnJSON.length; i++)
                   {
-                      $("#pollArea").append("<p>Qtn "+qtnJSON[i]['qtn_id']+":"+qtnJSON[i]['qtn']+"</p>");
-                      switch(qtnJSON[i]['qtn_type'])
+                      $("#pollArea").append("<p>Qtn "+qtnJSON[i][0]+":"+qtnJSON[i][2]+"</p>");
+                      switch(qtnJSON[i][1])
                       {
                           case "mcss":{
-                                        var answers=qtnJSON[i]['rows'];
+                                        var answers=ansJSON[i][1].split("\n");
                                         for (var j=0; j<answers.length;j++)
                                             {
                                                 $("#pollArea").append('<input type="radio" name="qtn'+(i+1)+'" value="'+(j+1)+'"/>'+answers[j]+'<br/>');
                                             }
                                       }break;
                           case "mcms":{//console.log(ansJSON[i][1]);
-                                        var answers=qtnJSON[i]['rows'];
+                                        var answers=ansJSON[i][1].split("\n");
                                        
                                         $("#pollArea").append('<select multiple id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></select>');
                                         for (var j=0; j<answers.length;j++)
@@ -107,80 +105,57 @@ Gson gson=new Gson();
                                       }break;
                            case "tb":{
                                        //console.log(ansJSON[i]);
-                                       $("#pollArea").append('Enter your answer here. If you have multiple answers then separate them with enter<br/><textarea id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></textarea>');
+                                       $("#pollArea").append('Enter your answer here. If you have multiple answers then separete them with enter<br/><textarea id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></textarea>');
                                       }break;
                             case "moc":{
-                                           
-                                           var rows=qtnJSON[i]['rows'];
-                                           var columns=qtnJSON[i]['columns'];
-                                           
-                                           var tableid="moc"+(i+1);
-                                           $("#pollArea").append('<table id="'+tableid+'"></table>');
-                                           for(var k=0; k<=rows.length; k++)
-                                           {var row_id="moctr"+k;
-                                               $("#"+tableid).append('<tr id="'+row_id+'"></tr>');
-                                               for(var l=0; l<=columns.length; l++)
+                                           var matrix=JSON.parse(ansJSON[i][1]);
+                                           console.log("matrix");
+                                           console.log(matrix);
+                                           $("#pollArea").append('<table id="moc'+(i+1)+'"></table>');
+                                           for(var k=0; k<matrix.length;k++)
+                                           {$("#moc"+(i+1)).append('<tr id="moctr'+k+'"></tr>');
+                                            for(var l=0; l<matrix[0].length;l++) 
                                                {
-                                                   if(k==0)
+                                                   if(k===0)
                                                    {
-                                                       if(l==0)
-                                                       {
-                                                           $("#"+row_id).append("<th><center>Rows\Columns</center></th>");// top right corner cell
-                                                       }
-                                                       else
-                                                       {
-                                                           $("#"+row_id).append("<th><center>"+columns[l-1]+"</center></th>");// naming columns
-                                                       }
+                                                       $("#moctr"+k).append("<th><center>"+matrix[k][l]+"</center></th>");
                                                    }
-                                                   else if(l==0)
+                                                   else if(l===0)
                                                    {
-                                                       $("#"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
+                                                       $("#moctr"+k).append("<td><b><center>"+matrix[k][l]+"</center></b></td>");
                                                    }
                                                    else
                                                    {
-                                                       $("#"+row_id).append("<td><center><input type='radio' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'/></center></td>");
+                                                       $("#moctr"+k).append("<td><center><input type='radio' name='qtn"+(i+1)+" "+k+"' value='"+k+","+l+"'/></center></td>");
                                                    }
                                                }
                                            }
-                                           
-                                          
                                        
                                       }break;
                           
                     case "momc":{
-                            
-                                           var rows=qtnJSON[i]['rows'];
-                                           var columns=qtnJSON[i]['columns'];
-                                           
-                                           var tableid="momc"+(i+1);
-                                           $("#pollArea").append('<table id="'+tableid+'"></table>');
-                                           for(var k=0; k<=rows.length; k++)
-                                           {var row_id="momctr"+k;
-                                               $("#"+tableid).append('<tr id="'+row_id+'"></tr>');
-                                               for(var l=0; l<=columns.length; l++)
+                                           var matrix=JSON.parse(ansJSON[i][1]);
+                                           console.log("matrix");
+                                           console.log(matrix);
+                                           $("#pollArea").append('<table id="momc'+(i+1)+'"></table>');
+                                           for(var k=0; k<matrix.length;k++)
+                                           {$("#momc"+(i+1)).append('<tr id="momctr'+k+'"></tr>');
+                                            for(var l=0; l<matrix[0].length;l++) 
                                                {
-                                                   if(k==0)
+                                                   if(k===0)
                                                    {
-                                                       if(l==0)
-                                                       {
-                                                           $("#"+row_id).append("<th><center>Rows\Columns</center></th>");// top right corner cell
-                                                       }
-                                                       else
-                                                       {
-                                                           $("#"+row_id).append("<th><center>"+columns[l-1]+"</center></th>");// naming columns
-                                                       }
+                                                       $("#momctr"+k).append("<th><center>"+matrix[k][l]+"</center></th>");
                                                    }
-                                                   else if(l==0)
+                                                   else if(l===0)
                                                    {
-                                                       $("#"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
+                                                       $("#momctr"+k).append("<td><b><center>"+matrix[k][l]+"</center></b></td>");
                                                    }
                                                    else
                                                    {
-                                                       $("#"+row_id).append("<td><center><input type='checkbox' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'/></center></td>");
+                                                       $("#momctr"+k).append("<td><center><input type='checkbox' name='qtn"+(i+1)+" "+k+"' value='"+k+","+l+"'/></center></td>");
                                                    }
                                                }
                                            }
-                                          
                                 }break;
                               
                       }
@@ -190,68 +165,70 @@ Gson gson=new Gson();
             });
             
             function submitAns()
-            {
-                var finalAns=new Array();
-                console.log("In submit ans");
-                console.log(qtnJSON);
+            {var finalAns=new Array();
                 for(var i=0; i<qtnJSON.length; i++)
-                  {
-                        var answers=new Array();
-                        //answers[0]=qtnJSON[i]['qtn_id'];
-                        //answers[1]=qtnJSON[i]['qtn_type'];
-                        //answers[2]=new Array();
-                      switch(qtnJSON[i]['qtn_type'])
+                  {var answers=new Array(3);
+                      switch(qtnJSON[i][1])
                       {
                           case "mcss":  {
-                                            
-                                            answers.push($('input[name=qtn'+(i+1)+']:checked').val());
-                                            //finalAns.push(answers);
+                                            answers[0]=i+1;
+                                            answers[1]='mcss';
+                                            answers[2]=new Array();
+                                            answers[2].push($('input[name=qtn'+(i+1)+']:checked').val());
+                                            finalAns.push(answers);
                                         }break;
                           case "mcms":  {
-                                            
-                                            answers.push($('#qtn'+(i+1)).val());
-                                            //finalAns.push(answers);
+                                            answers[0]=i+1;
+                                            answers[1]='mcms';
+                                            answers[2]=new Array();
+                                            answers[2].push($('#qtn'+(i+1)).val());
+                                            finalAns.push(answers);
                                         }break;
                           case "tb":    {
-                                           
+                                            answers[0]=i+1;
+                                            answers[1]='tb';
+                                            answers[2]=new Array();
                                             var temp=$('#qtn'+(i+1)).val().split('\n');
-                                            answers.push(temp);
-                                            //finalAns.push(answers);
+                                            answers[2].push(temp);
+                                            finalAns.push(answers);
                                         }break;
                           case "moc":   {
-                                            
-                                            var rows=qtnJSON[i]['rows'];
-                                           
-                                            for(var k=0; k<rows.length;k++)
+                                            answers[0]=i+1;
+                                            answers[1]='moc';
+                                            answers[2]=new Array();
+                                            var matrix=JSON.parse(ansJSON[i][1]);
+                                            console.log("matrix");
+                                            console.log(matrix);
+                                            for(var k=1; k<matrix.length;k++)
                                             {
-                                                   answers.push($('input[name="qtn'+(i+1)+' '+k+'"]:checked').val()); 
+                                                   answers[2].push($('input[name="qtn'+(i+1)+' '+k+'"]:checked').val());
+                                                   console.log(answers[2]);
+                                                
                                             }
-                                           //finalAns.push(answers);
+                                           finalAns.push(answers);
                                         }break;
                           case "momc":  {
-                                            
-                                            var rows=qtnJSON[i]['rows'];
-                                            for(var k=0; k<rows.length;k++)
+                                            answers[0]=i+1;
+                                            answers[1]='momc';
+                                            answers[2]=new Array();
+                                            var matrix=JSON.parse(ansJSON[i][1]);
+                                            for(var k=1; k<matrix.length;k++)
                                             {
                                                    var temp= new Array();
                                                    $('input[name="qtn'+(i+1)+' '+k+'"]:checked').each(function() {
                                                                                                                 //console.log(this.value);
-                                                                                                                answers.push(this.value);
+                                                                                                                answers[2].push(this.value);
                                                                                                              });
-                                                   
+                                                   console.log(answers[2]);
                                            }
-                                           //finalAns.push(answers);
+                                           finalAns.push(answers);
                                         }break;
                       }
-                      console.log("i="+i+" qtn id="+qtnJSON[i]['qtn_id']+" qtn type="+qtnJSON[i]['qtn_type']+" answrs="+answers);
-                      var ans2={qtn_id:qtnJSON[i]['qtn_id'], qtn_type:qtnJSON[i]['qtn_type'],ans:answers};
-                      finalAns.push(ans2);
+                      
                   }
-                  console.log(finalAns);
                   finalAns=JSON.stringify(finalAns);
                   console.log("finalAns");
                       console.log(finalAns);
-                      //console.log(finalAns2);
                   var finalJSON=new Array();
                   finalJSON.push(pid);
                   finalJSON.push(uid);// UID will come here

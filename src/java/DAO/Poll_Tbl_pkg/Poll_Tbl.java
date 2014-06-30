@@ -6,37 +6,23 @@
 
 package DAO.Poll_Tbl_pkg;
 
-import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author abc
  */
 public class Poll_Tbl {
-    Gson gson=new Gson();
     private int pid;
     private int uid;
     private String cid_json;
     private String title;
     private String description;
-    //private String qtn_json;
+    private String qtn_json;
     private String ans_json;
     private String poll_link;
     private String start_ts;
     private String end_ts;
     private int reward;
     private String poll_type;
-    private List<Qtn> qtn_json=new ArrayList<>();
-
-    public List<Qtn> getQtn_json() {
-        return qtn_json;
-    }
-
-    public void setQtn_json(String qtn_json) {
-        this.qtn_json = gson.fromJson(qtn_json, List.class);
-    }
 
     public int getPid() {
         return pid;
@@ -77,7 +63,15 @@ public class Poll_Tbl {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public String getQtn_json() {
+        return qtn_json;
+    }
+
+    public void setQtn_json(String qtn_json) {
+        this.qtn_json = qtn_json;
+    }
+
     public String getAns_json() {
         return ans_json;
     }
