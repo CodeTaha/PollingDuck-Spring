@@ -61,58 +61,39 @@ $(document).ready(function(){
     {
         var question=$('#question').val();
         var qtype=$('#Qtype').val();
-        qtnArray[count]=new Array(3);
-        qtnArray[count][0]=count+1;
-        qtnArray[count][1]=qtype;
-        qtnArray[count][2]=question;
+        var qtnArray2=new Array();
+        //qtnArray[count]=new Array(6);
+        qtnArray2[0]=count+1;
+        qtnArray2[1]=count+1;
+        qtnArray2[2]=qtype;
+        qtnArray2[3]=question;
         
         if(qtype==="moc" || qtype==="momc")
-        {ansArray[count]=new Array(2);
+        {
             var columns=$('#columns').val();
             var rows=$('#rows').val();
-            ansArray[count][0]=count+1;
-         //   ansArray[count][1]=columns;
-       // ansArray[count][2]=rows; 
-        var temp_col=columns.split("\n");
-        var temp_row=rows.split("\n");
-        var finalMat=new Array(temp_row.length+1);
-        for(var i=0; i<=temp_row.length;i++)
-            {finalMat[i]=new Array();
-                if(i==0)
-                            {
-                                finalMat[i].push("");
-                                for(var j=0; j<temp_col.length;j++)
-                                    {
-                                    finalMat[i].push(temp_col[j]);
-                                 
-                                      }
-                                //finalMat[i].push(temp_col);
-                            }
-                else
-                {finalMat[i].push(temp_row[i-1]);
-                    for(var j=0; j<temp_col.length;j++)
-                    {
-                     finalMat[i].push("");
-                                 
-                    }
-                }
-            }
-           console.log("final Mat"+finalMat);
-           console.log(finalMat);
-           ansArray[count][1]=JSON.stringify(finalMat);
+          
+        qtnArray2[4]=JSON.stringify(rows.split("\n"));
+        qtnArray2[5]=JSON.stringify(columns.split("\n"));
+        
+        
+  
         $("#d2").append("Question:"+question+"<br/>Type: "+qtype+"<br>Columns: "+columns+"<br>rows:"+rows);
         }
         else
         {
         var answers=$('#answers').val();
-        ansArray[count]=new Array(2);
-        ansArray[count][0]=count+1;
-        ansArray[count][1]=answers;
+        qtnArray2[4]=JSON.stringify(answers.split("\n"));
+        qtnArray2[5]="";
         
         $("#d2").append("Question:"+question+"<br/>Type: "+qtype+"<br>Options:"+answers);
         }
+        console.log("qtnArray2=");
+        console.log(qtnArray2);
+        qtnArray.push(qtnArray2);
+        console.log(qtnArray);
         $("#d3").empty();
-        var json=JSON.stringify(ansArray);
+        var json=JSON.stringify(qtnArray);
         console.log(json);
         count++;
         
@@ -137,14 +118,15 @@ $(document).ready(function(){
         detailArray[4]=count;
         var detailJSON=JSON.stringify(detailArray);
         var qtnJSON=JSON.stringify(qtnArray);
-        var ansJSON=JSON.stringify(ansArray);
+        //var ansJSON=JSON.stringify(ansArray);
+        console.log("sending complete Poll");
         console.log(detailJSON);
         console.log(qtnArray);
-        console.log(ansArray);
+        //console.log(ansArray);
        $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "submitPollData",
-           data: { detailJSON:detailJSON, qtnJSON:qtnJSON,ansJSON:ansJSON, fn:1},
+           data: { detailJSON:detailJSON, qtnJSON:qtnJSON},
            success: function(data){
                console.log(data);
                if (data)
