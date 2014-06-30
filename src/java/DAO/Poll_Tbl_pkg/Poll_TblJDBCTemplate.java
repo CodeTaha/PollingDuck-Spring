@@ -72,4 +72,10 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
        return true;
         
     }
+   
+   public Poll_Tbl getPoll(int pid) {
+      String SQL = "select * from poll_tbl where pid=?";
+      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Object[]{pid},new Poll_Tbl_Mapper());
+      return poll_tbl.get(0);
+   }
 }

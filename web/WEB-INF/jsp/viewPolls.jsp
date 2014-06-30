@@ -60,14 +60,15 @@
            }
            
            function pollResult(pid)
-           {//alert(pid);
-               $( "#dialog-modal").empty().load( 'pollResult.jsp', {pid: pid}, function( response, status, xhr ) {
-  if ( status === "error" ) {
-    var msg = "Sorry but there was an error: ";
-    $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );
-  }
-});
-           }
+           {
+                var win = window.open("result/"+pid, '_blank');
+                win.focus();
+                /*$( "#dialog-modal").empty().load( 'pollResult.jsp', {pid: pid}, function( response, status, xhr ) {
+                if ( status === "error" ) {
+                var msg = "Sorry but there was an error: ";
+                $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );*/
+            }
+           
         </script>
     </head>
     <body>

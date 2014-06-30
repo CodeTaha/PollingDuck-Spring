@@ -8,16 +8,23 @@ package controllers;
 
 import Category_Manager.Category;
 import Category_Manager.Category_TblJDBCTemplate;
+import DAO.Poll_Tbl_pkg.Poll_Tbl;
+import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
+import Poll_Ans_Tbl.Poll_Ans_Tbl;
+import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
 import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import static javax.management.Query.value;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static net.sf.cglib.core.CodeEmitter.OR;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 /* This class handles urls and shows an example of page redirection from index page to static page*/
@@ -72,9 +79,11 @@ public class UrlController extends Parent_Controller{
    }
     @RequestMapping(value = "/createPoll", method = RequestMethod.GET)
    public String createPoll(ModelMap model, HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
-      
-            if(checklogin(request))
+      System.out.println("In UrlController>CreatePolls");
+           try{
+               if(checklogin(request))
             {
+            System.out.println("Checklogin cleared");
             Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
             List<Category> category=cat.Category_list();
             String cat_json=gson.toJson(category);
@@ -87,6 +96,12 @@ public class UrlController extends Parent_Controller{
                 response.sendRedirect("index");    
                 return "index";
             }
+           }
+           catch(Exception e)
+           {
+               System.out.println("Exception occured @ UrlController>createPoll is "+e);
+           return "index";
+           }
    }
    @RequestMapping(value = "/viewPolls", method = RequestMethod.GET)
    public String viewPolls() {
@@ -116,4 +131,19 @@ public class UrlController extends Parent_Controller{
      return "redirect:/pages/final.html";
    }
   
+   @RequestMapping(value = "/result/{pid}",method = RequestMethod.GET)
+   public String result(@PathVariable int pid, ModelMap model,HttpServletRequest request) throws SQLException {
+            System.out.println("In UrlController>result ");
+            System.out.println("in Result pid="+pid);
+       
+            Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
+            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+            List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
+            String rslt=gson.toJson(poll_ans_tbl_list);
+            model.addAttribute("result", rslt);
+            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+            rslt=gson.toJson(poll_tbl);
+            model.addAttribute("poll", rslt);
+	   return "result";
+   }
 }

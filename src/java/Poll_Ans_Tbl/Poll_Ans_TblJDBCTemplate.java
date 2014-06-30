@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 
-package Category_Manager;
-
+package Poll_Ans_Tbl;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -13,16 +12,15 @@ import model.connectivity;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 /**
  *
- * @author Taha
+ * @author abc
  */
-public class Category_TblJDBCTemplate {
+public class Poll_Ans_TblJDBCTemplate {
     private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
    connectivity conn=null;
-    public Category_TblJDBCTemplate() throws SQLException
+    public Poll_Ans_TblJDBCTemplate() throws SQLException
     {
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
      conn=(connectivity)context.getBean("connectivity");
@@ -31,11 +29,10 @@ public class Category_TblJDBCTemplate {
       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
       
     }
-
-    public List<Category> Category_list() {
-       String SQL = "select * from category_tbl";
-      List <Category> category = jdbcTemplateObject.query(SQL, new Category_Mapper());
+    
+    public List<Poll_Ans_Tbl> get_PollResult(int pid) {
+       String SQL = "select * from poll_ans_tbl where pid=?";
+      List <Poll_Ans_Tbl> category = jdbcTemplateObject.query(SQL, new Object[]{pid},new Poll_Ans_Tbl_Mapper());
       return category;
     }
-    
 }

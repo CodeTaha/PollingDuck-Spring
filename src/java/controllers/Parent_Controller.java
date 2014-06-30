@@ -43,10 +43,12 @@ public class Parent_Controller {
             switch (cookie1.getName()) 
             {
                case "handle":
+                    System.out.println("Got Handle cookie");
                    handle=cookie1.getValue();
                    loggedin = true;
                    break;
                case "uid":
+                   System.out.println("Got uid cookie");
                    uid=Integer.parseInt(cookie1.getValue());
                    loggedin = true;
                    break;

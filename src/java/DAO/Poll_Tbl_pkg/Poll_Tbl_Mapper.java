@@ -18,6 +18,7 @@ public class Poll_Tbl_Mapper implements RowMapper<Poll_Tbl>{
      public Poll_Tbl mapRow(ResultSet rs, int rowNum) throws SQLException {
       Poll_Tbl poll_tbl = new Poll_Tbl();
       poll_tbl.setPid(rs.getInt("pid"));
+      poll_tbl.setUid(rs.getInt("uid"));
       poll_tbl.setCid_json(rs.getString("cid_json"));
       poll_tbl.setTitle(rs.getString("title"));
       poll_tbl.setDescription(rs.getString("description"));
