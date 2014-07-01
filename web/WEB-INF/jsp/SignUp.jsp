@@ -20,6 +20,7 @@
         <script type="text/javascript" src="pages/resources/js/jquery-ui-timepicker-addon.js"></script>
         
         <script>
+            
             var cat_json=${cat_list};
             var cat_list=new Array();
             
@@ -27,7 +28,7 @@
                 $("#dob").datepicker({
            //showSecond: true,
            //timeFormat: 'hh:mm:ss',
-           dateFormat:"dd-mm-yy" 
+           dateFormat:"mm/dd/yy" 
                    });
    for(var i=0; i<cat_json.length; i++)
    {
@@ -73,8 +74,153 @@
         </script>
     </head>
     <body>
-        <h1>Sign Up!</h1>
         
+        <div id="fb-root"></div>
+        
+<script type="text/javascript">
+
+     window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '555702664544677', // App ID
+       status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+    
+    
+	FB.Event.subscribe('auth.authResponseChange', function(response) 
+	{
+ 	 if (response.status === 'connected') 
+  	{
+  		document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
+  		//SUCCESS
+  		
+  	}	 
+	else if (response.status === 'not_authorized') 
+    {
+    	document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
+
+		//FAILED
+    } else 
+    {
+    	document.getElementById("message").innerHTML +=  "<br>Logged Out";
+
+    	//UNKNOWN ERROR
+    }
+	});	
+	
+    };
+    
+   	function Login()
+	{
+	
+		FB.login(function(response) {
+		   if (response.authResponse) 
+		   {
+		    	getUserInfo();
+  			} else 
+  			{
+  	    	 console.log('User cancelled login or did not fully authorize.');
+   			}
+		 },{scope: 'email,user_photos,user_videos,user_location,user_hometown,user_birthday'});
+	
+
+	
+	}
+
+  function getUserInfo() {
+	    FB.api('/me', function(response) {
+
+	var str="<b>Name</b> : "+response.name+"<br>";
+	  	  str +="<b>Link: </b>"+response.link+"<br>";
+	  	  str +="<b>Username:</b> "+response.username+"<br>";
+	  	  str +="<b>id: </b>"+response.id+"<br>";
+	  	  str +="<b>Email:</b> "+response.email+"<br>";
+                  
+	  	
+                  
+	  	  str +="<b>Location:</b> "+response.location.name+"<br>";
+                  
+	  	  str +="<b>Birthday:</b> "+response.birthday+"<br>";
+                  
+	  	  str +="<b>Gender:</b> "+response.gender+"<br>";
+	  	  str +="<input type='button' value='Get Photo' onclick='getPhoto();'/>";
+	  	  str +="<input type='button' value='Logout' onclick='Logout();'/>"; 
+     document.getElementById("status").innerHTML=str;
+     document.getElementById('signUpForm').hidden = false;     
+ document.getElementById("imgbut").innerHTML="";
+var name = response.name;
+var username=response.username;
+var userid = response.id;
+var email = response.email;
+var link = response.link; 
+var birthdate = response.birthday;
+// assigning begins
+document.getElementById("email").value =email;
+document.getElementById("email").readOnly = true;
+   
+document.getElementById("dob").value =birthdate;
+document.getElementById("email").readOnly = true;
+     
+   console.log(name);
+    console.log(username);
+   console.log(userid);
+    console.log(email);
+   console.log(link);
+
+       // document.getElementById("details").innerHTML=str;
+
+      //  document.getElementById("status").innerHTML=str2;
+
+
+	  	  	    
+    });
+    }
+	function getPhoto()
+	{
+	  FB.api('/me/picture?type=normal', function(response) {
+
+		  var str2 =  "<br/><b>Pic</b> : <img src='"+response.data.url+"'/>";
+	  	  document.getElementById("pic").innerHTML=str2;
+	  	  	    
+    });
+	
+	}
+	function Logout()
+	{
+		FB.logout(function(){document.location.reload();});
+	}
+
+  // Load the SDK asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+</script>
+<div id="status">
+    This is really cool <br/></div>
+ <div id="details">
+     
+ </div>
+        <div id="imgbut">
+<img src="pages/resources/images/LoginWithFacebook.png" style="cursor:pointer;" onclick="Login()"/>
+<br/>We respect your hatred towards membership form filling
+</div>
+<div id="pic"></div>
+<br/><br/><br/><br/><br/>
+<div id="message">
+Logs:<br/>
+</div>
+
+
+<br/>
+<br/>
+       
+        <div id="signUpForm" hidden="true">
+             <h1>Fill Up!</h1>
             <table>
                 <tr>
                     <td>Handle</td>
@@ -133,6 +279,6 @@
                     </td>
                 </tr>
             </table>
-        
+            </div>
     </body>
 </html>
