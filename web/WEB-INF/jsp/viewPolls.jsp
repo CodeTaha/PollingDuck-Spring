@@ -50,14 +50,25 @@
                var pollJson_obj=pollJSON[i];
                console.log("In OpenPoll");
                console.log(pollJson_obj);
-               $( "#dialog-modal").load( 'solvePoll', {pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1}, function( response, status, xhr ) 
+            $( ".selector" ).dialog({
+   open: function(event, ui) {   $( "#dialog-modal").load( 'solvePoll', {pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1}, function( response, status, xhr ) 
                {
   if ( status === "error" ) {
-    var msg = "Sorry but there was an error: ";
-    $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );
-  }
-});
-           }
+    var msg = "Sorry but there was an error: "; 
+    $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText ); 
+ /*    $('#dialog-modal').dialog({
+         resizable: false,
+         height: 300,
+         width: 500,
+         dialogClass: 'noTitle',
+         modal: true
+      });
+      $('#dialog-modal').dialog('show');   */
+  // $("#dialog-modal").dialog('open');
+  }}
+);
+           }});
+   }
            
            function pollResult(pid)
            {
@@ -76,8 +87,11 @@
         <div id="pollList" style="float:left">
             
         </div>
-        <div id="dialog-modal" title="Solve Poll" style="float:right">
+     <!--   <div id="dialog-modal" title="Solve Poll" style="float:right">   -->
+            <div class="selector">
+                <div id="dialog-modal" title="Solve Poll" >
   <p>.</p>
 </div>
+            </div>
     </body>
 </html>
