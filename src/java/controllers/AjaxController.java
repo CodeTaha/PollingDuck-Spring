@@ -10,6 +10,7 @@ import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import DAO.Poll_Tbl_pkg.Qtn;
 import DAO.Poll_Tbl_pkg.Qtn_Mapper;
+import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -100,5 +101,35 @@ public class AjaxController extends Parent_Controller{
 	response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();  
         out.println(rslt);
+   }
+   
+    @RequestMapping(value = "/SignUpReg", method = RequestMethod.POST)
+   public void SignUpReg(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+      System.out.println("in AjaxController > SignUpReg");
+        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+        
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        //handle:handle,email:email,country:country,state:state
+        //city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category 
+        String handle=request.getParameter("handle");
+        String email= request.getParameter("email");
+        String country= request.getParameter("country");
+        String state= request.getParameter("state");
+        String city= request.getParameter("city");
+        String zip= request.getParameter("zip");
+        String religion= request.getParameter("religion");
+        String sex= request.getParameter("sex");
+        String dob= request.getParameter("dob");
+        String phone= request.getParameter("phone");
+        int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
+        //System.out.println("cat list= "+Arrays.toString(category));
+        
+       
+       
+     boolean rslt=user_tblJDBCTemplate.createUser(handle,email,country,state,city,zip,religion,sex,dob,phone,category );
+      
+	 out.println(rslt);
+      
    }
 }

@@ -14,7 +14,7 @@ import com.google.gson.Gson;
  */
 public class User_Detail {
     private int uid;
-   private String handle;
+    private String handle;
     private int category_list_json[];
     Gson gson=new Gson();
     public int getUid() {

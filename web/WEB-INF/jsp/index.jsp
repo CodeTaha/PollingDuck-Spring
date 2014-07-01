@@ -14,6 +14,8 @@
             password <input type="password" name="password">
             <input type="submit"/>
         </form>
+        
+        <a href="SignUp">New User?</a>
         <ul>
             <li>
                 <a href="createPoll">Create</a>

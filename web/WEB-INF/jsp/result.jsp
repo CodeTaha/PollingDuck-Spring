@@ -16,6 +16,20 @@
             console.log("Poll_Ans_Tbl");
             console.log(poll);
             console.log(result);
+            var expJson=new Array();
+            var temp=new Array();
+            temp['cid']=1;
+            temp['exp']=10;
+            expJson.push(temp);
+            temp['cid']=2;
+            temp['exp']=20;
+            expJson.push(temp);
+            temp['cid']=3;
+            temp['exp']=30;
+            expJson.push(temp);
+            console.log(expJson);
+            
+            
         </script>
     </head>
     <body>

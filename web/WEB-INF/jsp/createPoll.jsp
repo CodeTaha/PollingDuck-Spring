@@ -4,7 +4,7 @@
  
 <script src="pages/resources/js/jquery.min.js"></script>
 <link href="pages/resources/select2/select2.css" rel="stylesheet"/>
-    <script src="pages/resources/select2/select2.js"></script>
+<script src="pages/resources/select2/select2.js"></script>
 </head>
 <body>
 <!--<h1>create poll</h1>-->
@@ -18,7 +18,6 @@ var count=0;
 var uid=1;
 console.log(${cat_list});
 var cat_json=${cat_list};
-console.log(cat_json[0]['cid']);
 var cat_list=new Array();
 $(document).ready(function(){
    for(var i=0; i<cat_json.length; i++)

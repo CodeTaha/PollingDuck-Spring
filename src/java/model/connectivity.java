@@ -26,8 +26,12 @@ private DataSource dataSource;
     public DataSource getDataSource() {
         return dataSource;
     }
-public void setDataSource(DataSource dataSource) {
+public void setDataSource(DataSource dataSource) throws SQLException {
       this.dataSource = dataSource;
+      System.out.println("DataSource is set"); 
+      System.out.println(dataSource);
+      con=dataSource.getConnection();
+      System.out.println("Connection set");
      
    }
 /* Adjust the above two as per the username
@@ -37,19 +41,9 @@ public void setDataSource(DataSource dataSource) {
 public connectivity() throws SQLException
 {
 
-       try{
-           
-          System.out.println("in connectivity sakina");
-            Class.forName(driver);
-            con=DriverManager.getConnection(mysqlurl,mysqluser,mysqlpass);
-           String[] arr=new String[3];
-           
-            System.out.println("connected to db");
-        }
-         catch(ClassNotFoundException e)
-        {
-            System.out.println("Connectivity object could not be created because of"+e);;
-        }
+    System.out.println("Creating Connectivity Object");
+    String[] arr=new String[3];
+    System.out.println("connected to db");
        
             
 }
@@ -57,5 +51,7 @@ public Connection getCon()
 {
     return con;
 }
+
+
 
 }
