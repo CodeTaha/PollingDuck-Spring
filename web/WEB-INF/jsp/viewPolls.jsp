@@ -52,7 +52,7 @@
                console.log(pollJson_obj);
             $( ".selector" ).dialog({
    open: function(event, ui) {   $( "#dialog-modal").load( 'solvePoll', {pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1}, function( response, status, xhr ) 
-               {
+               {  
   if ( status === "error" ) {
     var msg = "Sorry but there was an error: "; 
     $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText ); 
@@ -67,9 +67,21 @@
   // $("#dialog-modal").dialog('open');
   }}
 );
-           }});
+           },
+       close : function() {location.reload(true);}
+   });
+   /* 
+    resizable: false,
+            modal: true,
+            width: 400,
+            height: 450,
+            overlay: { backgroundColor: "#000", opacity: 0.5 },
+            buttons:{ "Close": function() { $(this).dialog("close"); } },
+            close: function(ev, ui) { $(this).remove(); },*/
+       
+       
    }
-           
+          
            function pollResult(pid)
            {
                 var win = window.open("result/"+pid, '_blank');
