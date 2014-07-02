@@ -43,7 +43,7 @@ public class UrlController extends Parent_Controller{
         PrintWriter out = response.getWriter();
         String username= request.getParameter("username");
         String password= request.getParameter("password");
-        user_detail=user.authenticate(username,password);
+        user_detail=user.authenticate(username,password,1);
         if(user_detail!=null)
         {
         

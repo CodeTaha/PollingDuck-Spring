@@ -39,10 +39,25 @@ public class User_TblJDBCTemplate {
       
     }
 
-    public User_Detail authenticate(String username, String password) {
-        SQL = "select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
-"OR \n" +
-"(A.uid=B.uid and A.uid=C.uid and A.email=?);";
+    public User_Detail authenticate(String username, String password, int loginType) {
+        //loginType can be 
+        //local=1
+        //fb=2
+        //twitter=3
+        // google=4
+        switch(loginType)
+        {
+            case 1: {
+                        SQL =   "select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
+                            "OR \n" +
+                            "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
+                    }break;
+            case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
+                        SQL="select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
+                    }    
+        }
+        
+        
        User_Detail user_detail;
        
       try{
@@ -74,7 +89,7 @@ public class User_TblJDBCTemplate {
         }
     }
     
-    public boolean createUser(String handle,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,int category[] )
+    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb )
    {
        System.out.println("In User_Tbl_JDBCTemplate> createUser");
         /* Code for User_Store */
@@ -106,17 +121,17 @@ public class User_TblJDBCTemplate {
        catch(DataAccessException e)
        {
            System.out.println("In catch");
-           SQL = "insert into login_tbl(email) values(?)";// Inserting into login_tbl
+           SQL = "insert into login_tbl(fb,email) values(?,?)";// Inserting into login_tbl
            try{
-           jdbcTemplateObject.update( SQL, email);// adding email in login_tbl
+           jdbcTemplateObject.update( SQL, fb,email);// adding email in login_tbl
             SQL="select uid from login_tbl where email=?";// fetchin the uid for newly entered row
             int uid=jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, Integer.class);
             
             
            
             int rs1=0,rs2=0;
-            try{SQL="insert into user_detail(uid,handle,country,state,city,zip,religion,sex,dob,phone) values(?,?,?,?,?,?,?,?,?,?)";
-             rs1=jdbcTemplateObject.update( SQL, uid,handle,country,state,city,zip,religion,sex,dob,phone);
+            try{SQL="insert into user_detail(uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic) values(?,?,?,?,?,?,?,?,?,?,?)";
+             rs1=jdbcTemplateObject.update( SQL, uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic);
             }
             catch(DataAccessException f)
             {

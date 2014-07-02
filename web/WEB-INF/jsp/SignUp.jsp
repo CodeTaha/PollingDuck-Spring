@@ -48,6 +48,7 @@
   function validate()
   {
       var handle=$("#handle").val();
+      var name=$("#name").val();
       var email=$("#email").val();
       var country=$("#country").val();
       var state=$("#state").val();
@@ -57,12 +58,14 @@
       var sex=$('input[name=sex]:checked').val();
       var dob=$("#dob").val();
       var phone=$("#phone").val();
+      var profile_pic=$("#profile_pic").val();
       var category=$("#category").val();
+      var fb="testfb";// Enter fb username here
       category=JSON.stringify(category);
       $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "SignUpReg",
-                                data: {handle:handle,email:email,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category },
+                                data: {handle:handle,name:name,email:email,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
                                 success: function(data){alert(data);
                                         if(data)
                                         {
@@ -78,7 +81,13 @@
         <div id="fb-root"></div>
         
 <script type="text/javascript">
-
+var name;
+var username;
+var userid;
+var email;
+var link; 
+var birthdate;
+var profile_pic;
      window.fbAsyncInit = function() {
     FB.init({
       appId      : '555702664544677', // App ID
@@ -149,24 +158,41 @@
      document.getElementById("status").innerHTML=str;
      document.getElementById('signUpForm').hidden = false;     
  document.getElementById("imgbut").innerHTML="";
-var name = response.name;
-var username=response.username;
-var userid = response.id;
-var email = response.email;
-var link = response.link; 
-var birthdate = response.birthday;
+    
+ name = response.name;
+ username=response.username;
+ userid = response.id;
+ email = response.email;
+ link = response.link; 
+ birthdate = response.birthday;
+ profile_pic;
+  FB.api('/me/picture?type=normal', function(response) {
+                    
+		  var str2 =  "<img src='"+response.data.url+"'/>";
+	  	  document.getElementById("dp").innerHTML=str2;
+                  
+	  	  profile_pic=response.data.url;
+                  document.getElementById("profile_pic").value=profile_pic
+    });
+                  
+
+
 // assigning begins
 document.getElementById("email").value =email;
 document.getElementById("email").readOnly = true;
    
 document.getElementById("dob").value =birthdate;
 document.getElementById("email").readOnly = true;
-     
+
+;
+document.getElementById("name").value=name;
+                  
    console.log(name);
     console.log(username);
    console.log(userid);
     console.log(email);
    console.log(link);
+
 
        // document.getElementById("details").innerHTML=str;
 
@@ -209,7 +235,6 @@ document.getElementById("email").readOnly = true;
 <img src="pages/resources/images/LoginWithFacebook.png" style="cursor:pointer;" onclick="Login()"/>
 <br/>We respect your hatred towards membership form filling
 </div>
-<div id="pic"></div>
 <br/><br/><br/><br/><br/>
 <div id="message">
 Logs:<br/>
@@ -223,8 +248,16 @@ Logs:<br/>
              <h1>Fill Up!</h1>
             <table>
                 <tr>
+                    <td>Profile <input type="hidden" id="profile_pic" name="profile_pic"/></td></td>
+                    <td id="dp"></td>
+                </tr>
+                <tr>
                     <td>Handle</td>
                     <td><input type="text" id="handle" name="handle"/></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" id="name" name="name"/></td>
                 </tr>
                 <tr>
                     <td>Categories</td>
@@ -272,6 +305,8 @@ Logs:<br/>
                     <td>Phone</td>
                     <td><input type="text" id="phone" name="phone"/></td>
                 </tr>
+               
+               
                 <tr>
                     <td></td>
                     <td>

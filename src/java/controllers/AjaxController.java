@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -113,6 +114,7 @@ public class AjaxController extends Parent_Controller{
         //handle:handle,email:email,country:country,state:state
         //city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category 
         String handle=request.getParameter("handle");
+        String name=request.getParameter("name");
         String email= request.getParameter("email");
         String country= request.getParameter("country");
         String state= request.getParameter("state");
@@ -122,14 +124,47 @@ public class AjaxController extends Parent_Controller{
         String sex= request.getParameter("sex");
         String dob= request.getParameter("dob");
         String phone= request.getParameter("phone");
+        String profile_pic= request.getParameter("profile_pic");
+        String fb= request.getParameter("fb");
         int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
         //System.out.println("cat list= "+Arrays.toString(category));
         
        
        
-     boolean rslt=user_tblJDBCTemplate.createUser(handle,email,country,state,city,zip,religion,sex,dob,phone,category );
+     boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
       
 	 out.println(rslt);
       
    }
+   
+   @RequestMapping(value = "/loginFB", method = RequestMethod.POST)
+   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+       User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String username= request.getParameter("username");
+        String password= request.getParameter("password");// its actually e-mail
+        user_detail=user.authenticate(username,password,2);
+        if(user_detail!=null)
+        {
+        
+        System.out.println("Adding cookie handle"+user_detail.getHandle());
+        Cookie cookie=set_Cookie("handle",user_detail.getHandle(),24);
+        response.addCookie(cookie); 
+        System.out.println("Adding cookie uid"+user_detail.getUid());
+        cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
+        response.addCookie(cookie);
+        //System.out.print("obj json="+gson.toJson(user_detail));
+        //cookie=set_Cookie("",gson.toJson(user_detail),24);
+        //response.addCookie(cookie);
+        //response.sendRedirect("dashboard");
+       out.println(1);
+        }
+        else   
+        {
+            System.out.println("Calling Signup");
+            out.println(2);
+        }
+   }
+   
 }
