@@ -14,21 +14,26 @@
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll
             console.log("Poll_Ans_Tbl");
-            console.log(poll);
-            console.log(result);
-            var expJson=new Array();
-            var temp=new Array();
-            temp['cid']=1;
-            temp['exp']=10;
-            expJson.push(temp);
-            temp['cid']=2;
-            temp['exp']=20;
-            expJson.push(temp);
-            temp['cid']=3;
-            temp['exp']=30;
-            expJson.push(temp);
-            console.log(expJson);
+            console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
+            console.log(result);// use result which is the compilation of all the answers users have submitted
             
+            // using the above parameteres
+            
+            console.log("Displays title of poll");
+            console.log(poll['title']);
+            
+            console.log("Displays qtn 1 and qtn type of poll");
+            console.log(poll['qtn_json'][0]['qtn']);
+            console.log(poll['qtn_json'][0]['qtn_type']);
+            
+            console.log("Displays options 1 and 4 of qtn 1 from poll");
+            console.log(poll['qtn_json'][0]['rows'][0]);
+            console.log(poll['qtn_json'][0]['rows'][3]);
+            
+            console.log("Displays all parameteres a user has entered from result");
+            console.log(result[0]);
+            
+            console.log(result[0]['qtn'][0]['ans']);
             
         </script>
     </head>
