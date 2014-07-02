@@ -268,6 +268,7 @@ Gson gson=new Gson();
                                         {
                                             $("#submitSurvey").empty().append('<button onclick="pollResult('+pid+');">View Result</button>')
                                         }
+                                                location.reload(true);
                                 }
                         });
             }
