@@ -6,6 +6,8 @@
 
 package controllers;
 
+import Category_Manager.Category;
+import Category_Manager.Category_TblJDBCTemplate;
 import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import DAO.Poll_Tbl_pkg.Qtn;
@@ -163,7 +165,12 @@ public class AjaxController extends Parent_Controller{
         else   
         {
             System.out.println("Calling Signup");
-            out.println(2);
+            Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
+            List<Category> category=cat.Category_list();
+            String cat_json=gson.toJson(category);
+//            System.out.println("cat list "+cat_json);
+//            model.addAttribute("cat_list", cat_json);
+            out.println(cat_json);
         }
    }
    

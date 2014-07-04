@@ -64,7 +64,7 @@ public class User_TblJDBCTemplate {
            user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper());
       }
       catch(DataAccessException e)
-      {System.out.println("User does not exist");
+      {System.out.println("User does not exist "+e);
           user_detail=null;
       }
       //return rslt;
@@ -115,7 +115,7 @@ public class User_TblJDBCTemplate {
             System.out.println("Exp_Json="+exp);
         SQL="select uid from login_tbl where email=?";
        try
-       {int rslt=jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, Integer.class);
+       {int rslt=jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, Integer.class);// If user is already registered using the email bfr
        return false;
        }
        catch(DataAccessException e)
@@ -130,7 +130,7 @@ public class User_TblJDBCTemplate {
             
            
             int rs1=0,rs2=0;
-            try{SQL="insert into user_detail(uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic) values(?,?,?,?,?,?,?,?,?,?,?)";
+            try{SQL="insert into user_detail(uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic) values(?,?,?,?,?,?,?,?,?,?,?,?)";
              rs1=jdbcTemplateObject.update( SQL, uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic);
             }
             catch(DataAccessException f)

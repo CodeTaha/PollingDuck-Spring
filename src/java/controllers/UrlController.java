@@ -146,13 +146,5 @@ public class UrlController extends Parent_Controller{
             model.addAttribute("poll", rslt);
 	   return "result";
    }
-   @RequestMapping(value = "/SignUp", method = RequestMethod.GET)
-   private String SignUp(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
-      Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
-            List<Category> category=cat.Category_list();
-            String cat_json=gson.toJson(category);
-            System.out.println("cat list "+cat_json);
-            model.addAttribute("cat_list", cat_json);
-            return "SignUp";
-   }
+  
 }

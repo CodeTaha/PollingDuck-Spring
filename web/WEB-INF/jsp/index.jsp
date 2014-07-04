@@ -6,7 +6,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to PollingDuck project</title>
+         <link href="pages/resources/select2/select2.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="pages/resources/css/jquery-ui-timepicker-addon.css" >
+        
         <script src="pages/resources/js/jquery.min.js"></script>
+        <script src="pages/resources/select2/select2.js"></script>
+        <script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="pages/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script type="text/javascript">
 var name;
 var username;
@@ -15,6 +21,23 @@ var email;
 var link; 
 var birthdate;
 var profile_pic;
+ var cat_json="";
+ var cat_list=new Array();
+    $(document).ready(function(){
+        $("#SignUp").hide();
+        $("#dob").datepicker({
+           //showSecond: true,
+           //timeFormat: 'hh:mm:ss',
+           dateFormat:"mm/dd/yy" 
+                   });
+    $("#category").select2({
+                                                            // multiple: true,
+                                                       placeholder:"Select The Categories you are interested in",
+                                                       maximumSelectionSize:20
+                                                       //allowClear: true,
+                                                       //tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
+                                                     });  
+    });
      window.fbAsyncInit = function() {
     FB.init({
       appId      : '555702664544677', // App ID
@@ -91,13 +114,15 @@ var profile_pic;
  email = response.email;
  link = response.link; 
  birthdate = response.birthday;
- profile_pic;
-  FB.api('/me/picture?type=normal', function(response) {
-                    
-		  var str2 =  "<img src='"+response.data.url+"'/>";
-	  	 
-                
+ //profile_pic=response.data.url;
+ FB.api('/me/picture?type=normal', function(response) {
+                  profile_pic=response.data.url;
+                  console.log('profile_pic');
+                  console.log(profile_pic);
+                  document.getElementById("profile_pic").value=profile_pic;
+                  $("#dp").append("<img src='"+profile_pic+"'/>")
     });
+ 
                   
 
 
@@ -107,35 +132,43 @@ var profile_pic;
    console.log(userid);
     console.log(email);
    console.log(link);
+    
   	$.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "loginFB",
                                 data: {username:username, password:email},
                                 success: function(data){//alert(data);
                                         if(data==1)
-                                        {//alert(1);
+                                        {
                                            window.location.assign("dashboard");
                                         }
                                         else
-                                        {//alert(2);
-                                            //console.log(data);
-                                            window.location.assign("SignUp");
+                                        {
+                                            $("#SignUp").show();
+                                            cat_json=JSON.parse(data);
+                                            document.getElementById("email").value =email;
+                                            document.getElementById("email").readOnly = true;
+                                            document.getElementById("dob").value =birthdate;
+                                            document.getElementById("email").readOnly = true;
+                                            document.getElementById("name").value=name;
+                                            console.log(cat_json);
+                                           
+                                              for(var i=0; i<cat_json.length; i++)
+                                                        {
+                                                            cat_list.push({id:cat_json[i]['cid'], text:cat_json[i]['category_name']});
+                                                            $("#category").append("<option value="+cat_json[i]['cid']+">"+cat_json[i]['category_name']+"</option>");
+                                                        }
+                                                       
+                                            
+                                                         
+                                            
                                         }
                                         
                                 }
                         });    
     });
     }
-	function getPhoto()
-	{
-	  FB.api('/me/picture?type=normal', function(response) {
-
-		  var str2 =  "<br/><b>Pic</b> : <img src='"+response.data.url+"'/>";
-	  	  document.getElementById("pic").innerHTML=str2;
-	  	  	    
-    });
 	
-	}
 	function Logout()
 	{
 		FB.logout(function(){document.location.reload();});
@@ -149,6 +182,37 @@ var profile_pic;
      js.src = "//connect.facebook.net/en_US/all.js";
      ref.parentNode.insertBefore(js, ref);
    }(document));
+   
+   function validate()
+  {
+      var handle=$("#handle").val();
+      var name=$("#name").val();
+      var email=$("#email").val();
+      var country=$("#country").val();
+      var state=$("#state").val();
+      var city=$("#city").val();
+      var zip=$("#zip").val();
+      var religion=$("#religion").val();
+      var sex=$('input[name=sex]:checked').val();
+      var dob=$("#dob").val();
+      var phone=$("#phone").val();
+      var profile_pic=$("#profile_pic").val();
+      var category=$("#category").val();
+      var fb=response.username;// Enter fb username here//it was testfb earlier
+      console.log("bcc"+fbs);
+      category=JSON.stringify(category);
+      $.ajax({
+                                type: "POST",       // the dNodeNameefault
+                                url: "SignUpReg",
+                                data: {handle:handle,name:name,email:email,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
+                                success: function(data){alert(data);
+                                        if(data)
+                                        {
+                                           
+                                        }
+                                }
+                        });
+  }
 </script>
 
     </head>
@@ -168,7 +232,79 @@ var profile_pic;
 <div id="message">
 Logs:<br/>
 </div>
-
+<div id="SignUp">
+    <div id="signUpForm">
+             <h1>Fill Up!</h1>
+            <table>
+                <tr>
+                    <td>Profile <input type="hidden" id="profile_pic" name="profile_pic"/></td></td>
+                    <td id="dp"></td>
+                </tr>
+                <tr>
+                    <td>Handle</td>
+                    <td><input type="text" id="handle" name="handle"/></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" id="name" name="name"/></td>
+                </tr>
+                <tr>
+                    <td>Categories</td>
+                    <td><select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td><input type="text" id="email" name="email"/></td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td><input type="text" id="country" name="country"/></td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td><input type="text" id="state" name="state"/></td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td><input type="text" id="city" name="city"/></td>
+                </tr>
+                <tr>
+                    <td>Zip</td>
+                    <td><input type="text" id="zip" name="zip"/></td>
+                </tr>
+                <tr>
+                    <td>Religion</td>
+                    <td><input type="text" id="religion" name="religion"/></td>
+                </tr>
+                <tr>
+                    <td>Sex</td>
+                    <td> 
+                        <input type="radio"  name="sex" value="M" checked/>Male
+                        <input type="radio"  name="sex" value="F"/>Female
+                        <input type="radio"  name="sex" value="T"/>Transgender
+                        <input type="radio"  name="sex" value="O"/>I do not want to mention
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date Of Birth</td>
+                    <td></td><td></td><td></td><td></td>
+                    <td><input type="text" id="dob" name="dob"/></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td><input type="text" id="phone" name="phone"/></td>
+                </tr>
+               
+               
+                <tr>
+                    <td></td>
+                    <td>
+                        <button onclick="validate()">Register</button>
+                    </td>
+                </tr>
+            </table>
+            </div>
+</div>
         <form action="login" method="post">
             User id <input type="text" name="username"><br>
             password <input type="password" name="password">
