@@ -61,7 +61,7 @@ public class User_TblJDBCTemplate {
        User_Detail user_detail;
        
       try{
-           user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper());
+           user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
       }
       catch(DataAccessException e)
       {System.out.println("User does not exist "+e);
@@ -164,12 +164,23 @@ public class User_TblJDBCTemplate {
            return true;
        }
       
-       // SQL = "insert into login_tbl(uid,cid_json,title,description,qtn_json,ans_json,poll_link,reward,poll_type) values(?,?,?,?,?,?,?,?,?)";
-      
-      //System.out.println(uid + cid_json+title+description+ qtn_json+ poll_link+ reward+ poll_type);
-     //int ty=jdbcTemplateObject.update( SQL, uid, cid_json,title,description, qtn_json, ans_json,poll_link, reward, poll_type);
-        //System.out.println("Ty=" +ty);
-   
    }
+    
+    public User_Detail get_profile(String handle)
+    {
+         User_Detail profile=null;
+        SQL="select A.uid,A.fb,A.email, B.handle,B.name,B.city,B.country,B.dob,B.sex,B.state,B.profile_pic,B.phone,B.religion,B.zip ,C.exp_json,C.category_list_json,C.lc,C.fish from login_tbl A, user_detail B, user_store C where A.uid=(select uid from user_detail where handle=?) and B.handle=? and C.uid=A.uid;";
+        try
+        {
+            profile=jdbcTemplateObject.queryForObject(SQL, new Object[]{handle,handle}, new User_Detail_Mapper(2));
+            
+        }
+        catch(DataAccessException e)
+        {
+            System.out.println("Error occured in User_TblJDBC>get_profile "+e);
+           
+        }
+        return profile;
+    }
     
 }

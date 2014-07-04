@@ -22,6 +22,9 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.connectivity;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -86,12 +89,17 @@ public class AjaxController extends Parent_Controller{
        }
    }
    @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
-   public String solvePoll(ModelMap model, HttpServletRequest request) {
+   public String solvePoll(ModelMap model, HttpServletRequest request) throws IOException, SQLException {
+    
        int pid= Integer.parseInt(request.getParameter("pid"));
        String poll_tbl=request.getParameter("obj");
+       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+        connectivity conn=(connectivity)context.getBean("connectivity");
+        boolean cansolve=conn.solvable(pid,uid);
         model.addAttribute("pid", pid);
         model.addAttribute("obj", poll_tbl);
 	   return "solvePoll";
+  
    }
    
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)

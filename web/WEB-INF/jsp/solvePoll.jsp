@@ -4,6 +4,9 @@
     Author     : abc
 --%>
 
+<%@page import="org.springframework.context.support.ClassPathXmlApplicationContext"%>
+<%@page import="org.springframework.context.ApplicationContext"%>
+<%@page import="model.connectivity"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="User_Manager.User_Detail"%>
@@ -39,6 +42,9 @@ Gson gson=new Gson();
             System.out.println("cookies not found 2");
             response.sendRedirect("index");
         }
+        
+        
+        
 %>
 <!DOCTYPE html>
 <html>

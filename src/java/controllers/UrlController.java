@@ -12,6 +12,7 @@ import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import Poll_Ans_Tbl.Poll_Ans_Tbl;
 import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
+import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,9 +54,7 @@ public class UrlController extends Parent_Controller{
         System.out.println("Adding cookie uid"+user_detail.getUid());
         cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
         response.addCookie(cookie);
-        //System.out.print("obj json="+gson.toJson(user_detail));
-        //cookie=set_Cookie("",gson.toJson(user_detail),24);
-        //response.addCookie(cookie);
+        
         response.sendRedirect("dashboard");
        
         }
@@ -145,7 +144,19 @@ public class UrlController extends Parent_Controller{
             rslt=gson.toJson(poll_tbl);
             model.addAttribute("poll", rslt);
 	   return "result";
+   } 
+   
+   @RequestMapping(value = "/profile/{handle}", method = RequestMethod.GET)
+   public String profile(@PathVariable String handle, ModelMap model,HttpServletRequest request) throws SQLException {
+       User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+       
+        User_Detail profile=user.get_profile(handle);
+        String rslt=gson.toJson(profile);
+       model.addAttribute("profile", rslt);
+	   return "profile";
    }
+  
+   
   
    
 }

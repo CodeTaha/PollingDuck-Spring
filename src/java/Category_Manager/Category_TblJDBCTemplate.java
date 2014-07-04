@@ -6,14 +6,17 @@
 
 package Category_Manager;
 
+import User_Manager.Exp_Json;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import model.connectivity;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import com.google.gson.Gson;
 /**
  *
  * @author Taha
@@ -37,5 +40,7 @@ public class Category_TblJDBCTemplate {
       List <Category> category = jdbcTemplateObject.query(SQL, new Category_Mapper());
       return category;
     }
+   
+   
     
 }

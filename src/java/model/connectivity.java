@@ -52,6 +52,10 @@ public Connection getCon()
     return con;
 }
 
-
+public boolean solvable(int pid, int uid)
+{
+    System.out.println("in connectivity > solvable() uid="+uid+" pid="+pid);
+    return true;
+}
 
 }

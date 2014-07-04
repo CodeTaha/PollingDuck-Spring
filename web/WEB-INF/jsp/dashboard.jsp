@@ -41,6 +41,10 @@ Gson gson=new Gson();
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to PollingDuck project</title>
+        <script>
+      
+           
+        </script>
     </head>
     <body>
         
@@ -50,6 +54,9 @@ Gson gson=new Gson();
             </li>
             <li>
                 <a href="viewPolls">View</a>
+            </li>
+             <li>
+                <a href="profile/<%=handle%>">Profiles</a>
             </li>
         </ul>
         <p><%= handle %>! Your uid is <%= uid%> This is the default welcome page for a PollingDuck project.</p>
