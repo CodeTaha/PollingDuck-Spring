@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import static javax.management.Query.value;
+import static javax.management.Query.value;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -130,20 +131,34 @@ public class UrlController extends Parent_Controller{
      return "redirect:/pages/final.html";
    }
   
-   @RequestMapping(value = "/result/{pid}",method = RequestMethod.GET)
-   public String result(@PathVariable int pid, ModelMap model,HttpServletRequest request) throws SQLException {
+   @RequestMapping(value = "/result/{pid}/{ref_url}",method = RequestMethod.GET)
+   public String result(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
             System.out.println("In UrlController>result ");
             System.out.println("in Result pid="+pid);
-       
+            System.out.println("in Result reflink="+ref_url);
             Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
-            List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
-            String rslt=gson.toJson(poll_ans_tbl_list);
-            model.addAttribute("result", rslt);
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-            rslt=gson.toJson(poll_tbl);
+            if(!poll_tbl.getPoll_link().equals(ref_url))
+            {System.out.println("incorrect reflink="+poll_tbl.getPoll_link());
+                response.sendRedirect(poll_tbl.getPoll_link());
+               return "error";
+            }
+            String rslt=gson.toJson(poll_tbl);
             model.addAttribute("poll", rslt);
+            
+            List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
+            rslt=gson.toJson(poll_ans_tbl_list);
+            model.addAttribute("result", rslt);
+            
 	   return "result";
+   } 
+   
+  @RequestMapping(value = "/result/{pid}",method = RequestMethod.GET)
+   public void result(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
    } 
    
    @RequestMapping(value = "/profile/{handle}", method = RequestMethod.GET)

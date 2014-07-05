@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="../pages/resources/js/jquery.min.js"></script>
+        <script src="../../pages/resources/js/jquery.min.js"></script>
         <title>JSP Page</title>
         <style>
         .axis {

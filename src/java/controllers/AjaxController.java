@@ -65,7 +65,9 @@ public class AjaxController extends Parent_Controller{
         String start_ts= request.getParameter("start");
         String end_ts= request.getParameter("end");
         System.out.println("qtn JSON="+qtn_JSON);
-        String poll_link="pollLink";
+        String poll_link = detail[1].replaceAll("[^a-zA-Z0-9 ]+","").replace(" ","_");
+        System.out.println("poll_link="+poll_link);
+       // poll_link="pollLink";
         int reward=5;
         int fishes=10;
         int uid=Integer.parseInt(request.getParameter("uid"));
