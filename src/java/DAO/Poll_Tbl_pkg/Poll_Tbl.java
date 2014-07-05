@@ -6,9 +6,18 @@
 
 package DAO.Poll_Tbl_pkg;
 
+import Category_Manager.Category;
+import User_Manager.User_Detail;
+import User_Manager.User_TblJDBCTemplate;
 import com.google.gson.Gson;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import model.connectivity;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -29,7 +38,9 @@ public class Poll_Tbl {
     private int reward;
     private String poll_type;
     private List<Qtn> qtn_json=new ArrayList<>();
-
+    private List<Category> cat_list=new ArrayList<>();
+    private User_Detail user;
+    
     public List<Qtn> getQtn_json() {
         return qtn_json;
     }
@@ -50,16 +61,35 @@ public class Poll_Tbl {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(int uid) throws SQLException {
         this.uid = uid;
+        setUser(uid);
     }
 
     public String getCid_json() {
         return cid_json;
     }
 
-    public void setCid_json(String cid_json) {
-        this.cid_json = cid_json;
+    public void setCid_json(String cid_json1, connectivity conn) throws SQLException {
+//        
+        //List<Category> cat_list1=new ArrayList();
+        System.out.println("setCid_json="+cid_json1);
+        this.cid_json = cid_json1;
+        String cat_arr[]=cid_json.split(",");
+        System.out.println("cat_arr="+Arrays.toString(cat_arr));
+        Category category;
+        for(int i=0; i<cat_arr.length; i++)
+        {category = new Category();
+        String rslt[]=conn.getCategoryName(Integer.parseInt(cat_arr[i]));
+        System.out.println("getCategoryName="+Arrays.toString(rslt));
+        category.setCid(Integer.parseInt(cat_arr[i]));
+        category.setCategory_name(rslt[0]);
+        category.setGroup(rslt[1]);
+            cat_list.add(category);
+        }
+        String cat_list1=gson.toJson(cat_list);
+        System.out.println("catlist="+cat_list1);
+        
     }
 
     public String getTitle() {
@@ -124,6 +154,22 @@ public class Poll_Tbl {
 
     public void setPoll_type(String poll_type) {
         this.poll_type = poll_type;
+    }
+
+    public List<Category> getCat_list() {
+        return cat_list;
+    }
+
+    
+
+    public User_Detail getUser() {
+        return user;
+    }
+
+    public void setUser(int uid) throws SQLException {
+        User_TblJDBCTemplate user_jdbc=new User_TblJDBCTemplate();
+        this.user=user_jdbc.get_profile(uid);
+        
     }
     
 }

@@ -8,18 +8,25 @@ package DAO.Poll_Tbl_pkg;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.connectivity;
 import org.springframework.jdbc.core.RowMapper;
 /**
  *
  * @author abc
  */
 public class Poll_Tbl_Mapper implements RowMapper<Poll_Tbl>{
+    connectivity conn;
+    public Poll_Tbl_Mapper(connectivity conn)
+    {
+        this.conn=conn;
+    }
+    
      @Override
      public Poll_Tbl mapRow(ResultSet rs, int rowNum) throws SQLException {
       Poll_Tbl poll_tbl = new Poll_Tbl();
       poll_tbl.setPid(rs.getInt("pid"));
       poll_tbl.setUid(rs.getInt("uid"));
-      poll_tbl.setCid_json(rs.getString("cid_json"));
+      poll_tbl.setCid_json(rs.getString("cid_json"),conn);
       poll_tbl.setTitle(rs.getString("title"));
       poll_tbl.setDescription(rs.getString("description"));
       poll_tbl.setQtn_json(rs.getString("qtn_json"));

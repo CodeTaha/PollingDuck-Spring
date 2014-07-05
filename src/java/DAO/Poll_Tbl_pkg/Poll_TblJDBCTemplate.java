@@ -22,10 +22,11 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
    Gson gson=new Gson();
+   connectivity conn;
     public Poll_TblJDBCTemplate() throws SQLException
     {System.out.println("in poll_tbl Taha");
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-    connectivity conn=(connectivity)context.getBean("connectivity");
+    conn=(connectivity)context.getBean("connectivity");
       System.out.println("in poll_tbl Taha got beaan properly");
       this.dataSource=conn.getDataSource();
       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
@@ -50,7 +51,7 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    
    public List<Poll_Tbl> listPolls() {
       String SQL = "select * from poll_tbl";
-      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Poll_Tbl_Mapper());
+      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Poll_Tbl_Mapper(conn));
       return poll_tbl;
    }
    
@@ -75,14 +76,14 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
    
    public Poll_Tbl getPoll(int pid) {
       String SQL = "select * from poll_tbl where pid=?";
-      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Object[]{pid},new Poll_Tbl_Mapper());
+      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Object[]{pid},new Poll_Tbl_Mapper(conn));
       return poll_tbl.get(0);
    }
    
    public List<Poll_Tbl> ListMyPolls(int uid) {
        
       String SQL = "select * from poll_tbl where uid=?";
-      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper());
+      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper(conn));
       return poll_tbl;
 }
    

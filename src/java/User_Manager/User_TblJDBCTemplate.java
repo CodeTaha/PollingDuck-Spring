@@ -183,4 +183,21 @@ public class User_TblJDBCTemplate {
         return profile;
     }
     
+    public User_Detail get_profile(int uid)
+    {
+         User_Detail profile=null;
+        SQL="select A.uid, B.handle,B.name,B.profile_pic from login_tbl A, user_detail B where A.uid=? and B.uid=?";
+        try
+        {
+            profile=jdbcTemplateObject.queryForObject(SQL, new Object[]{uid,uid}, new User_Detail_Mapper(3));
+            
+        }
+        catch(DataAccessException e)
+        {
+            System.out.println("Error occured in User_TblJDBC>get_profile "+e);
+           
+        }
+        return profile;
+    }
+    
 }

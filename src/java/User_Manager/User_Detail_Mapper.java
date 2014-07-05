@@ -56,10 +56,18 @@ public class User_Detail_Mapper implements RowMapper<User_Detail>
                    user.setPhone(rs.getString("phone"));
                    user.setProfile_pic(rs.getString("profile_pic"));
                    user.setReligion(rs.getString("religion"));
-                  user.setSex(rs.getString("sex"));
+                   user.setSex(rs.getString("sex"));
                    user.setZip(rs.getString("zip"));
                    
-             }break;     
+             }break;    
+            case 3:{
+                    System.out.println("In User_Detail_Mapper row3");
+                    user.setUid(rs.getInt("uid"));
+                    user.setHandle(rs.getString("handle"));
+                    user.setName(rs.getString("name"));
+                    user.setProfile_pic(rs.getString("profile_pic"));
+                    
+                    }break;     
                  
          }
         

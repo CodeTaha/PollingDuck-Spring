@@ -163,7 +163,7 @@ $(document).ready(function(){
            success: function(data){
                console.log(data);
                if (data)
-               {  alert('successful');
+               {  alert('Your Poll has been created Successfully');
                }   
                else 
                {alert('unsuccesful');

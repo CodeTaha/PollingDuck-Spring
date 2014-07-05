@@ -79,7 +79,7 @@ public class AjaxController extends Parent_Controller{
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listPolls();
-         
+         System.out.println("view Polls PollJSON taha");
          //String pollJSON=gson.toJson(alist);
          String pollJSON=gson.toJson(poll_tbl);
          System.out.println("view Polls PollJSON="+pollJSON);
