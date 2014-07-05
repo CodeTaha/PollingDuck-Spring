@@ -52,36 +52,45 @@ Gson gson=new Gson();
             <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.css">
             <script src="${delimiter}pages/resources/js/jquery.min.js"></script>
             <script src="${delimiter}pages/resources/js/jquery-ui.js"></script>
-  
-  
-  
-  
-        <script src="${delimiter}pages/resources/js/ui.core.js"></script>
-        
-        
-        <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
-        
-          <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
+            <script src="${delimiter}pages/resources/js/ui.core.js"></script>
+            <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
+            <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        
         <script>
                 console.log("In solvePoll");
-                var pollJSON;
+               // var pollJSON;
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
-                var data=${obj};
+                var pollJSON=${obj};
                 var solvable=${solvable};
               
                 var uid=<%= uid %>
+                function set_metadata(title,description,catl,author)
+                {
+                    var keywords="PollingDuck, Polls, Surveys";
+                    for(var i=0; i<catl.length; i++)
+                    {
+                        keywords=keywords+", "+catl[i]['category_name'];
+                    }
+                    console.log(catl);
+                  $("head").append("<title>"+title+"</title>")
+                            .append("<meta name='keywords' content='"+keywords+"'>")
+                            .append("<meta name='description' content='"+description+"'>")
+                            .append("<meta name='author' content='"+author+"'>");  
+                }
             $(document).ready(function(){
               
-                 if(solvable==1)
+                set_metadata(pollJSON['title'],pollJSON['description'],pollJSON['cat_list'],pollJSON['user']['name']);
+                 
+        
+                if(solvable===1)
                  {
                 console.log("dataIn solvePoll");
-               console.log(data);
-               pollJSON=data;//JSON.parse(data);
+               //console.log(data);
+               //pollJSON=data;//JSON.parse(data);
                console.log(pollJSON);
                qtnJSON=pollJSON['qtn_json'];
                console.log("qtn JSON");
