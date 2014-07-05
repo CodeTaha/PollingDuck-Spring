@@ -25,8 +25,6 @@
         <script>
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll
-             var maxticks=0;
-             var jsonArr = [];
             console.log("Poll_Ans_Tbl");
             console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
             console.log(result);// use result which is the compilation of all the answers users have submitted
@@ -89,18 +87,14 @@
         </script>
     </head>
     <body>
-        
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <h1>Poll Result!</h1>
         <script>
                 
-               // var $j = jQuery.noConflict();
-               
-               
-    $(document).ready(function(){
-                
-        for(var jw=0;jw<result[0]['qtn'].length;jw++)
+                for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
+                    var q_id=poll['qtn_json'][jw]['qtn_id'];
+                    console.log("question no"+q_id);
                 var choice=poll['qtn_json'][jw]['qtn_type'];    
                 switch(choice)
                 {
@@ -144,14 +138,17 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="mcss")
                 { 
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var ans=result[i]['qtn'][j]['ans'];
                     count[k][ans-1]=count[k][ans-1]+1;
                     k++;
                 }
+            }
                 }
                 
             }
-                   maxticks=0;
+                  var maxticks=0;
             console.log("ansarray");
             for(var p=0;p<noOfmcss;p++)
                         for(var l=0;l<noOfOptions;l++)
@@ -178,7 +175,7 @@
                     var arrayOptions=poll['qtn_json'][j]['rows'];
                     console.log(arrayOptions);
                      var noOfOptions=poll['qtn_json'][j]['rows'].length;
-                     jsonArr=[];
+                     var jsonArr = [];
                     for(i=0;i<noOfOptions ;i++)
                     {
                         jsonArr.push({
@@ -207,7 +204,7 @@
                         if(flagmcms===1)
                 {
                         flagmcms=0;
-                         console.log("mcms")
+                         console.log("mcms");
                                   
                          var k=0;
                 var count = new Array(noOfmcms);
@@ -240,6 +237,8 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="mcms")
                 { 
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var ans=result[i]['qtn'][j]['ans'];
                     console.log(ans[0]);
                     if(ans[0]!==null)
@@ -254,13 +253,14 @@
                     //count[k][ans-1]=count[k][ans-1]+1;
                     k++;
                 }
+            }
                 }
                 }
                 
             }
             
             
-             maxticks=0;
+              var maxticks=0;
             console.log("ansarray");
             for(var p=0;p<noOfmcms;p++)
                         for(var l=0;l<noOfOptions;l++)
@@ -287,32 +287,256 @@
                     var arrayOptions=poll['qtn_json'][j]['rows'];
                     console.log(arrayOptions);
                      var noOfOptions=poll['qtn_json'][j]['rows'].length;
-                     jsonArr = [];
+                     var jsonArr = [];
                     for(i=0;i<noOfOptions ;i++)
                     {
-                
-                        
                         jsonArr.push({
-                             label:arrayOptions[i],
+                            label:arrayOptions[i],
                              n: count[k][i]
                                     });
-                        
                     }
+                    console.log(jsonArr.slice(0));
                     k++;
                     console.log("call");
                     console.log(jsonArr);
-                    plotBar(qtn_div,j);
+                    
+                    //logic of pie label
+                    var first=[];
+                    var second=[];
+                    var third=[];
+                    var temp=[];
+                    var kk=noOfOptions;
+                    
+                    var cc=0;
+                    first=arrayOptions;
+                    
+                    second=arrayOptions;
+                    for(var u=0;u<noOfOptions;u++)
+                    {
+                        var te=0;
+                        
+                        third=third.concat(first);
+                        temp=[];
+                        for(var ii=0;ii<first.length;ii++)
+                        {
+                            for(jj=ii+cc+1;jj<second.length;jj++)
+                        {
+                            var tit=jj;
+                           // console.log(temp);
+                            
+                           // console.log("empty"+temp);
+                            temp[te]=first[ii]+second[jj];
+                            console.log("first"+first[ii]+"second"+second[jj]);
+                            kk++;
+                            te++;
+                            if(jj===second.length-1 && ii!==first.length-1 )
+                            {
+                                jj=tit+1;
+                                console.log("inside if");
+                            }
+                            
+                        }
+                        
+                        }
+                        //console.log(temp);
+                        first=[];
+                        first=temp;
+                        cc++;
+                    }
+                    console.log("third"+third);
+                      plotBar(qtn_div,j);
                     tablegen(qtn_div,j);
                 }
                 
                 }
             }        
                      }//case 2
+                     
+                     break;
+                     
+                     case ( (choice.match(/moc/) )? choice : undefined ) :
+                                {
+                  for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                if(poll['qtn_json'][j]['qtn_type']==="moc")
+                {
+                    var noOfRows=poll['qtn_json'][j]['rows'].length;
+                    var noOfColumns=poll['qtn_json'][j]['columns'].length;
+                    var count=new Array(noOfRows);
+                    for(var l=0;l<count.length;l++)
+                        count[l]=new Array(noOfColumns);
+                    for(var k=0;k<noOfRows;k++)
+                        for(var l=0;l<noOfColumns;l++)
+                    {
+                        count[k][l]=0;
+                    }
+                     for(var k=0;k<noOfRows;k++)
+                        for(var l=0;l<noOfColumns;l++)
+                    {
+                        console.log(count[k][l]);
+                    }
+                     }
+            
+                    
+                }   
+                
+                    
+                    for(var i=0;i<result.length;i++)
+            {
+                for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                    console.log("question no"+q_id);
+                if(poll['qtn_json'][j]['qtn_type']==="moc")
+                { 
+                  
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
+                        console.log("q_id working");
+                    var arrayRows=poll['qtn_json'][j]['rows'];
+                    console.log(arrayRows);
+                     var noOfRows=poll['qtn_json'][j]['rows'].length;
+                     var arrayColumns=poll['qtn_json'][j]['columns'];
+                    console.log(arrayColumns);
+                     var noOfColumns=poll['qtn_json'][j]['columns'].length;
+                    var ans=result[i]['qtn'][j]['ans'];
+                    console.log(ans);
+                  //  for(var ii=0;ii<noOfRows;ii++)
+                    //    for(var jj=0;jj<noOfColumns;jj++)
+                    for(var ii=0;ii<ans.length;ii++)
+                    {
+                        console.log(ans[0][0]+"poi"+ans[0][2]);
+                        count[ans[ii][0]][ans[ii][2]]++;
+                    }
+                }
+                }
+                }
+                }
+            
+           for(var k=0;k<noOfRows;k++)
+                        for(var l=0;l<noOfColumns;l++)
+                    {
+                        console.log(count[k][l]);
+                    }
+                    
+                     var k=0;
+                for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                if(poll['qtn_json'][j]['qtn_type']==="moc")
+                { 
+                    
+                     var jsonArr = [];
+                    for(ii=0;ii<noOfRows ;ii++)
+                    for(jj=0;jj<noOfColumns;jj++)
+                    {
+                       
+                        jsonArr.push({
+                             label:arrayRows[ii]+"+"+arrayColumns[jj],
+                             n: count[ii][jj]
+                                    });
+                    }
+                    k++;
+                    console.log("call");
+                    console.log(jsonArr);
+                    plotBar(qtn_div,j);
+                }
+                    
+                }
+            
+                    break;
+                                 }//case moc
+                                 
+                                  case ( (choice.match(/momc/) )? choice : undefined ) :
+                                {
+                  for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                if(poll['qtn_json'][j]['qtn_type']==="momc")
+                {
+                    var noOfRows=poll['qtn_json'][j]['rows'].length;
+                    var noOfColumns=poll['qtn_json'][j]['columns'].length;
+                    var count=new Array(noOfRows);
+                    for(var l=0;l<count.length;l++)
+                        count[l]=new Array(noOfColumns);
+                    for(var k=0;k<noOfRows;k++)
+                        for(var l=0;l<noOfColumns;l++)
+                    {
+                        count[k][l]=0;
+                    }
+                     for(var k=0;k<noOfRows;k++)
+                        for(var l=0;l<noOfColumns;l++)
+                    {
+                        console.log(count[k][l]);
+                    }
+                     }
+            
+                    
+                }   
+                
+                    
+                    for(var i=0;i<result.length;i++)
+            {
+                for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                if(poll['qtn_json'][j]['qtn_type']==="momc")
+                { 
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
+                    var arrayRows=poll['qtn_json'][j]['rows'];
+                    console.log(arrayRows);
+                     var noOfRows=poll['qtn_json'][j]['rows'].length;
+                     var arrayColumns=poll['qtn_json'][j]['columns'];
+                    console.log(arrayColumns);
+                     var noOfColumns=poll['qtn_json'][j]['columns'].length;
+                    var ans=result[i]['qtn'][j]['ans'];
+                    console.log(ans);
+                  //  for(var ii=0;ii<noOfRows;ii++)
+                    //    for(var jj=0;jj<noOfColumns;jj++)
+                    for(var ii=0;ii<ans.length;ii++)
+                    {
+                        console.log(ans[0][0]+"poi"+ans[0][2]);
+                        count[ans[ii][0]][ans[ii][2]]++;
+                    }
+                }
+                }
+                }
+                }
+            
+           for(var k=0;k<noOfRows;k++)
+                        for(var l=0;l<noOfColumns;l++)
+                    {
+                        console.log(count[k][l]);
+                    }
+                    
+                     var k=0;
+                for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                if(poll['qtn_json'][j]['qtn_type']==="momc")
+                { 
+                    
+                     var jsonArr = [];
+                    for(ii=0;ii<noOfRows ;ii++)
+                    for(jj=0;jj<noOfColumns;jj++)
+                    {
+                       
+                        jsonArr.push({
+                             label:arrayRows[ii]+"+"+arrayColumns[jj],
+                             n: count[ii][jj]
+                                    });
+                    }
+                    k++;
+                    console.log("call");
+                    console.log(jsonArr);
+                    plotBar(qtn_div,j);
+                }
+                    
+                }
+            
+                    
+                                 }//case momc
+                                 break;
                 }//switch  
                
         }//forloop
-   });     
-        
+    
  function plotBar(qtn_div,p)
  {qtn_div="#"+qtn_div;
      var svg_id="svg_"+p;
@@ -342,7 +566,7 @@ var svg = d3.select(qtn_div).append("svg")
 "translate(" + margin.left + "," + margin.top + ")");
 console.log("just above d3fucntion");
 //d3.json("bars", function() {
-  console.log("just above split"+jsonArr)
+  console.log("just above split"+jsonArr);
   var data=jsonArr.slice();
 data.forEach(function(d) {
 d.label = d.label;
@@ -415,7 +639,7 @@ svg.selectAll("bar")
        
     }
     
-    
+        
         </script>
         
         <div id="mytable2"></div>
