@@ -158,7 +158,7 @@ public class UrlController extends Parent_Controller{
    public void result(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-	   response.sendRedirect(poll_tbl.getPoll_link());
+	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
    } 
    
    @RequestMapping(value = "/profile/{handle}", method = RequestMethod.GET)
