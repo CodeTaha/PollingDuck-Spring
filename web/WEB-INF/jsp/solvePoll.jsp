@@ -49,19 +49,19 @@ Gson gson=new Gson();
 <!DOCTYPE html>
 <html>
     <head>
-            <link rel="stylesheet" href="pages/resources/css/jquery-ui.css">
-            <script src="pages/resources/js/jquery.min.js"></script>
-            <script src="pages/resources/js/jquery-ui.js"></script>
+            <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.css">
+            <script src="${delimiter}pages/resources/js/jquery.min.js"></script>
+            <script src="${delimiter}pages/resources/js/jquery-ui.js"></script>
   
   
   
   
-        <script src="pages/resources/js/ui.core.js"></script>
+        <script src="${delimiter}pages/resources/js/ui.core.js"></script>
         
         
-        <link rel="stylesheet" href="pages/resources/css/ui.dropdownchecklist.css" />
+        <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
         
-          <script src="pages/resources/js/ui.dropdownchecklist.js"></script>
+          <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -200,7 +200,7 @@ Gson gson=new Gson();
                 }
                 else
                 {
-                    $("#pollArea").append("<p>Sorry but you have already solved this Poll. However you can view the Result</p>").append("<a href='result/"+pid+"' target='blank'>"+data['title']+"</a>");
+                    $("#pollArea").append("<p>Sorry but you have already solved this Poll. However you can view the Result</p>").append("<a href='${delimiter}result/"+pid+"' target='blank'>"+data['title']+"</a>");
                     $("#submitAns").hide();
                     
                 }
@@ -278,7 +278,7 @@ Gson gson=new Gson();
                   console.log(finalJSON);
                   $.ajax({
                                 type: "POST",       // the dNodeNameefault
-                                url: "submitPollAns",
+                                url: "${delimiter}submitPollAns",
                                 data: { finalJSON: finalJSON},
                                 success: function(data){alert(data);
                                         if(data)

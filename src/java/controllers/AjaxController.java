@@ -31,6 +31,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 /* This class handles urls and shows an example of page redirection from index page to static page*/
@@ -73,7 +74,7 @@ public class AjaxController extends Parent_Controller{
         int uid=Integer.parseInt(request.getParameter("uid"));
         String poll_type="free";
         boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),detail[3],detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
-        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,1);
+        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,0);
         
 	if(rslt==true && rslt2==true) out.println(true);
       
@@ -109,10 +110,29 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("pid", pid);
         model.addAttribute("obj", poll_tbl);
         model.addAttribute("solvable", cansolve);
+        model.addAttribute("delimiter", "");//used to load source files properly
 	   return "solvePoll";
   
    }
-   
+   @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
+   public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+    
+       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+        connectivity conn=(connectivity)context.getBean("connectivity");
+        int cansolve=conn.solvable(pid,uid);
+        Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+        Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+        if(!poll_tbl.getPoll_link().equals(ref_url))
+            {System.out.println("incorrect reflink="+poll_tbl.getPoll_link());
+                response.sendRedirect(poll_tbl.getPoll_link());
+               return "error";
+            }
+        model.addAttribute("pid", pid);
+        model.addAttribute("obj", gson.toJson(poll_tbl));
+        model.addAttribute("solvable", cansolve);
+        model.addAttribute("delimiter", "../../");
+	   return "solvePoll";
+   }
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        
