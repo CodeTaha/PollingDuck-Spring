@@ -199,5 +199,25 @@ public class User_TblJDBCTemplate {
         }
         return profile;
     }
+       
+    public boolean addreducefishes(int uid,int fishes,int addreduce)
+    {
+        if(addreduce==0)
+          SQL="update user_store set fish=fish-? where uid=?";
+        else 
+            SQL="update user_store set fish=fish+? where uid=?";
+      //  SQL="select A.uid, B.handle,B.name,B.profile_pic from login_tbl A, user_detail B where A.uid=? and B.uid=?";
+        try
+        {
+          int what =   jdbcTemplateObject.update(SQL,fishes,uid);
+        System.out.println("fishes hue change"+what);
+        }
+        catch(DataAccessException e)
+        {
+            System.out.println("Error occured in User_TblJDBC>reducefishes "+e);
+           return false;
+        }
+       return true;
+    }
     
 }

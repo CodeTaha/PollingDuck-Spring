@@ -36,7 +36,18 @@ Gson gson=new Gson();
 <head>
 <title>form</title>
  
+<script src="pages/resources/js/jquery.js"></script>
 <script src="pages/resources/js/jquery.min.js"></script>
+<script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
+<script type="text/javascript" src="pages/resources/js/jquery.datetimepicker.js"></script>
+  <script type="text/javascript" src="pages/resources/js/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="pages/resources/css/jquery.datetimepicker.css" >
+         <link rel="stylesheet" href="pages/resources/css/jquery-ui.css" >
+         <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.css" >
+          <link rel="stylesheet" href="pages/resources/css/jquery-ui.structure.css" >
+                   <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.css" >
+           <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.min.css" >
+           
 <link href="pages/resources/select2/select2.css" rel="stylesheet"/>
 <script src="pages/resources/select2/select2.js"></script>
 </head>
@@ -66,7 +77,18 @@ $(document).ready(function(){
   //allowClear: true,
   //tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
 });
-
+     $("#sd").datetimepicker(
+      /*   showMinute: true,
+           showSecond: true,
+           timeFormat: 'hh:mm:ss',
+           dateFormat:"mm/dd/yy" */
+                   );
+      $("#ed").datetimepicker(
+         /*   showMinute: true,
+           showSecond: true,
+           timeFormat: 'hh:mm:ss',
+           dateFormat:"mm/dd/yy" */
+                   );
   });
   
   function addQuestion()
@@ -155,15 +177,23 @@ $(document).ready(function(){
         console.log("sending complete Poll");
         console.log(detailJSON);
         console.log(qtnArray);
+        var sd=$("#sd").val();
+      //  var startdate=new Date(sd).getTime();
+        var ed=$("#ed").val();
+      //  var enddate=new Date(ed).getTime();
+        alert(sd);
+        alert(ed);
         //console.log(ansArray);
+        //, std:startdate,etd:enddate
        $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "submitPollData",
-           data: { detailJSON:detailJSON, qtnJSON:qtnJSON},
+           data: { detailJSON:detailJSON, qtnJSON:qtnJSON ,start:sd,end:ed,uid:uid },
            success: function(data){
                console.log(data);
                if (data)
                {  alert('Your Poll has been created Successfully');
+                  
                }   
                else 
                {alert('unsuccesful');
@@ -171,17 +201,25 @@ $(document).ready(function(){
             }
             });
     }
+   
+            
+            
+    
     
     
 </script>
 <div id='d1'>
  Title:<input type="text" name="t1" id="title"><br/> 
- Description:<textarea name="t1" id="desc"></textarea><br/> 
+ Description:<textarea name="t1" id="desc"></textarea><br/>
+ 
 </div>
 Category :<select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select>
 
 <!--Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>-->
-
+<div id="datetimediv">
+     Start Date  : <input type="text" id="sd" name="sd"/> 
+     End Date  : <input type="text" id="ed" name="ed"/>
+</div>
 <div id='d2'>
 
 

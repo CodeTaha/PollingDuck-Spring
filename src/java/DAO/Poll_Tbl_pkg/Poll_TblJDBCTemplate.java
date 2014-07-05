@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author abc
  */
-public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
+public class Poll_TblJDBCTemplate  {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
    Gson gson=new Gson();
@@ -38,13 +38,13 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
    }*/
 
-   @Override
-   public boolean create(int uid, String cid_json, String title, String description, String qtn_json, String ans_json, String poll_link, int reward, String poll_type)
+  
+   public boolean create(int uid, String cid_json, String title, String description, String qtn_json, String ans_json, String poll_link, String start_ts,String end_ts,int reward, String poll_type)
    {
-       String SQL = "insert into poll_tbl(uid,cid_json,title,description,qtn_json,ans_json,poll_link,reward,poll_type) values(?,?,?,?,?,?,?,?,?)";
+       String SQL = "insert into poll_tbl(uid,cid_json,title,description,qtn_json,ans_json,poll_link,start_ts,end_ts,reward,poll_type) values(?,?,?,?,?,?,?,?,?,?,?)";
       System.out.println("Taha chal gaya");
-      System.out.println(uid + cid_json+title+description+ qtn_json+ poll_link+ reward+ poll_type);
-     int ty=jdbcTemplateObject.update( SQL, uid, cid_json,title,description, qtn_json, ans_json,poll_link, reward, poll_type);
+      System.out.println(uid + cid_json+title+description+ qtn_json+ poll_link+ start_ts+end_ts+reward+ poll_type);
+     int ty=jdbcTemplateObject.update( SQL, uid, cid_json,title,description, qtn_json, ans_json,poll_link,start_ts,end_ts, reward, poll_type);
         System.out.println("Ty=" +ty);
      return true;
    }

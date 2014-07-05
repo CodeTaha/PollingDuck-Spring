@@ -14,6 +14,7 @@ import DAO.Poll_Tbl_pkg.Qtn;
 import DAO.Poll_Tbl_pkg.Qtn_Mapper;
 import Poll_Ans_Tbl.Poll_Ans_Tbl;
 import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
+import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,10 +43,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AjaxController extends Parent_Controller{
    
     @RequestMapping(value = "/submitPollData", method = RequestMethod.POST)
-   public void submitPollData(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+   public void submitPollData(@ModelAttribute Poll_Tbl poll_tbl,User_Detail user_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
       System.out.println("in AjaxController > submitPollData");
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
-        
+         User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String detail[]= gson.fromJson(request.getParameter("detailJSON"), String[].class);
@@ -61,13 +62,18 @@ public class AjaxController extends Parent_Controller{
             qtn_list.add(qtn_obj);
         }
         String qtn_JSON=gson.toJson(qtn_list);
+        String start_ts= request.getParameter("start");
+        String end_ts= request.getParameter("end");
         System.out.println("qtn JSON="+qtn_JSON);
         String poll_link="pollLink";
         int reward=5;
+        int fishes=10;
+        int uid=Integer.parseInt(request.getParameter("uid"));
         String poll_type="free";
-        boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),detail[3],detail[1],detail[2],qtn_JSON,"",poll_link,reward,poll_type);
-      
-	 out.println(rslt);
+        boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),detail[3],detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
+        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,1);
+        
+	if(rslt==true && rslt2==true) out.println(true);
       
    }
      
@@ -228,4 +234,6 @@ public class AjaxController extends Parent_Controller{
           out.println("fail");
        }
    }
-}
+  
+   }
+
