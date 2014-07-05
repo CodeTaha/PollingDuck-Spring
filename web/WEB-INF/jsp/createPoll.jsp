@@ -1,3 +1,37 @@
+<%@page import="com.google.gson.Gson"%>
+<% 
+Cookie[] cookies = request.getCookies();
+String handle="";
+int uid=0;
+//User_Detail user_detail;
+Gson gson=new Gson();
+        boolean foundCookie = false;
+
+        for(int i = 0; i < cookies.length; i++) { 
+            Cookie cookie1 = cookies[i];
+            if(cookie1.getName().equals("handle"))
+            {
+                handle=cookie1.getValue();
+                foundCookie = true;
+            }
+            else if(cookie1.getName().equals("uid"))
+            {
+                uid=Integer.parseInt(cookie1.getValue());
+                foundCookie = true;
+            }
+            else if(cookie1.getName().equals("User_Obj"))
+            {
+                System.out.println(cookie1.getValue());
+               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
+                foundCookie = true;
+            }
+        }  
+
+        if (!foundCookie) {
+            System.out.println("cookies not found 2");
+            response.sendRedirect("index");
+        }
+%>
 <html>
 <head>
 <title>form</title>
@@ -15,7 +49,7 @@ var detailArray=new Array();
 var qtnArray= new Array();
 var ansArray= new Array();
 var count=0;
-var uid=1;
+var uid=<%=uid%>;
 console.log(${cat_list});
 var cat_json=${cat_list};
 var cat_list=new Array();

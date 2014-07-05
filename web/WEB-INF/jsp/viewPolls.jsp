@@ -56,30 +56,12 @@
   if ( status === "error" ) {
     var msg = "Sorry but there was an error: "; 
     $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText ); 
- /*    $('#dialog-modal').dialog({
-         resizable: false,
-         height: 300,
-         width: 500,
-         dialogClass: 'noTitle',
-         modal: true
-      });
-      $('#dialog-modal').dialog('show');   */
-  // $("#dialog-modal").dialog('open');
+
   }}
 );
            },
        close : function() {location.reload(true);}
    });
-   /* 
-    resizable: false,
-            modal: true,
-            width: 400,
-            height: 450,
-            overlay: { backgroundColor: "#000", opacity: 0.5 },
-            buttons:{ "Close": function() { $(this).dialog("close"); } },
-            close: function(ev, ui) { $(this).remove(); },*/
-       
-       
    }
           
            function pollResult(pid)

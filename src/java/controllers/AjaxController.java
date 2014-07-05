@@ -96,10 +96,22 @@ public class AjaxController extends Parent_Controller{
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
         connectivity conn=(connectivity)context.getBean("connectivity");
         boolean cansolve=conn.solvable(pid,uid);
+        if(cansolve)
+        {
         model.addAttribute("pid", pid);
         model.addAttribute("obj", poll_tbl);
-	   return "solvePoll";
-  
+        model.addAttribute("solvable", 1);
+	return "solvePoll";
+        }
+        else
+        {
+            
+            model.addAttribute("pid", pid);
+            model.addAttribute("obj", poll_tbl);
+            model.addAttribute("solvable", 0);
+            return "solvePoll";
+        }
+              
    }
    
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)

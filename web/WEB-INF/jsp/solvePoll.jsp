@@ -71,10 +71,14 @@ Gson gson=new Gson();
                 var ansJSON;
                 var pid=${pid};
                 var data=${obj};
+                var solvable=${solvable};
+              
                 var uid=<%= uid %>
             $(document).ready(function(){
-                
-                console.log("dataIn solvePoll");
+              
+                 if(solvable==1)
+                 {
+                //console.log("dataIn solvePoll");
                //console.log(data);
                pollJSON=data;//JSON.parse(data);
                console.log(pollJSON);
@@ -192,7 +196,13 @@ Gson gson=new Gson();
                       }
                   }
                
-            
+                }
+                else
+                {
+                    $("#pollArea").append("<p>Sorry but you have already solved this Poll. However you can view the Result</p>").append("<a href='result/"+pid+"' target='blank'>"+data['title']+"</a>");
+                    $("#submitAns").hide();
+                    
+                }
             });
             
             function submitAns()
@@ -285,7 +295,7 @@ Gson gson=new Gson();
             
         </div>
         <div id='submitSurvey'>
-            <button onclick="submitAns();">Submit Survey</button>
+            <button onclick="submitAns();" id="submitAns">Submit Survey</button>
         </div>
     </body>
 </html>

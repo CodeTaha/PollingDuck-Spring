@@ -22,7 +22,8 @@ private final String mysqlpass="";
 private final String mysqlurl="jdbc:mysql:///"+database_name;
 private Connection con=null;
 private DataSource dataSource;
-
+PreparedStatement st;
+ResultSet rs;
     public DataSource getDataSource() {
         return dataSource;
     }
@@ -52,10 +53,23 @@ public Connection getCon()
     return con;
 }
 
-public boolean solvable(int pid, int uid)
-{
+public boolean solvable(int pid, int uid) throws SQLException
+    {
     System.out.println("in connectivity > solvable() uid="+uid+" pid="+pid);
-    return true;
-}
+    st=con.prepareStatement("Select pid from poll_ans_tbl where pid=? and uid=?");
+    st.setInt(1,pid);
+    st.setInt(2, uid);
+    System.out.println("query="+st);
+    
+    rs=st.executeQuery();
+    if(rs.next())
+        {
+            return false;
+        }
+    else
+        {
+            return true;
+        }
 
+    }
 }
