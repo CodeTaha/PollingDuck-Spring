@@ -62,10 +62,12 @@ public class AjaxController extends Parent_Controller{
         }
         String qtn_JSON=gson.toJson(qtn_list);
         System.out.println("qtn JSON="+qtn_JSON);
-        String poll_link="pollLink";
+        String poll_link = detail[1].replaceAll("[^a-zA-Z0-9 ]+","").replace(" ","_");
+        System.out.println("poll_link="+poll_link);
+       // poll_link="pollLink";
         int reward=5;
         String poll_type="free";
-        boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),detail[3],detail[1],detail[2],qtn_JSON,"",poll_link,reward,poll_type);
+        boolean rslt=true;//poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),detail[3],detail[1],detail[2],qtn_JSON,"",poll_link,reward,poll_type);
       
 	 out.println(rslt);
       
