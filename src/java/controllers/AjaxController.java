@@ -97,9 +97,10 @@ public class AjaxController extends Parent_Controller{
        String poll_tbl=request.getParameter("obj");
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
         connectivity conn=(connectivity)context.getBean("connectivity");
-        boolean cansolve=conn.solvable(pid,uid);
+        int cansolve=conn.solvable(pid,uid);
         model.addAttribute("pid", pid);
         model.addAttribute("obj", poll_tbl);
+        model.addAttribute("solvable", cansolve);
 	   return "solvePoll";
   
    }

@@ -66,7 +66,8 @@ Gson gson=new Gson();
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
-            var pollJSON;
+                console.log("In solvePoll");
+                var pollJSON;
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
@@ -78,8 +79,8 @@ Gson gson=new Gson();
               
                  if(solvable==1)
                  {
-                //console.log("dataIn solvePoll");
-               //console.log(data);
+                console.log("dataIn solvePoll");
+               console.log(data);
                pollJSON=data;//JSON.parse(data);
                console.log(pollJSON);
                qtnJSON=pollJSON['qtn_json'];

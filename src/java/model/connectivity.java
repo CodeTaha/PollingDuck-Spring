@@ -53,7 +53,7 @@ public Connection getCon()
     return con;
 }
 
-public boolean solvable(int pid, int uid) throws SQLException
+public int solvable(int pid, int uid) throws SQLException
     {
     System.out.println("in connectivity > solvable() uid="+uid+" pid="+pid);
     st=con.prepareStatement("Select pid from poll_ans_tbl where pid=? and uid=?");
@@ -64,11 +64,11 @@ public boolean solvable(int pid, int uid) throws SQLException
     rs=st.executeQuery();
     if(rs.next())
         {
-            return false;
+            return 0;
         }
     else
         {
-            return true;
+            return 1;
         }
 
     }
