@@ -5,6 +5,8 @@
  */
 
 package Poll_Ans_Tbl;
+import DAO.Poll_Tbl_pkg.Poll_Tbl;
+import DAO.Poll_Tbl_pkg.Poll_Tbl_Mapper;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -35,4 +37,10 @@ public class Poll_Ans_TblJDBCTemplate {
       List <Poll_Ans_Tbl> category = jdbcTemplateObject.query(SQL, new Object[]{pid},new Poll_Ans_Tbl_Mapper());
       return category;
     }
+     public List<Poll_Ans_Tbl> ListMySolvedPolls(int uid) {
+       System.out.println("in list my solved polls");
+      String SQL = "select * from poll_ans_tbl where uid=?";
+      List <Poll_Ans_Tbl> poll_ans_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Ans_Tbl_Mapper());
+      return poll_ans_tbl;
+}
 }

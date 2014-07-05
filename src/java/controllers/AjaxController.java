@@ -12,6 +12,8 @@ import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import DAO.Poll_Tbl_pkg.Qtn;
 import DAO.Poll_Tbl_pkg.Qtn_Mapper;
+import Poll_Ans_Tbl.Poll_Ans_Tbl;
+import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
 import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -96,22 +98,10 @@ public class AjaxController extends Parent_Controller{
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
         connectivity conn=(connectivity)context.getBean("connectivity");
         boolean cansolve=conn.solvable(pid,uid);
-        if(cansolve)
-        {
         model.addAttribute("pid", pid);
         model.addAttribute("obj", poll_tbl);
-        model.addAttribute("solvable", 1);
-	return "solvePoll";
-        }
-        else
-        {
-            
-            model.addAttribute("pid", pid);
-            model.addAttribute("obj", poll_tbl);
-            model.addAttribute("solvable", 0);
-            return "solvePoll";
-        }
-              
+	   return "solvePoll";
+  
    }
    
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
@@ -193,5 +183,48 @@ public class AjaxController extends Parent_Controller{
             out.println(cat_json);
         }
    }
+    
+   @RequestMapping(value = "/viewMyPollsData", method = RequestMethod.POST)
+   public void viewMyPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+        System.out.println("in AjaxConnt>viewMyPollsData");
+        PrintWriter out = response.getWriter();
+       if(checklogin(request))
+       {
+       Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
+      
+        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.ListMyPolls(uid);
+         
+         //String pollJSON=gson.toJson(alist);
+         String pollJSON=gson.toJson(poll_tbl);
+         System.out.println("view Polls PollJSON="+pollJSON);
+         out.println(pollJSON);
+        }
+       else
+       { 
+          out.println("fail");
+       }
+   }
    
+   @RequestMapping(value = "/viewMySolvedPollsData", method = RequestMethod.POST)
+   public void viewMySolvedPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+        System.out.println("in AjaxConnt>viewMySolvedPollsData");
+        PrintWriter out = response.getWriter();
+       if(checklogin(request))
+       {
+       Poll_Ans_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_Ans_TblJDBCTemplate(); 
+      
+        List<Poll_Ans_Tbl> poll_ans_tbl=poll_tblJDBCTemplate.ListMySolvedPolls(uid);
+         
+         //String pollJSON=gson.toJson(alist);
+         String pollJSON=gson.toJson(poll_ans_tbl);
+         System.out.println("view Polls PollJSON="+pollJSON);
+         out.println(pollJSON);
+        }
+       else
+       { 
+          out.println("fail");
+       }
+   }
 }

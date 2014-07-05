@@ -78,4 +78,13 @@ public class Poll_TblJDBCTemplate implements Poll_Tbl_DAO {
       List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Object[]{pid},new Poll_Tbl_Mapper());
       return poll_tbl.get(0);
    }
+   
+   public List<Poll_Tbl> ListMyPolls(int uid) {
+       
+      String SQL = "select * from poll_tbl where uid=?";
+      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper());
+      return poll_tbl;
+}
+   
+   
 }

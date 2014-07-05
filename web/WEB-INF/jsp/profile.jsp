@@ -67,6 +67,7 @@ int uid=0;
         var lc=profile['lc'];
         var phone=profile['phone'];
         var profile_pic =profile['profile_pic'];
+        
          $("#user_everything").append('<h1>'+name+'</h1><br/><a href="http://www.facebook.com/'+fbid+'" target="_blank">'+fbid+'</a>');
 // <br/><p>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>''<img src="'+profile_pic+'"></p>'    
 $("#user_everything").append('<br/>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>');
@@ -74,15 +75,83 @@ $("#dp").append("<img src="+profile_pic+">");
 
 if(profile['uid']==<%=uid%>)
 {
-    $("body").append("<button>Edit Profile</button>");
+    $("#dp").append("<br/><button>Edit Profile</button>");
 }
+
+//timeline
+
+$("#createdPolls").append('<h3>Polls Created By You</h3><br/>');
+console.log("requesting viewMyPollsData");      
+                $.ajax({
+           type: "POST",       // the dNodeNameefault
+           url: "../viewMyPollsData",
+           data: { },
+           success: function(data){
+               console.log(data);
+               mypollJSON=JSON.parse(data);
+               console.log("mypollJSON");
+               console.log(mypollJSON);
+                 for(var i=0; i<mypollJSON.length;i++)
+                 {  $("#createdPolls").append("<p><b>Title </b>"+mypollJSON[i]['title']+"</p>");
+                 $("#createdPolls").append("<p><b>Description </b>"+mypollJSON[i]['description']+"</p>");
+                 $("#createdPolls").append('<button onclick="pollResult('+parseInt(mypollJSON[i]["pid"])+')">Results</button>');
+                 
+                 }
+            }
 });
+       
+                   
+$("#solvedPolls").append('<h3>Polls Solved By You</h3></br/>');
+       console.log("requesting viewMySolvedPollsData");      
+                $.ajax({
+           type: "POST",       // the dNodeNameefault
+           url: "../viewMySolvedPollsData",
+           data: { },
+           success: function(data){
+               console.log(data);
+               mysolvedpollJSON=JSON.parse(data);
+               console.log("mysolvedpollJSON");
+               console.log(mysolvedpollJSON);
+                for(var i=0; i<mysolvedpollJSON.length;i++)
+                 {  $("#solvedPolls").append("<p><b>Poll ID : </b>"+mysolvedpollJSON[i]['pid']+"</p>");
+                 $("#solvedPolls").append("<p><b>Poll Ans Key: </b>"+mysolvedpollJSON[i]['poll_ans_key']+"</p>");
+           $("#solvedPolls").append('<button onclick="pollResult2('+parseInt(mysolvedpollJSON[i]["pid"])+')">Results</button>');
+                     
+        }   
+            }
+           });  
+            
+});
+function pollResult(pid)
+           {    
+                     var win = window.open("../result/"+pid, '_blank');
+                win.focus();    
+            }
+function pollResult2(pid)
+           {    
+ 
+                var win = window.open("../result/"+pid, '_blank');
+                win.focus();
+            }
+   
     </script>
     </head>
     <body>
         
         <div id="user_everything"></div>
-        <div id="dp"></div>
+        <div id="dp">
+        
+        </div>
+        <div id="timeline"><center> <h1> <b>TimeLine  </b></h1>
+                <div id="createdPolls">
+        
+                </div>
+                <div id="solvedPolls">
+             
+                </div>
+             </center>
+            
+        </div>
         
         
     </body>
