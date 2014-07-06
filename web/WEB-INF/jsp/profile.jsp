@@ -71,7 +71,7 @@ int uid=0;
          $("#user_everything").append('<h1>'+name+'</h1><br/><a href="http://www.facebook.com/'+fbid+'" target="_blank">'+fbid+'</a>');
 // <br/><p>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>''<img src="'+profile_pic+'"></p>'    
 $("#user_everything").append('<br/>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>');
-$("#dp").append("<img src="+profile_pic+">");
+$("#dp").append("<img width='100' height='100' src="+profile_pic+">");
 
 if(profile['uid']==<%=uid%>)
 {
