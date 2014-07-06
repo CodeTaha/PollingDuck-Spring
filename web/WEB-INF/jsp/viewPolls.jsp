@@ -29,11 +29,7 @@
                console.log(pollJSON);
                  //alert(data);
                  for(var i=0; i<pollJSON.length;i++)
-                     {   /*
-                         $("#pollList").append('<div id="pid'+pollJSON[i][0]+'"><h3>'+pollJSON[i][0]+":"+pollJSON[i][3]+'</h3></div>')
-                         $("#pid"+pollJSON[i][0]).append('<button onclick="openPoll('+parseInt(pollJSON[i][0])+')">Take Poll</button>');
-                         $("#pid"+pollJSON[i][0]).append('<button onclick="pollResult('+parseInt(pollJSON[i][0])+')">Results</button>');
-                         */
+                     {  
                          $("#pollList").append('<div id="pid'+pollJSON[i]["pid"]+'"><h3>'+pollJSON[i]["pid"]+":"+pollJSON[i]["title"]+'</h3></div>');
                          $("#pid"+pollJSON[i]["pid"]).append('<button onclick="openPoll('+i+')">Take Poll</button>');
                          $("#pid"+pollJSON[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSON[i]["pid"])+')">Results</button>');
