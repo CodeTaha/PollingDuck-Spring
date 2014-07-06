@@ -90,7 +90,7 @@
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <h1>Poll Result!</h1>
         <script>
-                
+   //$(document).ready(function(){              
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
                     var q_id=poll['qtn_json'][jw]['qtn_id'];
@@ -536,7 +536,7 @@
                 }//switch  
                
         }//forloop
-    
+    //});
  function plotBar(qtn_div,p)
  {qtn_div="#"+qtn_div;
      var svg_id="svg_"+p;
@@ -617,10 +617,7 @@ svg.selectAll("bar")
         
          td1=td1+"<th>"+jsonArr[i]["label"]+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
-        
-         
-        
-
+ 
        }
        $(tbl_id).append("<tr>"+td1+"</tr>"); 
        $(tbl_id).append("<td>"+poll['uid']+"</td>");
@@ -638,7 +635,7 @@ svg.selectAll("bar")
        //$(tbl_id).append("</tr>");
        
     }
-    
+
         
         </script>
         
