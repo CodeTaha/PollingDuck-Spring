@@ -198,8 +198,8 @@ var profile_pic;
       var phone=$("#phone").val();
       var profile_pic=$("#profile_pic").val();
       var category=$("#category").val();
-      var fb=response.username;// Enter fb username here//it was testfb earlier
-      console.log("bcc"+fbs);
+      var fb=username;// Enter fb username here//it was testfb earlier
+      
       category=JSON.stringify(category);
       $.ajax({
                                 type: "POST",       // the dNodeNameefault

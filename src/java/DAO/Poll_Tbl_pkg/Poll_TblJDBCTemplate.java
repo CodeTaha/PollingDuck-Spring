@@ -7,6 +7,9 @@
 package DAO.Poll_Tbl_pkg;
 import com.google.gson.Gson;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 import model.connectivity;
@@ -49,9 +52,24 @@ public class Poll_TblJDBCTemplate  {
      return true;
    }
    
-   public List<Poll_Tbl> listPolls() {
-      String SQL = "select * from poll_tbl";
-      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL, new Poll_Tbl_Mapper(conn));
+   public List<Poll_Tbl> listPolls(String ts) {
+       System.out.println("in Poll_tblJDBCTemplate >listPolls()");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        System.out.println("Todays date="+dateFormat.format(date)+" ts="+ts);
+        String SQL;
+        List <Poll_Tbl> poll_tbl;
+        if(ts.equals(""))
+        {System.out.println("in listPolls() if");
+            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<=? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{date,date}, new Poll_Tbl_Mapper(conn));
+        }
+        else
+        {System.out.println("in listPolls() else");
+            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,date}, new Poll_Tbl_Mapper(conn));
+        }
+      
       return poll_tbl;
    }
    

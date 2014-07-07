@@ -17,47 +17,96 @@
   <script src="pages/resources/js/jquery-ui.js"></script>
   
         <script>
-    var pollJSON;        
+    var pollJSONtemp;   
+    var pollJSON=new Array();
+    var ts="";
+    var canLoadMore=true;
     $(document).ready(function(){
-                
-                 
+                $('#loading').hide();
+                $('#NoMoreData').hide();
+                 loadData();
+               
+            });
+            function loadData()
+            {$('#loading').show();
+                if(canLoadMore)
+                {
                 $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "viewPollsData",
-           data: { },
+           data: {ts:ts },
            success: function(data){
+               $('#loading').hide();
                //console.log(data);
-               pollJSON=JSON.parse(data);
-               console.log("pollJSON");
-               console.log(pollJSON);
+               pollJSONtemp=null;
+               pollJSONtemp=JSON.parse(data);
+               console.log("pollJSONtemp");
+               console.log(pollJSONtemp);
+               if(pollJSONtemp==[] || pollJSONtemp==null || pollJSONtemp=="")
+               {
+                   console.log("end of data reached");
+                   canLoadMore=false;
+                   $('#NoMoreData').show();
+                   
+               }
+               else
+               {
+               ts=pollJSONtemp[pollJSONtemp.length-1]['start_ts'];
+               console.log("ts="+ts);
+               
+               createPollDivs();
                  //alert(data);
-                 for(var i=0; i<pollJSON.length;i++)
-                     {  
-                       /*  $("#pollList").append('<div id="pid'+pollJSON[i]["pid"]+'"><h3>'+pollJSON[i]["pid"]+":"+pollJSON[i]["title"]+'</h3></div>');
-                         $("#pid"+pollJSON[i]["pid"]).append('<button onclick="openPoll('+i+')">Take Poll</button>');
-                         $("#pid"+pollJSON[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSON[i]["pid"])+')">Results</button>');
-                       */
-                      $("#pollList").append('<hr><div id="pid'+pollJSON[i]["pid"]+'">\n\
-                      <h3>'+pollJSON[i]["pid"]+":"+pollJSON[i]["title"]+'</h3>\n\
-                         \n\<a href="/PollingDuck-Spring/profile/'+pollJSON[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSON[i]["user"]["profile_pic"]+"></a>  <a href='/PollingDuck-Spring/profile/"+pollJSON[i]["user"]["handle"]+"'>"+pollJSON[i]["user"]["name"]+"</a>  <a href='/PollingDuck-Spring/profile/"+pollJSON[i]["user"]["handle"]+"'  >@"+pollJSON[i]["user"]["handle"]+'</a>\n\
-                          \n\<h4>'+pollJSON[i]["description"] +'</h4><h5>REWARD :'+pollJSON[i]["reward"]+'</h5></div>'
-                          );
-                  $("#pid"+pollJSON[i]["pid"]).append("<b><i>TAGS</i></b> :  ");
-                         for(var j=0;j<pollJSON[i]["cat_list"].length;j++)
-                           $("#pid"+pollJSON[i]["pid"]).append('<b>'+pollJSON[i]["cat_list"][j]["category_name"]+"</b> ");
-                         $("#pid"+pollJSON[i]["pid"]).append('<br><button onclick="openPoll('+i+')">Take Poll</button>');
-                         $("#pid"+pollJSON[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSON[i]["pid"])+')">Results</button>');
-                      
-                         
-                     }
+             }
                    
             }
             });
-            });
-            
+    }
+    
+            }
+            $(window).scroll(function()
+                {
+                    if(($(window).scrollTop() === $(document).height() - $(window).height()) && canLoadMore==true)
+                    {
+                        console.log("Ajax scroll working");
+                        loadData();
+                    }
+                });
+            function createPollDivs()
+            {
+                for(var i=0; i<pollJSONtemp.length;i++)
+                     { 
+                         pollJSON.push(pollJSONtemp[i]);
+                      $("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
+                      <h3>'+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+'</h3>\n\
+                         \n\<a href="/PollingDuck-Spring/profile/'+pollJSONtemp[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSONtemp[i]["user"]["profile_pic"]+"></a>  <a href='/PollingDuck-Spring/profile/"+pollJSONtemp[i]["user"]["handle"]+"'>"+pollJSONtemp[i]["user"]["name"]+"</a>  <a href='/PollingDuck-Spring/profile/"+pollJSONtemp[i]["user"]["handle"]+"'  >@"+pollJSONtemp[i]["user"]["handle"]+'</a>\n\
+                          \n\<h4>'+pollJSONtemp[i]["description"] +'</h4><h5>REWARD :'+pollJSONtemp[i]["reward"]+'</h5></div>'
+                          );
+                  $("#pid"+pollJSONtemp[i]["pid"]).append("<b><i>TAGS</i></b> :  ");
+                         for(var j=0;j<pollJSONtemp[i]["cat_list"].length;j++)
+                           $("#pid"+pollJSONtemp[i]["pid"]).append('<b>'+pollJSONtemp[i]["cat_list"][j]["category_name"]+"</b> ");
+                         $("#pid"+pollJSONtemp[i]["pid"]).append('<br><button onclick="openPoll('+parseInt(pollJSONtemp[i]["pid"])+')">Take Poll</button>');
+                         $("#pid"+pollJSONtemp[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSONtemp[i]["pid"])+')">Results</button>');
+                      
+                         
+                     }
+            }
            function openPoll(i)
        {$( "#dialog-modal").empty();
-               var pollJson_obj=pollJSON[i];
+           var ind;
+           console.log('pollJSON=');
+           console.log(pollJSON)
+           for(k=0; k<pollJSON.length; k++)
+           {console.log(pollJSON[k])
+               if(pollJSON[k]['pid']===i)
+               {
+                   ind=k;
+                   console.log("k="+k);
+                   break;
+               }
+           }
+          
+                 
+               var pollJson_obj=pollJSON[ind];
                console.log("In OpenPoll");
                console.log(pollJson_obj);
             $( ".selector" ).dialog({  
@@ -87,15 +136,20 @@
         </script>
     </head>
     <body>
+        
         <h1>HEllo World!</h1>
         <div id="pollList" style="float:left">
             
         </div>
+        
+        <div id="loading">Loading polls..</div>
+        
      <!--   <div id="dialog-modal" title="Solve Poll" style="float:right">   -->
             <div class="selector">
                 <div id="dialog-modal" title="Solve Poll" >
   <p>.</p>
 </div>
             </div>
+     <div id="NoMoreData" style="padding-bottom: 3px;">Sorry No More Polls to load</div>
     </body>
 </html>

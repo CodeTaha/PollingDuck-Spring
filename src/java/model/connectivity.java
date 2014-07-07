@@ -75,10 +75,10 @@ public int solvable(int pid, int uid) throws SQLException
 
 public String[] getCategoryName(int cid) throws SQLException
 {// Returns category name on entering cid
-    System.out.println("in connectivity > getCategoryName()");
+    //System.out.println("in connectivity > getCategoryName()");
     st=con.prepareStatement("Select category_name,group_name from category_tbl where cid=?");
     st.setInt(1,cid);
-    System.out.println("query="+st);
+    //System.out.println("query="+st);
     rs=st.executeQuery();
     String rslt[] = new String[2];
     while(rs.next())
