@@ -170,7 +170,11 @@ public class UrlController extends Parent_Controller{
        model.addAttribute("profile", rslt);
 	   return "profile";
    }
-  
+  @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+   public String editProfile(@PathVariable  ModelMap model,HttpServletRequest request) throws SQLException {
+     
+      return "editProfile";
+   }
    
   
    
