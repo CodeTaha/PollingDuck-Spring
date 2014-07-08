@@ -86,7 +86,7 @@ console.log("requesting viewMyPollsData");
                 $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewMyPollsData",
-           data: {handle:handle },
+           data: { uidp:profile['uid'] },
            success: function(data){
                console.log(data);
                mypollJSON=JSON.parse(data);
@@ -107,7 +107,7 @@ $("#solvedPolls").append('<h3>Polls Solved </h3></br/>');
                 $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewMySolvedPollsData",
-           data: { },
+           data: { uidp : profile['uid'] },
            success: function(data){
                console.log(data);
                mysolvedpollJSON=JSON.parse(data);
