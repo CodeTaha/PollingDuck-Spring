@@ -261,6 +261,27 @@ public class AjaxController extends Parent_Controller{
           out.println("fail");
        }
    }
-  
+  @RequestMapping(value = "/viewUsersCategData", method = RequestMethod.POST)
+   public void viewUsersCategData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       if(checklogin(request))
+       {
+        String categs=request.getParameter("categs");
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+       // String ts=request.getParameter("ts");
+            Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
+        //    List<Category> category=cat.User_Category_list(categs);
+             List<Category> category=cat.Category_list();
+            String cat_json=gson.toJson(category);
+//            System.out.println("cat list "+cat_json);
+//            model.addAttribute("cat_list", cat_json);
+            out.println(cat_json);
+       }
+       else
+       {
+          // response.sendRedirect("index");
+          // out.println("fail");
+       }
+     }
    }
 

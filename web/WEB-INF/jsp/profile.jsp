@@ -67,7 +67,8 @@ int uid=0;
         var lc=profile['lc'];
         var phone=profile['phone'];
         var profile_pic =profile['profile_pic'];
-        
+        var categs = profile['category_list_json'];
+        var exp_json = profile['exp_json'];
          $("#user_everything").append('<h1>Name : '+name+'</h1><br/><a href="http://www.facebook.com/'+fbid+'" target="_blank">'+fbid+'</a>');
 // <br/><p>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>''<img src="'+profile_pic+'"></p>'    
 $("#user_everything").append('<br/><b>City </b>: '+city+'<br/><b> Country </b>: '+country+'<br/><b>Date Of Birth </b> : '+dob+'<br/><b> Email </b> : '+email+'<br/><b>Sex </b>: '+sex+'<br/><b> Religion </b>: '+religion+'<br/><b> Fishes </b> : '+fish+'<br/><b> Polling Duck Handle</b> : <i>'+handle+'</i><br/><b> Last Change </b> : '+lc+'<br/><b> Contact : </b>'+phone+'<br/>');
@@ -78,6 +79,30 @@ if(profile['uid']==<%=uid%>)
     $("#dp").append('<br/><button onclick=editProfile();>Edit Profile</button>');
     console.log(handle);
 }
+console.log("cat");
+console.log(categs);
+console.log("dog");
+   $.ajax({
+           type: "POST",       // the dNodeNameefault
+           url: "../viewUsersCategData",
+           data:   {   },
+           success: function(data){
+             //  console.log(data);
+               userCategJSON=JSON.parse(data);
+               console.log("userCategJSON");
+             //  console.log(userCategJSON);
+                for(var i=0;i<userCategJSON.length;i++)
+                {   for (var j=0; j < categs.length ; j++)
+                    { if(userCategJSON[i]['cid']===categs[j])
+                        { $("#usercateg").append( "<b>" + userCategJSON[i]['category_name']  +"</b>") ;
+                          $("#usercateg").append( " <i> "+ exp_json[j]['exp']+"</i>") ;
+                           $("#usercateg").append( "   |   ") ;
+                        }
+                    }
+                }
+            }
+});
+       
 
 //timeline
 
@@ -121,7 +146,7 @@ $("#solvedPolls").append('<h3>Polls Solved </h3></br/>');
         }   
             }
            });  
-            
+         
 });
 function pollResult(pid)
            {    
@@ -134,19 +159,20 @@ function pollResult2(pid)
                 var win = window.open("../result/"+pid, '_blank');
                 win.focus();
             }
-   function editProfile(handle)
-           {    var handle="taha";
-                     var win = window.open('../editProfile', '_blank');
-                win.focus();    
+   function editProfile()
+           {    
+                 
             }
     </script>
     </head>
     <body>
         
         <div id="user_everything"></div> 
-        <div id="dp">
+        <div id="dp"></div>
+        <div id="usercateg">
+            <h2>User Experiences</h2><br/>
+        </div> 
         
-        </div>
         <div id="timeline"><center> <h1> <b>TimeLine  </b></h1>
                 <div id="createdPolls">
         
