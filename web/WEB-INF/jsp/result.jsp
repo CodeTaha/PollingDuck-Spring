@@ -87,7 +87,8 @@
         </script>
     </head>
     <body>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>   
+    <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
         <h1>Poll Result!</h1>
         <script>
    //$(document).ready(function(){              
@@ -105,7 +106,7 @@
                     case ( (choice.match(/mcss/) )? choice : undefined ) :
                                 {
                                     
-                    if(flagmcss===1)
+                   // if(flagmcss===1)
             {
                       flagmcss=0;              
                  var k=0;
@@ -115,6 +116,8 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="mcss")
                 {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var noOfOptions=poll['qtn_json'][j]['rows'].length;
                    
                     console.log(count);
@@ -127,6 +130,7 @@
                        for(var l=0;l<noOfOptions;l++)
                             console.log(count[k][l]);
                  k++;
+             }
                 }
                 }
             
@@ -150,7 +154,8 @@
             }
                   var maxticks=0;
             console.log("ansarray");
-            for(var p=0;p<noOfmcss;p++)
+            var p=0;
+            //for(var p=0;p<noOfmcss;p++)
                         for(var l=0;l<noOfOptions;l++)
                     { 
                         console.log(count[p][l]);
@@ -172,6 +177,8 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="mcss")
                 { 
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var arrayOptions=poll['qtn_json'][j]['rows'];
                     console.log(arrayOptions);
                      var noOfOptions=poll['qtn_json'][j]['rows'].length;
@@ -191,6 +198,7 @@
                     plotBar(qtn_div,j);
                     tablegen(qtn_div,j);
                 }
+                }
                 
                 }
             }
@@ -201,7 +209,7 @@
                                 
              case ( (choice.match(/mcms/) )? choice : undefined ) :
                     {
-                        if(flagmcms===1)
+                     //   if(flagmcms===1)
                 {
                         flagmcms=0;
                          console.log("mcms");
@@ -213,6 +221,8 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="mcms")
                 {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var noOfOptions=poll['qtn_json'][j]['rows'].length;
                    
                     console.log(count);
@@ -225,11 +235,14 @@
                        for(var l=0;l<noOfOptions;l++)
                             console.log(count[k][l]);
                  k++;
+             }
                 }
                 }
                     
                     
                     console.log("finished declarations");
+                    var pieOptions=[];
+                    var pieCount=new Array();
             for(var i=0;i<result.length;i++)
             {
                  k=0;
@@ -240,7 +253,7 @@
                     if(poll['qtn_json'][j]['qtn_id']===q_id)
                     {
                     var ans=result[i]['qtn'][j]['ans'];
-                    console.log(ans[0]);
+                    console.log("ans[0]"+ans[0]);
                     if(ans[0]!==null)
                     {
                     console.log(ans[0].length);
@@ -248,6 +261,65 @@
                     for(io=0;io<ans[0].length;io++)
                     {
                         count[k][ans[0][io]-1]=count[k][ans[0][io]-1]+1;
+                    }
+                    var ret=-1;
+                    var n=pieOptions.length;
+                    console.log("length");
+                    console.log(n);
+                    for(var test=0;test<n;test++)
+                    {
+                        console.log("this is it");
+                        var t1=pieOptions[test].toString();
+                        console.log(t1);
+                        var t2=ans[0].toString();
+                        console.log(t2);
+                        if(t1===t2)
+                        {
+                            ret=test;
+                            console.log("aaaaya");
+                            test=1000;
+                        }
+                        else
+                        {
+                            ret=-1;
+                        }
+                    }
+                        
+                   
+                    //var ret=pieOptions.indexOf(ans[0].valueOf());
+                    console.log("ret"+ret);
+                    console.log("original"+ans[0].valueOf());
+                    console.log(ans[0].valueOf());
+                    
+                    if(ret===-1)
+                        {
+                            console.log("in if -1"+ans[0]);
+                            console.log(ans[0]);
+                            pieOptions[pieOptions.length]=ans[0];
+                            pieCount[pieOptions.indexOf(ans[0])]=1;
+                        }
+                        else
+                            pieCount[ret]++;
+                    
+                    console.log("piearr"+pieOptions+"piecount"+pieCount);
+                     var pieArr = [];
+                    for(var iq=0;iq<pieOptions.length ;iq++)
+                    {
+                        var str=pieOptions[iq].toString();
+                        var chr=str.split('');
+                        console.log(chr+"len"+chr.length);
+                        var lab="";
+                        for(var iw=0;iw<chr.length;)
+                        {
+                            
+                             lab=lab.concat(poll['qtn_json'][j]['rows'][chr[iw]-1]+",");
+                             console.log("lab"+lab);
+                     iw=iw+2;
+                        }
+                        pieArr.push({
+                            label:lab,
+                             n: pieCount[iq]
+                                    });
                     }
                     
                     //count[k][ans-1]=count[k][ans-1]+1;
@@ -258,16 +330,17 @@
                 }
                 
             }
-            
+            console.log("pieArrseo"+pieArr);
+            console.log(pieArr);
             
               var maxticks=0;
             console.log("ansarray");
-            for(var p=0;p<noOfmcms;p++)
+            //for(var p=0;p<noOfmcms;p++)
                         for(var l=0;l<noOfOptions;l++)
                     { 
-                        console.log(count[p][l]);
-                        if(count[p][l]>maxticks)
-                            maxticks=count[p][l];
+                        console.log(count[0][l]);
+                        if(count[0][l]>maxticks)
+                            maxticks=count[0][l];
                         
                     }
                 if(maxticks>10)
@@ -283,7 +356,9 @@
                 for(var j=0;j<result[0]['qtn'].length;j++)
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="mcms")
-                { 
+                {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var arrayOptions=poll['qtn_json'][j]['rows'];
                     console.log(arrayOptions);
                      var noOfOptions=poll['qtn_json'][j]['rows'].length;
@@ -301,6 +376,30 @@
                     console.log(jsonArr);
                     
                     //logic of pie label
+                   /* 
+                    
+                    var pieOptions=new Array();
+                    var pieCount=new Array();
+                    var ret;
+                    for(var ii=0;ii<ans[0].length;ii++)
+                    {
+                        console.log(ans[0]);
+                        
+                                        
+                        ret=pieOptions.indexOf(ans[0].[ii]);
+                        if(ret===-1)
+                        {
+                            
+                            pieOptions.push(ans[0][ii]);
+                            pieCount[indexOf[ans[0][ii]]]=1;
+                        }
+                        else
+                            pieCount[ret]++;
+                    }
+                    console.log("piearr"+piearr);
+                                        
+                     */                   
+                                        
                     var first=[];
                     var second=[];
                     var third=[];
@@ -311,7 +410,7 @@
                     first=arrayOptions;
                     
                     second=arrayOptions;
-                    for(var u=0;u<noOfOptions;u++)
+                    /*for(var u=0;u<noOfOptions;u++)
                     {
                         var te=0;
                         
@@ -343,9 +442,13 @@
                         first=temp;
                         cc++;
                     }
-                    console.log("third"+third);
+                    console.log("third"+third);*/
+                      var qtn_div="qtn_div_"+j;
+                    $("body").append("<div id='"+qtn_div+"'></div>");
                       plotBar(qtn_div,j);
+                      plotpie();
                     tablegen(qtn_div,j);
+                }
                 }
                 
                 }
@@ -360,6 +463,8 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="moc")
                 {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     var noOfRows=poll['qtn_json'][j]['rows'].length;
                     var noOfColumns=poll['qtn_json'][j]['columns'].length;
                     var count=new Array(noOfRows);
@@ -375,6 +480,7 @@
                     {
                         console.log(count[k][l]);
                     }
+                }
                      }
             
                     
@@ -417,12 +523,32 @@
                     {
                         console.log(count[k][l]);
                     }
+                    var maxticks=0;
+            console.log("ansarray");
+            var p=0;
+            for( p=0;p<noOfRows;p++)
+                        for(var l=0;l<noOfColumns;l++)
+                    { 
+                        console.log(count[p][l]);
+                        if(count[p][l]>maxticks)
+                            maxticks=count[p][l];
+                        
+                    }
+                if(maxticks>10)
+                {
+                    console.log("maxticks"+maxticks);
+                    maxticks=5;
+                    console.log("maxticks"+maxticks);
+                }
+               console.log("finish counting started d3"); 
                     
                      var k=0;
                 for(var j=0;j<result[0]['qtn'].length;j++)
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="moc")
-                { 
+                {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     
                      var jsonArr = [];
                     for(ii=0;ii<noOfRows ;ii++)
@@ -437,9 +563,11 @@
                     k++;
                     console.log("call");
                     console.log(jsonArr);
+                    var qtn_div="qtn_div_"+j;
+                    $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
                 }
-                    
+            }
                 }
             
                     break;
@@ -451,6 +579,8 @@
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="momc")
                 {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {   
                     var noOfRows=poll['qtn_json'][j]['rows'].length;
                     var noOfColumns=poll['qtn_json'][j]['columns'].length;
                     var count=new Array(noOfRows);
@@ -466,6 +596,7 @@
                     {
                         console.log(count[k][l]);
                     }
+                }
                      }
             
                     
@@ -506,11 +637,32 @@
                         console.log(count[k][l]);
                     }
                     
+                    
+                         var maxticks=0;
+            console.log("ansarray");
+            var p=0;
+            for( p=0;p<noOfRows;p++)
+                        for(var l=0;l<noOfColumns;l++)
+                    { 
+                        console.log(count[p][l]);
+                        if(count[p][l]>maxticks)
+                            maxticks=count[p][l];
+                        
+                    }
+                if(maxticks>10)
+                {
+                    console.log("maxticks"+maxticks);
+                    maxticks=5;
+                    console.log("maxticks"+maxticks);
+                }
+                    
                      var k=0;
                 for(var j=0;j<result[0]['qtn'].length;j++)
                 {
                 if(poll['qtn_json'][j]['qtn_type']==="momc")
-                { 
+                {
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
                     
                      var jsonArr = [];
                     for(ii=0;ii<noOfRows ;ii++)
@@ -525,7 +677,10 @@
                     k++;
                     console.log("call");
                     console.log(jsonArr);
+                    var qtn_div="qtn_div_"+j;
+                    $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
+                }
                 }
                     
                 }
@@ -537,8 +692,10 @@
                
         }//forloop
     //});
+    
  function plotBar(qtn_div,p)
- {qtn_div="#"+qtn_div;
+ {
+     qtn_div="#"+qtn_div;
      var svg_id="svg_"+p;
      console.log("in");
 var margin = {top: 20, right: 20, bottom: 70, left: 40},
@@ -546,6 +703,8 @@ width = 350 - margin.left - margin.right,
 height = 250 - margin.top - margin.bottom;
 // Parse the label / time
 //var parseDate = d3.time.format("%Y-%m").parse;
+var color = d3.scale.ordinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .6);
 var y = d3.scale.linear().range([height, 0]);
 var xAxis = d3.svg.axis()
@@ -556,7 +715,7 @@ var yAxis = d3.svg.axis()
 .scale(y)
 .orient("left")
 .ticks(maxticks);
-console.log("maxticks3"+maxticks)
+console.log("maxticks3"+maxticks);
 var svg = d3.select(qtn_div).append("svg")
 .attr("id", "svg_"+p)
 .attr("width", width + margin.left + margin.right)
@@ -574,6 +733,7 @@ d.n = +d.n;
 });
 x.domain(data.map(function(d) { return d.label; }));
 y.domain([0, d3.max(data, function(d) { return d.n; })]);
+console.log(data);
 svg.append("g")
 .attr("class", "x axis")
 .attr("transform", "translate(0," + height + ")")
@@ -596,12 +756,64 @@ svg.append("g")
 svg.selectAll("bar")
 .data(data)
 .enter().append("rect")
-.style("fill", "steelblue")
+.style("fill", function(d) { return color(d.label); })
 .attr("x", function(d) { return x(d.label); })
 .attr("width", x.rangeBand())
 .attr("y", function(d) { return y(d.n); })
 .attr("height", function(d) { return height - y(d.n); });
 //});
+console.log("out");
+ }
+ 
+ 
+ function plotpie()
+ {
+ 
+var width = 350,
+    height = 350,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scale.ordinal()
+    //.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+      .range([ "#6b486b", "#a05d56", "#d0743c"]);
+
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.n; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+//d3.json("json/bars.json", function(error, jsonarr) {
+    var data=pieArr.slice();
+  data.forEach(function(d) {
+    d.n = +d.n;
+  });
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.label); });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return (d.data.label+'('+d.data.n+')'); });
+
+//});
+
  }
  
  function tablegen(qtn_div, p)
