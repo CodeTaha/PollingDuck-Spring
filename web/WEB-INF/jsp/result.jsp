@@ -10,7 +10,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../../pages/resources/js/jquery.min.js"></script>
-        <title>JSP Page</title>
+         <!--<script src="http://d3js.org/d3.v3.min.js"></script>  -->
+        <script src="../../pages/resources/js/d3/d3.min.js"></script>
+         <title>JSP Page</title>
         <style>
         .axis {
         font: 10px sans-serif;
@@ -87,7 +89,7 @@
         </script>
     </head>
     <body>
-        <script src="http://d3js.org/d3.v3.min.js"></script>   
+        
     <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
         <h1>Poll Result!</h1>
         <script>
