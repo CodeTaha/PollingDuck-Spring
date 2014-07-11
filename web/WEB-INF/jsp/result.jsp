@@ -10,6 +10,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../../pages/resources/js/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
+
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.jsdelivr.net/jspdf/1.0.178/jspdf.min.js"></script>        
+
+        
+        
         <title>JSP Page</title>
         <style>
         .axis {
@@ -566,6 +575,7 @@
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
+                    tablegen(qtn_div,j);
                 }
             }
                 }
@@ -680,6 +690,7 @@
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
+                    tablegen(qtn_div,j);
                 }
                 }
                     
@@ -816,36 +827,121 @@ var svg = d3.select("body").append("svg")
 
  }
  
- function tablegen(qtn_div, p)
+    function tablegen(qtn_div, p)
  {
-     var tbl_id='#tbl_'+p;
+      
+        var tbl_id='#tbl_'+p;
+        var btn_id='#btn_'+p;
      $("#"+qtn_div).append("<table id='tbl_"+p+"'></table>");
  //var tbl2=$("<table/>").attr("id","mytable26");
        //$(tbl_id).append("<tr></tr>");
       
       var td1="<th>"+"uid"+"</th>";
-        for(var i=0;i<jsonArr.length;i++)
+    //   console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
+      //      console.log(result);// use result which is the compilation of all the answers users have submitted
+            
+         if(poll['qtn_json'][j]['qtn_type']==="mcss" || poll['qtn_json'][j]['qtn_type']==="mcms" )
+       {
+        
+            for(var i=0;i<jsonArr.length;i++)
        {
         
          td1=td1+"<th>"+jsonArr[i]["label"]+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
  
        }
-       $(tbl_id).append("<tr>"+td1+"</tr>"); 
-       $(tbl_id).append("<td>"+poll['uid']+"</td>");
+      
+       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+       
+        }
+        
+        
+           if(poll['qtn_json'][j]['qtn_type']==="moc" || poll['qtn_json'][j]['qtn_type']==="momc" )
+       {
+           var x=0,h=0;
+            var y=1,g=0;
+        for(var i=0;i<jsonArr.length;i++)
+        {
+            x=0;
+            y=1;
+            h=0;
+            g=0;
+            for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
+            {   
+                if(jsonArr[i]["label"].slice(x,y)==="+")
+            {
+                h=x;
+                g=y;            
+                
+                td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
+                    
+             }
+            x++;
+            y++;
+        
+            }       
+         }
+        console.log("values of moc");
+        console.log(h);console.log(g);console.log(jsonArr.length);
+        console.log("values of jsonArr");
+        for(var i=0;i<jsonArr.length;i++)
+            console.log(jsonArr[i]["label"]);
+        
+        
+            //for(var i=0;i<jsonArr.length;i++)
+       //{
+        
+         //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
+        // var td2="<td>"+jsonArr[i]["n"]+"</td>";
+ 
+       //}
+      
+       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+       
+        }
+        
+        
+        
+            var td11="<td>"+poll['uid']+"</td>";
+      // $(tbl_id).append("<td>"+poll['uid']+"</td>");
       
         for(var i=0;i<jsonArr.length;i++)
        {
         
-        var td1="<td>"+jsonArr[i]["n"]+"</td>";
+         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
+      }
         
-        
-        $(tbl_id).append(td1); 
+        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
-       }
-       //$(tbl_id).append("</tr>");
        
+       //$(document).ready(function(){
+      
+      
+       
+        $(tbl_id).dataTable(
+          {  
+              
+             bJQueryUI: true,
+             sPaginationType: "full_numbers",
+             "bPaginate": true,
+    "bLengthChange": true,
+    "bFilter": true,
+    "bSort": true,
+    "bInfo": true,
+    "bAutoWidth": true
+    ,
+    "asStripClasses": null  
+        
+        
+        });
+   //});
+       //$(tbl_id).append("</tr>");
+   
+        
+        
+        
+   
     }
 
         
