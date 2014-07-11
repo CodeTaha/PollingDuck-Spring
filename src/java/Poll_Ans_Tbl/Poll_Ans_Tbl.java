@@ -6,7 +6,10 @@
 
 package Poll_Ans_Tbl;
 import DAO.Poll_Tbl_pkg.Qtn;
+import User_Manager.User_Detail;
+import User_Manager.User_TblJDBCTemplate;
 import com.google.gson.Gson;
+import java.sql.SQLException;
 import java.util.List;
 /**
  *
@@ -17,7 +20,9 @@ public class Poll_Ans_Tbl {
     List<Qtn> qtn;
     String solve_ts;
     Gson gson=new Gson();
+   User_Detail user;
 
+   
     public List<Qtn> getQtn() {
         return qtn;
     }
@@ -46,8 +51,14 @@ public class Poll_Ans_Tbl {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(int uid) throws SQLException {
         this.uid = uid;
+        
+        User_TblJDBCTemplate user_jdbc= new User_TblJDBCTemplate();
+        
+        user=user_jdbc.get_profile(uid);
+ 
+     
     }
 
     
@@ -59,6 +70,7 @@ public class Poll_Ans_Tbl {
     public void setSolve_ts(String solve_ts) {
         this.solve_ts = solve_ts;
     }
+
 }
 
 

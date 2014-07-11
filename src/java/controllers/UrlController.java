@@ -148,8 +148,17 @@ public class UrlController extends Parent_Controller{
             model.addAttribute("poll", rslt);
             
             List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
-            rslt=gson.toJson(poll_ans_tbl_list);
-            model.addAttribute("result", rslt);
+            System.out.println("Got values properly");
+            String rslt2;
+            try{rslt2=gson.toJson(poll_ans_tbl_list);
+             System.out.println(rslt2);
+            model.addAttribute("result", rslt2);}
+            catch(Exception e)
+            {
+                System.out.println("error="+e);
+            }
+           
+            
             
 	   return "result";
    } 
