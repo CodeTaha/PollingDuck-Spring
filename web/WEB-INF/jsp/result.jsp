@@ -11,17 +11,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../../pages/resources/js/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../../pages/resources/css/jquery.dataTables.css">
-  <link rel="stylesheet" type="text/css" href="../../pages/resources/media/css/TableTools.css">
 
 
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/TableTools.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.jsdelivr.net/jspdf/1.0.178/jspdf.min.js"></script>        
 
- <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/ZeroClipboard.js"></script>
-       
         
-              <title>JSP Page</title>
+        
+        <title>JSP Page</title>
         <style>
         .axis {
         font: 12px sans-serif;
@@ -63,7 +61,7 @@
    
    
      
-    //c is the no. of ques jinka type mcss hai
+   console.log(noOfmcss);  //c is the no. of ques jinka type mcss hai
     //now finding no. of options in each. array of length c
     var noOfoptnEachmcss = new Array(noOfmcss);
     console.log(noOfoptnEachmcss.length);
@@ -106,9 +104,8 @@
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
                      var bot=0;
-                     var colmax=0;
                     var q_id=poll['qtn_json'][jw]['qtn_id'];
-                  
+                    console.log("question no"+q_id);
                 var choice=poll['qtn_json'][jw]['qtn_type'];    
                 switch(choice)
                 {
@@ -133,18 +130,21 @@
                     {
                     var noOfOptions=poll['qtn_json'][j]['rows'].length;
                    
-                 
+                    console.log(count);
+                    console.log("no of option"+noOfOptions);
+                    console.log("no of mcss"+noOfmcss);
+                    console.log("kth no"+k);
                     count[k]=new Array(noOfOptions);
                        for(var l=0;l<noOfOptions;l++)
                             count[k][l]=0;
                        for(var l=0;l<noOfOptions;l++)
-                           
+                            console.log(count[k][l]);
                  k++;
              }
                 }
                 }
             
-         
+            console.log("finished declarations");
             for(var i=0;i<result.length;i++)
             {
                  k=0;
@@ -156,35 +156,30 @@
                     {
                     var ans=result[i]['qtn'][j]['ans'];
                     count[k][ans-1]=count[k][ans-1]+1;
-                     if(count[k][ans-1]>colmax)
-                    {
-                        colmax=count[k][ans-1];
-                    }
                     k++;
-                    
                 }
             }
                 }
                 
             }
                   var maxticks=0;
-          
+            console.log("ansarray");
             var p=0;
             //for(var p=0;p<noOfmcss;p++)
                         for(var l=0;l<noOfOptions;l++)
                     { 
-                       
+                        console.log(count[p][l]);
                         if(count[p][l]>maxticks)
                             maxticks=count[p][l];
                         
                     }
                 if(maxticks>10)
                 {
-                  
+                    console.log("maxticks"+maxticks);
                     maxticks=5;
-                  
+                    console.log("maxticks"+maxticks);
                 }
-             
+               console.log("finish counting started d3"); 
                
              
      var k=0;
@@ -195,7 +190,7 @@
                     if(poll['qtn_json'][j]['qtn_id']===q_id)
                     {
                     var arrayOptions=poll['qtn_json'][j]['rows'];
-                
+                    console.log(arrayOptions);
                      var noOfOptions=poll['qtn_json'][j]['rows'].length;
                      var jsonArr = [];
                     for(i=0;i<noOfOptions ;i++)
@@ -207,13 +202,13 @@
                         if(arrayOptions[i].length>bot)
                         {
                             var bot= arrayOptions[i].length;
-                      
+                            console.log("bot"+bot);
                     }
-                   
 
                     }
                     k++;
-                  
+                    console.log("call");
+                    console.log(jsonArr);
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
@@ -234,7 +229,8 @@
                 {
                        
                         flagmcms=0;
-                     
+                         console.log("mcms");
+                                  
                          var k=0;
                 var count = new Array(noOfmcms);
                // var count = new Array([]);
@@ -246,12 +242,15 @@
                     {
                     var noOfOptions=poll['qtn_json'][j]['rows'].length;
                    
-               
+                    console.log(count);
+                    console.log("no of option"+noOfOptions);
+                    console.log("no of mcms"+noOfmcms);
+                    console.log("kth no"+k);
                     count[k]=new Array(noOfOptions);
                        for(var l=0;l<noOfOptions;l++)
                             count[k][l]=0;
                        for(var l=0;l<noOfOptions;l++)
-                         
+                            console.log(count[k][l]);
                  k++;
              }
                 }
@@ -279,12 +278,7 @@
                     for(io=0;io<ans[0].length;io++)
                     {
                         count[k][ans[0][io]-1]=count[k][ans[0][io]-1]+1;
-                         if(count[k][ans[0][io]-1]>colmax)
-                    {
-                        colmax=count[k][ans[0][io]-1];
                     }
-                    }
-                    
                     var ret=-1;
                     var n=pieOptions.length;
                     console.log("length");
@@ -398,7 +392,6 @@
                             var bot= arrayOptions[i].length;
                             console.log("bot"+bot);
                     }
-                    
                     }
                     
                     console.log(jsonArr.slice(0));
@@ -553,10 +546,6 @@
                         for(var l=0;l<noOfColumns;l++)
                     {
                         console.log(count[k][l]);
-                         if(count[k][l]>colmax)
-                    {
-                        colmax=count[k][l];
-                    }
                     }
                     var maxticks=0;
             console.log("ansarray");
@@ -600,7 +589,6 @@
                             var bot= (arrayRows[ii].length+arrayColumns[jj].length)+1;
                             console.log("bot"+bot);
                     }
-                  
 
                     }
                     k++;
@@ -679,10 +667,6 @@
                         for(var l=0;l<noOfColumns;l++)
                     {
                         console.log(count[k][l]);
-                        if(count[k][l]>colmax)
-                    {
-                        colmax=count[k][l];
-                    } 
                     }
                     
                     
@@ -725,14 +709,14 @@
                        if((arrayRows[ii].length+arrayColumns[jj].length)>bot)
                         {
                             var bot= (arrayRows[ii].length+arrayColumns[jj].length);
-                            
+                            console.log("bot"+bot);
                     }
-                   
 
                     }
                     
                     k++;
-                    
+                    console.log("call");
+                    console.log(jsonArr);
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
@@ -760,10 +744,8 @@ width = 350 - margin.left - margin.right,
 height = 300 - margin.top - margin.bottom;
 // Parse the label / time
 //var parseDate = d3.time.format("%Y-%m").parse;
-color = d3.scale.ordinal()
-        //.range(["red", "orange", "green", "violet", "blue", "steelblue", "grey"])
-  .range(["grey", "steelblue", "blue", "yellow", "green", "", "orange"])
-  .domain([0,1,2,3,4,5,6]);
+var color = d3.scale.ordinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .6);
 var y = d3.scale.linear().range([height, 0]);
 var xAxis = d3.svg.axis()
@@ -774,7 +756,7 @@ var yAxis = d3.svg.axis()
 .scale(y)
 .orient("left")
 .ticks(maxticks);
-
+console.log("maxticks3"+maxticks);
 var svg = d3.select(qtn_div).append("svg")
 .attr("id", "svg_"+p)
 .attr("width", width + margin.left + margin.right)
@@ -782,9 +764,9 @@ var svg = d3.select(qtn_div).append("svg")
 .append("g")
 .attr("transform",
 "translate(" + margin.left + "," + margin.top + ")");
-
+console.log("just above d3fucntion");
 //d3.json("bars", function() {
-  
+  console.log("just above split"+jsonArr);
   var data=jsonArr.slice();
 data.forEach(function(d) {
 d.label = d.label;
@@ -792,7 +774,7 @@ d.n = +d.n;
 });
 x.domain(data.map(function(d) { return d.label; }));
 y.domain([0, d3.max(data, function(d) { return d.n; })]);
-
+console.log(data);
 svg.append("g")
 .attr("class", "x axis")
 .attr("transform", "translate(0," + height + ")")
@@ -815,13 +797,12 @@ svg.append("g")
 svg.selectAll("bar")
 .data(data)
 .enter().append("rect")
-.style("fill", function(d) { return color((d.n*7/colmax)-1); })
+.style("fill", function(d) { return color(d.label); })
 .attr("x", function(d) { return x(d.label); })
 .attr("width", x.rangeBand())
 .attr("y", function(d) { return y(d.n); })
 .attr("height", function(d) { return height - y(d.n); });
 //});
-console.log("colmax"+colmax);
 console.log("out");
  }
  
@@ -921,24 +902,7 @@ var svg = d3.select("body").append("svg")
                 tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
           }
          $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
-         
       }
-      
-        
-        
-            var td11="<td>TOTAL :</td>";
-      // $(tbl_id).append("<td>"+poll['uid']+"</td>");
-      
-        for(var i=0;i<jsonArr.length;i++)
-       {
-        
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
-      }
-        
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
-
-       
          }
          if( poll['qtn_json'][j]['qtn_type']==="mcms" )
          {
@@ -964,7 +928,55 @@ var svg = d3.select("body").append("svg")
           }
          $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
       }
-         
+         }
+        
+        
+        }
+        
+        
+           if(poll['qtn_json'][j]['qtn_type']==="moc" || poll['qtn_json'][j]['qtn_type']==="momc" )
+       {
+           var x=0,h=0;
+            var y=1,g=0;
+        for(var i=0;i<jsonArr.length;i++)
+        {
+            x=0;
+            y=1;
+            h=0;
+            g=0;
+            for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
+            {   
+                if(jsonArr[i]["label"].slice(x,y)==="+")
+            {
+                h=x;
+                g=y;            
+                
+                td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
+                    
+             }
+            x++;
+            y++;
+        
+            }       
+         }
+        console.log("values of moc");
+        console.log(h);console.log(g);console.log(jsonArr.length);
+        console.log("values of jsonArr");
+        for(var i=0;i<jsonArr.length;i++)
+            console.log("TK"+jsonArr[i]["label"]);
+        
+        
+            //for(var i=0;i<jsonArr.length;i++)
+       //{
+        
+         //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
+        // var td2="<td>"+jsonArr[i]["n"]+"</td>";
+ 
+       //}
+      
+       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+       
+        
         
         
             var td11="<td>TOTAL :</td>";
@@ -980,213 +992,7 @@ var svg = d3.select("body").append("svg")
         $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
        
-            }
-        
-        
         }
-        
-        
-           if(poll['qtn_json'][j]['qtn_type']==="moc" || poll['qtn_json'][j]['qtn_type']==="momc" )
-       {
-           
-           if(poll['qtn_json'][j]['qtn_type']==="moc" )
-           {
-           var x=0,h=0;
-            var y=1,g=0;
-        for(var i=0;i<jsonArr.length;i++)
-        {
-            x=0;
-            y=1;
-            h=0;
-            g=0;
-            for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
-            {   
-                if(jsonArr[i]["label"].slice(x,y)==="+")
-            {
-                h=x;
-                g=y;            
-                
-                td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
-                    
-             }
-            x++;
-            y++;
-        
-            }       
-         }
-        console.log("values of moc");
-        console.log(h);console.log(g);console.log(jsonArr.length);
-        console.log("values of jsonArr");
-        for(var i=0;i<jsonArr.length;i++)
-            console.log("TK"+jsonArr[i]["label"]);
-        
-        console.log("rows :  " + noOfRows);
-        console.log("columns :  " + noOfColumns);
-            //for(var i=0;i<jsonArr.length;i++)
-       //{
-        
-         //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
-        // var td2="<td>"+jsonArr[i]["n"]+"</td>";
- 
-       //}
-      
-       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
-       
-        var myArr = new Array(noOfRows);
-        for(var pdr=0;pdr<noOfRows;pdr++)
-          myArr[pdr]=new Array(noOfColumns);
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-            myArr[pdr][pdc]=0;
-        }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-           console.log("alia"+myArr[pdr][pdc]);
-        }
-        for(var i=0 ; i < result.length;i++ )
-        {   var tUID="<td>"+result[i]['uid']+"</td>"; 
-            for(var pdr = 0; pdr < noOfRows ; pdr++)
-            {  for(var pdc=0; pdc <noOfColumns ; pdc++ )
-               {  
-                    myArr[pdr][pdc]=0;
-                 for(var temp2 = 0; temp2 < result[i]['qtn'][p]['ans'].length; temp2++)
-                 {
-                     if(result[i]['qtn'][p]['ans'][temp2] ===(pdr+","+pdc))
-                     { 
-                         myArr[pdr][pdc] = 1;
-                         
-                     }    
-             
-                 }
-                 tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>"; 
-                 
-               }
-            }
-            $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
-        }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-           console.log("bhatt"+myArr[pdr][pdc]);
-        }
-
-                
-                var td11="<td>TOTAL :</td>";
-      
-        for(var i=0;i<jsonArr.length;i++)
-       {
-        
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
-      }
-        
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
-
-       
-        }
-          if(poll['qtn_json'][j]['qtn_type']==="momc" )
-           {
-           var x=0,h=0;
-            var y=1,g=0;
-        for(var i=0;i<jsonArr.length;i++)
-        {
-            x=0;
-            y=1;
-            h=0;
-            g=0;
-            for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
-            {   
-                if(jsonArr[i]["label"].slice(x,y)==="+")
-            {
-                h=x;
-                g=y;            
-                
-                td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
-                    
-             }
-            x++;
-            y++;
-        
-            }       
-         }
-        console.log("values of moc");
-        console.log(h);console.log(g);console.log(jsonArr.length);
-        console.log("values of jsonArr");
-        for(var i=0;i<jsonArr.length;i++)
-            console.log("TK"+jsonArr[i]["label"]);
-        
-        console.log("rows :  " + noOfRows);
-        console.log("columns :  " + noOfColumns);
-            //for(var i=0;i<jsonArr.length;i++)
-       //{
-        
-         //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
-        // var td2="<td>"+jsonArr[i]["n"]+"</td>";
- 
-       //}
-      
-       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
-       
-        
-        
-        
-              var myArr = new Array(noOfRows);
-        for(var pdr=0;pdr<noOfRows;pdr++)
-          myArr[pdr]=new Array(noOfColumns);
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-            myArr[pdr][pdc]=0;
-        }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-           console.log("alia"+myArr[pdr][pdc]);
-        }
-        for(var i=0 ; i < result.length;i++ )
-        {   var tUID="<td>"+result[i]['uid']+"</td>"; 
-            for(var pdr = 0; pdr < noOfRows ; pdr++)
-            {  for(var pdc=0; pdc <noOfColumns ; pdc++ )
-               {  
-                    myArr[pdr][pdc]=0;
-                 for(var temp2 = 0; temp2 < result[i]['qtn'][p]['ans'].length; temp2++)
-                 {
-                     if(result[i]['qtn'][p]['ans'][temp2] ===(pdr+","+pdc))
-                     { 
-                         myArr[pdr][pdc] = 1;
-                         
-                     }    
-             
-                 }
-                 tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>"; 
-                 
-               }
-            }
-            $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
-        }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-           console.log("bhatt"+myArr[pdr][pdc]);
-        }
-                
-                var td11="<td>TOTAL :</td>";
-      // $(tbl_id).append("<td>"+poll['uid']+"</td>");
-      
-        for(var i=0;i<jsonArr.length;i++)
-       {
-        
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
-      }
-        
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
-
-       
-        }
-      }  
         $(tbl_id).dataTable(
           {  
               
@@ -1197,35 +1003,14 @@ var svg = d3.select("body").append("svg")
     "bFilter": true,
     "bSort": true,
     "bInfo": true,
-    "bAutoWidth": true,
-    "asStripClasses": null , 
-        "sDom": 'T<"H"fr>t<"F"ip>',
-                      "oTableTools": { "sSwfPath": "../../pages/resources/media/swf/eightpixel.swf", 
-                                       "aButtons": [ 
-                                                  {
-                                                      "sExtends": "xls",
-                                                      "sButtonText": "EXCEL",
-                                                      "sFileName" : "*.xls"
-                                                     
-					           },
-                                                   {
-                                                      "sExtends": "pdf",
-                                                      "sButtonText": "PDF",
-                                                      "sPdfOrientation": "landscape",
-                                                   //   "sPdfMessage":   "FromTime:" +fromT+" "+ "ToTime:"+toT ,
-                                                   //   "sTitle" : text1,
-                                                   //   "sPdfSize":pdfsize
-                                                     
-					           },
-                                                  {
-                                                      "sExtends": "csv",
-                                                      "sButtonText": "CSV"
-                                                     
-					           } ]
-                                      }  
+    "bAutoWidth": true
+    ,
+    "asStripClasses": null  
+        
         
         });
-
+   //});
+       //$(tbl_id).append("</tr>");
    
         
         
