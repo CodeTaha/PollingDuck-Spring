@@ -762,14 +762,11 @@ height = 300 - margin.top - margin.bottom;
 //var parseDate = d3.time.format("%Y-%m").parse;
 color = d3.scale.ordinal()
         //.range(["red", "orange", "green", "violet", "blue", "steelblue", "grey"])
-
-  .range(["grey", "steelblue", "blue", "yellow", "green", "", "orange"])
-
-  .range(["grey", "steelblue", "blue", "violet", "green", "orange", "red"])
-
+  .range(["grey", "blue", "steelblue", "yellow", "green", "indigo", "orange"])
   .domain([0,1,2,3,4,5,6]);
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .6);
 var y = d3.scale.linear().range([height, 0]);
+
 var xAxis = d3.svg.axis()
 .scale(x)
 .orient("bottom")
@@ -819,11 +816,7 @@ svg.append("g")
 svg.selectAll("bar")
 .data(data)
 .enter().append("rect")
-
-.style("fill", function(d) { return color((d.n*7/colmax)-1); })
-
-.style("fill", function(d) { return color(d.n/colmax*7-1); })
-
+.style("fill", function(d) { return color(d.n*6/colmax); })
 .attr("x", function(d) { return x(d.label); })
 .attr("width", x.rangeBand())
 .attr("y", function(d) { return y(d.n); })
