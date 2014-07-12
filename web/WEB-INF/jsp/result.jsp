@@ -48,11 +48,11 @@
             console.log("Displays qtn 1 and qtn type of poll");
             console.log(poll['qtn_json'][0]['qtn']);
             console.log(poll['qtn_json'][0]['qtn_type']);
-            console.log("mere upar mcss hai ?");
+           // console.log("mere upar mcss hai ?");
            
-    console.log("mere niche no of options hai un questions k jinka type mcss hai. ");
+   // console.log("mere niche no of options hai un questions k jinka type mcss hai. ");
     var noOfques = poll['qtn_json'].length;        
-    console.log(noOfques); 
+   // console.log(noOfques); 
    var mcss = 0 ;
    var mcms=0;
    var i = 0;
@@ -66,22 +66,22 @@
     //c is the no. of ques jinka type mcss hai
     //now finding no. of options in each. array of length c
     var noOfoptnEachmcss = new Array(noOfmcss);
-    console.log(noOfoptnEachmcss.length);
+    //console.log(noOfoptnEachmcss.length);
     
-    console.log(poll['qtn_json'][0]['rows'].length);   //no of options
-            console.log("Displays options 1 and 4 of qtn 1 from poll");
-            console.log(poll['qtn_json'][0]['rows'][0]);
-          +  console.log(poll['qtn_json'][0]['rows'][3]);
+   // console.log(poll['qtn_json'][0]['rows'].length);   //no of options
+     //       console.log("Displays options 1 and 4 of qtn 1 from poll");
+       //     console.log(poll['qtn_json'][0]['rows'][0]);
+         // +  console.log(poll['qtn_json'][0]['rows'][3]);
             
-            console.log("Displays all parameteres a user has entered from result");
-            console.log(result[0]);
-            console.log("whats this?: this is answer given by first solver to the first question");
-            console.log(result[0]['qtn'][0]['ans']);
-            console.log("no. of questions ");
-            console.log(result[0]['qtn'].length);
-            console.log("no. of options in qtype=mcss ");
+           // console.log("Displays all parameteres a user has entered from result");
+            //console.log(result[0]);
+            //console.log("whats this?: this is answer given by first solver to the first question");
+            //console.log(result[0]['qtn'][0]['ans']);
+            //console.log("no. of questions ");
+            //console.log(result[0]['qtn'].length);
+            //console.log("no. of options in qtype=mcss ");
             //console.log(result[0]['ans'].length);
-            console.log("the main logic begins");
+            //console.log("the main logic begins");
           
                
                  for(var io=0;io < noOfques ;io++)
@@ -258,7 +258,7 @@
                 }
                     
                     
-                    console.log("finished declarations");
+                 //   console.log("finished declarations");
                     var pieOptions=[];
                     var pieCount=new Array();
             for(var i=0;i<result.length;i++)
@@ -271,10 +271,10 @@
                     if(poll['qtn_json'][j]['qtn_id']===q_id)
                     {
                     var ans=result[i]['qtn'][j]['ans'];
-                    console.log("ans[0]"+ans[0]);
+                //    console.log("ans[0]"+ans[0]);
                     if(ans[0]!==null)
                     {
-                    console.log(ans[0].length);
+                 //   console.log(ans[0].length);
                     
                     for(io=0;io<ans[0].length;io++)
                     {
@@ -287,19 +287,19 @@
                     
                     var ret=-1;
                     var n=pieOptions.length;
-                    console.log("length");
-                    console.log(n);
+                //    console.log("length");
+                 //   console.log(n);
                     for(var test=0;test<n;test++)
                     {
-                        console.log("this is it");
+                   //     console.log("this is it");
                         var t1=pieOptions[test].toString();
-                        console.log(t1);
+                     //   console.log(t1);
                         var t2=ans[0].toString();
-                        console.log(t2);
+                       // console.log(t2);
                         if(t1===t2)
                         {
                             ret=test;
-                            console.log("aaaaya");
+                         //   console.log("aaaaya");
                             test=1000;
                         }
                         else
@@ -310,33 +310,33 @@
                         
                    
                     //var ret=pieOptions.indexOf(ans[0].valueOf());
-                    console.log("ret"+ret);
-                    console.log("original"+ans[0].valueOf());
-                    console.log(ans[0].valueOf());
+                  //  console.log("ret"+ret);
+                  ////  console.log("original"+ans[0].valueOf());
+                  //  console.log(ans[0].valueOf());
                     
                     if(ret===-1)
                         {
-                            console.log("in if -1"+ans[0]);
-                            console.log(ans[0]);
+                  //          console.log("in if -1"+ans[0]);
+                   //         console.log(ans[0]);
                             pieOptions[pieOptions.length]=ans[0];
                             pieCount[pieOptions.indexOf(ans[0])]=1;
                         }
                         else
                             pieCount[ret]++;
                     
-                    console.log("piearr"+pieOptions+"piecount"+pieCount);
+                 //   console.log("piearr"+pieOptions+"piecount"+pieCount);
                      var pieArr = [];
                     for(var iq=0;iq<pieOptions.length ;iq++)
                     {
                         var str=pieOptions[iq].toString();
                         var chr=str.split('');
-                        console.log(chr+"len"+chr.length);
+                    //    console.log(chr+"len"+chr.length);
                         var lab="";
                         for(var iw=0;iw<chr.length;)
                         {
                             
                              lab=lab.concat(poll['qtn_json'][j]['rows'][chr[iw]-1]+",");
-                             console.log("lab"+lab);
+                        //     console.log("lab"+lab);
                      iw=iw+2;
                         }
                         pieArr.push({
@@ -354,26 +354,26 @@
                 }
                 
             }
-            console.log("pieArrseo"+pieArr);
-            console.log(pieArr);
+           // console.log("pieArrseo"+pieArr);
+          //  console.log(pieArr);
             
               var maxticks=0;
-            console.log("ansarray");
+          //  console.log("ansarray");
             //for(var p=0;p<noOfmcms;p++)
                         for(var l=0;l<noOfOptions;l++)
                     { 
-                        console.log(count[0][l]);
+                 //       console.log(count[0][l]);
                         if(count[0][l]>maxticks)
                             maxticks=count[0][l];
                         
                     }
                 if(maxticks>10)
                 {
-                    console.log("maxticks"+maxticks);
+                 //   console.log("maxticks"+maxticks);
                     maxticks=5;
-                    console.log("maxticks"+maxticks);
+                 //   console.log("maxticks"+maxticks);
                 }
-               console.log("finish counting started d3"); 
+             //  console.log("finish counting started d3"); 
                
              
      var k=0;
@@ -384,7 +384,7 @@
                     if(poll['qtn_json'][j]['qtn_id']===q_id)
                     {
                     var arrayOptions=poll['qtn_json'][j]['rows'];
-                    console.log(arrayOptions);
+                  //  console.log(arrayOptions);
                      var noOfOptions=poll['qtn_json'][j]['rows'].length;
                      var jsonArr = [];
                     for(i=0;i<noOfOptions ;i++)
@@ -396,15 +396,15 @@
                          if(arrayOptions[i].length>bot)
                         {
                             var bot= arrayOptions[i].length;
-                            console.log("bot"+bot);
+                      //      console.log("bot"+bot);
                     }
                     
                     }
                     
-                    console.log(jsonArr.slice(0));
+                  //  console.log(jsonArr.slice(0));
                     k++;
-                    console.log("call");
-                    console.log(jsonArr);
+                  //  console.log("call");
+                 //   //console.log(jsonArr);
                     
                     //logic of pie label
                    /* 
@@ -414,7 +414,7 @@
                     var ret;
                     for(var ii=0;ii<ans[0].length;ii++)
                     {
-                        console.log(ans[0]);
+                        //console.log(ans[0]);
                         
                                         
                         ret=pieOptions.indexOf(ans[0].[ii]);
@@ -427,7 +427,7 @@
                         else
                             pieCount[ret]++;
                     }
-                    console.log("piearr"+piearr);
+                    //console.log("piearr"+piearr);
                                         
                      */                   
                                         
@@ -452,28 +452,28 @@
                             for(jj=ii+cc+1;jj<second.length;jj++)
                         {
                             var tit=jj;
-                           // console.log(temp);
+                           // //console.log(temp);
                             
-                           // console.log("empty"+temp);
+                           // //console.log("empty"+temp);
                             temp[te]=first[ii]+second[jj];
-                            console.log("first"+first[ii]+"second"+second[jj]);
+                            //console.log("first"+first[ii]+"second"+second[jj]);
                             kk++;
                             te++;
                             if(jj===second.length-1 && ii!==first.length-1 )
                             {
                                 jj=tit+1;
-                                console.log("inside if");
+                                //console.log("inside if");
                             }
                             
                         }
                         
                         }
-                        //console.log(temp);
+                        ////console.log(temp);
                         first=[];
                         first=temp;
                         cc++;
                     }
-                    console.log("third"+third);*/
+                    //console.log("third"+third);*/
                       var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
                       plotBar(qtn_div,j);
@@ -509,7 +509,7 @@
                      for(var k=0;k<noOfRows;k++)
                         for(var l=0;l<noOfColumns;l++)
                     {
-                        console.log(count[k][l]);
+                        //console.log(count[k][l]);
                     }
                 }
                      }
@@ -522,26 +522,26 @@
             {
                 for(var j=0;j<result[0]['qtn'].length;j++)
                 {
-                    console.log("question no"+q_id);
+                    //console.log("question no"+q_id);
                 if(poll['qtn_json'][j]['qtn_type']==="moc")
                 { 
                   
                     if(poll['qtn_json'][j]['qtn_id']===q_id)
                     {
-                        console.log("q_id working");
+                        //console.log("q_id working");
                     var arrayRows=poll['qtn_json'][j]['rows'];
-                    console.log(arrayRows);
+                    //console.log(arrayRows);
                      var noOfRows=poll['qtn_json'][j]['rows'].length;
                      var arrayColumns=poll['qtn_json'][j]['columns'];
-                    console.log(arrayColumns);
+                    //console.log(arrayColumns);
                      var noOfColumns=poll['qtn_json'][j]['columns'].length;
                     var ans=result[i]['qtn'][j]['ans'];
-                    console.log(ans);
+                    //console.log(ans);
                   //  for(var ii=0;ii<noOfRows;ii++)
                     //    for(var jj=0;jj<noOfColumns;jj++)
                     for(var ii=0;ii<ans.length;ii++)
                     {
-                        console.log(ans[0][0]+"poi"+ans[0][2]);
+                        //console.log(ans[0][0]+"poi"+ans[0][2]);
                         count[ans[ii][0]][ans[ii][2]]++;
                     }
                 }
@@ -552,30 +552,30 @@
            for(var k=0;k<noOfRows;k++)
                         for(var l=0;l<noOfColumns;l++)
                     {
-                        console.log(count[k][l]);
+                        //console.log(count[k][l]);
                          if(count[k][l]>colmax)
                     {
                         colmax=count[k][l];
                     }
                     }
                     var maxticks=0;
-            console.log("ansarray");
+            //console.log("ansarray");
             var p=0;
             for( p=0;p<noOfRows;p++)
                         for(var l=0;l<noOfColumns;l++)
                     { 
-                        console.log(count[p][l]);
+                        //console.log(count[p][l]);
                         if(count[p][l]>maxticks)
                             maxticks=count[p][l];
                         
                     }
                 if(maxticks>10)
                 {
-                    console.log("maxticks"+maxticks);
+                    //console.log("maxticks"+maxticks);
                     maxticks=5;
-                    console.log("maxticks"+maxticks);
+                    //console.log("maxticks"+maxticks);
                 }
-               console.log("finish counting started d3"); 
+               //console.log("finish counting started d3"); 
                     
                      var k=0;
                 for(var j=0;j<result[0]['qtn'].length;j++)
@@ -598,14 +598,14 @@
                        if((arrayRows[ii].length+arrayColumns[jj].length)>bot)
                         {
                             var bot= (arrayRows[ii].length+arrayColumns[jj].length)+1;
-                            console.log("bot"+bot);
+                            //console.log("bot"+bot);
                     }
                   
 
                     }
                     k++;
-                    console.log("call");
-                    console.log(jsonArr);
+                    //console.log("call");
+                    //console.log(jsonArr);
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     plotBar(qtn_div,j);
@@ -638,7 +638,7 @@
                      for(var k=0;k<noOfRows;k++)
                         for(var l=0;l<noOfColumns;l++)
                     {
-                        console.log(count[k][l]);
+                        //console.log(count[k][l]);
                     }
                 }
                      }
@@ -656,18 +656,18 @@
                     if(poll['qtn_json'][j]['qtn_id']===q_id)
                     {
                     var arrayRows=poll['qtn_json'][j]['rows'];
-                    console.log(arrayRows);
+                    //console.log(arrayRows);
                      var noOfRows=poll['qtn_json'][j]['rows'].length;
                      var arrayColumns=poll['qtn_json'][j]['columns'];
-                    console.log(arrayColumns);
+                    //console.log(arrayColumns);
                      var noOfColumns=poll['qtn_json'][j]['columns'].length;
                     var ans=result[i]['qtn'][j]['ans'];
-                    console.log(ans);
+                    //console.log(ans);
                   //  for(var ii=0;ii<noOfRows;ii++)
                     //    for(var jj=0;jj<noOfColumns;jj++)
                     for(var ii=0;ii<ans.length;ii++)
                     {
-                        console.log(ans[0][0]+"poi"+ans[0][2]);
+                        //console.log(ans[0][0]+"poi"+ans[0][2]);
                         count[ans[ii][0]][ans[ii][2]]++;
                     }
                 }
@@ -678,7 +678,7 @@
            for(var k=0;k<noOfRows;k++)
                         for(var l=0;l<noOfColumns;l++)
                     {
-                        console.log(count[k][l]);
+                        //console.log(count[k][l]);
                         if(count[k][l]>colmax)
                     {
                         colmax=count[k][l];
@@ -687,21 +687,21 @@
                     
                     
                          var maxticks=0;
-            console.log("ansarray");
+            //console.log("ansarray");
             var p=0;
             for( p=0;p<noOfRows;p++)
                         for(var l=0;l<noOfColumns;l++)
                     { 
-                        console.log(count[p][l]);
+                        //console.log(count[p][l]);
                         if(count[p][l]>maxticks)
                             maxticks=count[p][l];
                         
                     }
                 if(maxticks>10)
                 {
-                    console.log("maxticks"+maxticks);
+                    //console.log("maxticks"+maxticks);
                     maxticks=5;
-                    console.log("maxticks"+maxticks);
+                    //console.log("maxticks"+maxticks);
                 }
                     
                      var k=0;
@@ -754,7 +754,7 @@
  {
      qtn_div="#"+qtn_div;
      var svg_id="svg_"+p;
-     console.log("in");
+     //console.log("in");
 var margin = {top: 20, right: 20, bottom: 15+bot*7, left: 40},
 width = 350 - margin.left - margin.right,
 height = 300 - margin.top - margin.bottom;
@@ -822,8 +822,8 @@ svg.selectAll("bar")
 .attr("y", function(d) { return y(d.n); })
 .attr("height", function(d) { return height - y(d.n); });
 //});
-console.log("colmax"+colmax);
-console.log("out");
+//console.log("colmax"+colmax);
+//console.log("out");
  }
  
  
@@ -887,57 +887,101 @@ var svg = d3.select("body").append("svg")
        //$(tbl_id).append("<tr></tr>");
       
       var td1="<th>"+"uid"+"</th>";
-    //   console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
+    //  console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
       //      console.log(result);// use result which is the compilation of all the answers users have submitted
             
+        var tableAligns=["left","center","right"];
+   
+         //  var table;
+             
+        
          if(poll['qtn_json'][j]['qtn_type']==="mcss" || poll['qtn_json'][j]['qtn_type']==="mcms" )
        {
-        
-            for(var i=0;i<jsonArr.length;i++)
+           var clistJSON=new Array();
+            // clistJSON.push("uid");
+           var header=new Array();
+           header[0]="uid";
+            for(var i=1;i<jsonArr.length+1;i++)
        {
-        
-         td1=td1+"<th>"+jsonArr[i]["label"]+"</th>";
+        header[i]=jsonArr[i-1]["label"];
+         //td1=td1+"<th>"+jsonArr[i]["label"]+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
+             //clistJSON.push(jsonArr[i]["label"]);
+        } 
  
+        for(var i=0;i<header.length;i++)
+            clistJSON.push(header[i]);
+        
+        
+            var Tcolumns = [];
+                                              
+                             for (var i=0; i< clistJSON.length; i++ ) 
+                             {
+                         Tcolumns.push({
+                               "sTitle": clistJSON[i],
+                               "aTargets": [i]
+                               //"sClass":tableAligns[i]
+                             });
        }
+var relist=new Array();
+       //var tst=[1,2,0,1,0];
+      // relist.push()
+     // relist[jsonArr.length][result.length]=rlistJSON[jsonArr.length][result.length];
+      // $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
       
-       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
-       
        if(poll['qtn_json'][j]['qtn_type']==="mcss" )
         {   
+            
        for(var i=0;i<result.length;i++)
       {
-          var tUID="<td>"+result[i]['uid']+"</td>"; 
+          //var tUID="<td>"+result[i]['uid']+"</td>"; 
+          
+              
+          
           
          var nOptn = jsonArr.length;
-         var mcssArr = new Array(nOptn);
+         var mcssArr = new Array(nOptn+1);
          
-         for(var t = 0 ; t < nOptn ; t++)
-              mcssArr[t]=0; 
-          
+         for(var t = 0 ; t < nOptn+1 ; t++)
+         {     mcssArr[t]=0; }
+          mcssArr[0]=result[i]['uid'];
        //  var  tANS = "<td>"+result[i]['qtn'][p]['ans'][0]+"</td>";
-         mcssArr[result[i]['qtn'][p]['ans'][0]-1]=1;
-          for(var i1=0 ; i1 < mcssArr.length ; i1++)
-          {
-                tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
-          }
-         $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+         mcssArr[result[i]['qtn'][p]['ans'][0]]=1;
          
+              //  tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
+         
+                 relist.push(mcssArr);   
+                    
+           
+        // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+         
+         console.log("relist data");
+         console.log(relist);
       }
       
         
         
-            var td11="<td>TOTAL :</td>";
+            //var td11="<td>TOTAL :</td>";
       // $(tbl_id).append("<td>"+poll['uid']+"</td>");
-      
-        for(var i=0;i<jsonArr.length;i++)
+      var mcssTotal=new Array(jsonArr.length+1);
+      mcssTotal[0]="TOTAL";
+        for(var i=1;i<jsonArr.length+1;i++)
        {
         
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       mcssTotal[i]=jsonArr[i-1]["n"];
       }
         
         $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
+
+       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       relist.push(mcssTotal);
+      
+      
+        
+        
+        //$(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
        
          }
@@ -945,40 +989,40 @@ var svg = d3.select("body").append("svg")
          {
               for(var i=0;i<result.length;i++)
       {
-          var tUID="<td>"+result[i]['uid']+"</td>"; 
+          //var tUID="<td>"+result[i]['uid']+"</td>"; 
           
          var nOptn = jsonArr.length;
-         var mcssArr = new Array(nOptn);
+         var mcmsArr = new Array(nOptn+1);
          
-         for(var t = 0 ; t < nOptn ; t++)
-              mcssArr[t]=0; 
+         for(var t = 0 ; t < nOptn+1 ; t++)
+         {     mcmsArr[t]=0; }
+          mcmsArr[0]=result[i]['uid'];
           
-       //  var  tANS = "<td>"+result[i]['qtn'][p]['ans'][0]+"</td>";
-       //  mcssArr[result[i]['qtn'][p]['ans'][0]-1]=1;
        for(var i1new=0; i1new < result[i]['qtn'][p]['ans'][0].length; i1new++)
        {
-           mcssArr[result[i]['qtn'][p]['ans'][0][i1new]-1]=1;
+           mcmsArr[result[i]['qtn'][p]['ans'][0][i1new]]=1;
        }
-          for(var i1=0 ; i1 < mcssArr.length ; i1++)
-          {
-                tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
+       
+           relist.push(mcmsArr);
+         // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
           }
-         $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
-      }
          
         
         
-            var td11="<td>TOTAL :</td>";
-      // $(tbl_id).append("<td>"+poll['uid']+"</td>");
-      
-        for(var i=0;i<jsonArr.length;i++)
+      var mcmsTotal=new Array(jsonArr.length+1);
+      mcmsTotal[0]="TOTAL";
+        for(var i=1;i<jsonArr.length+1;i++)
        {
         
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       mcmsTotal[i]=jsonArr[i-1]["n"];
       }
         
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
+
+       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       relist.push(mcmsTotal);
+     
 
        
             }
@@ -990,16 +1034,33 @@ var svg = d3.select("body").append("svg")
            if(poll['qtn_json'][j]['qtn_type']==="moc" || poll['qtn_json'][j]['qtn_type']==="momc" )
        {
            
+           
+           
+           var clistJSON=new Array();
+            // clistJSON.push("uid");
+           var header=new Array();
+           header[0]="uid";
+        
+       
+var relist=new Array();
+
+           
+           
+           
+           
+           
            if(poll['qtn_json'][j]['qtn_type']==="moc" )
            {
            var x=0,h=0;
             var y=1,g=0;
+            var i12=1;
         for(var i=0;i<jsonArr.length;i++)
         {
             x=0;
             y=1;
             h=0;
             g=0;
+            //i12=1;
             for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
             {   
                 if(jsonArr[i]["label"].slice(x,y)==="+")
@@ -1007,22 +1068,26 @@ var svg = d3.select("body").append("svg")
                 h=x;
                 g=y;            
                 
-                td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
-                    
+               // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
+                 // for(var i=1;i<jsonArr.length+1;i++)
+      // {
+        header[i12]="row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
+            i12++;
+       // }     
              }
             x++;
             y++;
         
             }       
          }
-        console.log("values of moc");
-        console.log(h);console.log(g);console.log(jsonArr.length);
-        console.log("values of jsonArr");
-        for(var i=0;i<jsonArr.length;i++)
-            console.log("TK"+jsonArr[i]["label"]);
+       // console.log("values of moc");
+       // console.log(h);console.log(g);console.log(jsonArr.length);
+       // console.log("values of jsonArr");
+        //for(var i=0;i<jsonArr.length;i++)
+          //  console.log("TK"+jsonArr[i]["label"]);
         
-        console.log("rows :  " + noOfRows);
-        console.log("columns :  " + noOfColumns);
+        //console.log("rows :  " + noOfRows);
+        //console.log("columns :  " + noOfColumns);
             //for(var i=0;i<jsonArr.length;i++)
        //{
         
@@ -1031,7 +1096,23 @@ var svg = d3.select("body").append("svg")
  
        //}
       
-       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+       //$(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+       
+       for(var i=0;i<header.length;i++)
+            clistJSON.push(header[i]);
+        
+        
+            var Tcolumns = [];
+                                              
+                             for (var i=0; i< clistJSON.length; i++ ) 
+                             {
+                         Tcolumns.push({
+                               "sTitle": clistJSON[i],
+                               "aTargets": [i]
+                               //"sClass":tableAligns[i]
+                             });
+                        }
+       
        
         var myArr = new Array(noOfRows);
         for(var pdr=0;pdr<noOfRows;pdr++)
@@ -1041,13 +1122,27 @@ var svg = d3.select("body").append("svg")
         {
             myArr[pdr][pdc]=0;
         }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-           console.log("alia"+myArr[pdr][pdc]);
-        }
+     
+       // for(var pdr = 0; pdr < noOfRows ; pdr++)
+         //   for(var pdc=0; pdc <noOfColumns ; pdc++ )
+       // {
+          // console.log("alia"+myArr[pdr][pdc]);
+       // }
+       
+       
         for(var i=0 ; i < result.length;i++ )
-        {   var tUID="<td>"+result[i]['uid']+"</td>"; 
+        {
+               var mocArr=new Array(noOfColumns*noOfRows+1);
+             for(var t=0 ; t < mocArr.length;t++ )
+        { 
+            mocArr[t]=0;
+        }
+             
+                    //var tUID="<td>"+result[i]['uid']+"</td>"; 
+           mocArr[0]=result[i]['uid'];
+           console.log("f1 "+mocArr[0]);
+           var i12=1;
+                    
             for(var pdr = 0; pdr < noOfRows ; pdr++)
             {  for(var pdc=0; pdc <noOfColumns ; pdc++ )
                {  
@@ -1061,36 +1156,51 @@ var svg = d3.select("body").append("svg")
                      }    
              
                  }
-                 tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>"; 
+                 //tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>";
+               //for(i12=1 ; i12<mocArr.length;i12++)
+                 mocArr[i12++]=myArr[pdr][pdc]; 
                  
                }
             }
-            $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
-        }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-           console.log("bhatt"+myArr[pdr][pdc]);
+           // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+         //  console.log("lll "+mocArr);
+            relist.push(mocArr);
+          //    console.log("ll2 "+relist);
         }
 
                 
-                var td11="<td>TOTAL :</td>";
+          //      var td11="<td>TOTAL :</td>";
       
-        for(var i=0;i<jsonArr.length;i++)
+       // for(var i=0;i<jsonArr.length;i++)
+      // {
+        
+      //   td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       
+     // }
+        
+      //  $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
+
+  var mocTotal=new Array(jsonArr.length+1);
+      mocTotal[0]="TOTAL";
+        for(var i5=1;i5<jsonArr.length+1;i5++)
        {
         
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       mocTotal[i5]=jsonArr[i5-1]["n"];
       }
         
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
+
+       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       relist.push(mocTotal);
+     
 
        
         }
           if(poll['qtn_json'][j]['qtn_type']==="momc" )
            {
            var x=0,h=0;
-            var y=1,g=0;
+            var y=1,g=0;var i12=1;
         for(var i=0;i<jsonArr.length;i++)
         {
             x=0;
@@ -1104,22 +1214,23 @@ var svg = d3.select("body").append("svg")
                 h=x;
                 g=y;            
                 
-                td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
-                    
+               // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
+                header[i12]="row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
+            i12++;     
              }
             x++;
             y++;
         
             }       
          }
-        console.log("values of moc");
-        console.log(h);console.log(g);console.log(jsonArr.length);
-        console.log("values of jsonArr");
-        for(var i=0;i<jsonArr.length;i++)
-            console.log("TK"+jsonArr[i]["label"]);
+       // console.log("values of moc");
+        //console.log(h);console.log(g);console.log(jsonArr.length);
+        //console.log("values of jsonArr");
+        //for(var i=0;i<jsonArr.length;i++)
+          //  console.log("TK"+jsonArr[i]["label"]);
         
-        console.log("rows :  " + noOfRows);
-        console.log("columns :  " + noOfColumns);
+       // console.log("rows :  " + noOfRows);
+        //console.log("columns :  " + noOfColumns);
             //for(var i=0;i<jsonArr.length;i++)
        //{
         
@@ -1128,8 +1239,24 @@ var svg = d3.select("body").append("svg")
  
        //}
       
-       $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+      // $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
        
+          var clistJSON=new Array();      
+                for(var i=0;i<header.length;i++)
+            clistJSON.push(header[i]);
+        
+        
+            var Tcolumns = [];
+        
+                             for (var i=0; i< clistJSON.length; i++ ) 
+                             {
+                         Tcolumns.push({
+                               "sTitle": clistJSON[i],
+                               "aTargets": [i]
+                               //"sClass":tableAligns[i]
+                             });
+                        }
+     
         
         
         
@@ -1144,10 +1271,24 @@ var svg = d3.select("body").append("svg")
         for(var pdr = 0; pdr < noOfRows ; pdr++)
             for(var pdc=0; pdc <noOfColumns ; pdc++ )
         {
-           console.log("alia"+myArr[pdr][pdc]);
+           //console.log("alia"+myArr[pdr][pdc]);
         }
         for(var i=0 ; i < result.length;i++ )
-        {   var tUID="<td>"+result[i]['uid']+"</td>"; 
+        {   
+           // var tUID="<td>"+result[i]['uid']+"</td>"; 
+               var momcArr=new Array(noOfColumns*noOfRows+1);
+             for(var t=0 ; t < momcArr.length;t++ )
+        { 
+            momcArr[t]=0;
+        }
+             
+                    //var tUID="<td>"+result[i]['uid']+"</td>"; 
+           momcArr[0]=result[i]['uid'];
+           console.log("f1 "+momcArr[0]);
+           var i12=1;
+           
+                    
+                    
             for(var pdr = 0; pdr < noOfRows ; pdr++)
             {  for(var pdc=0; pdc <noOfColumns ; pdc++ )
                {  
@@ -1161,30 +1302,46 @@ var svg = d3.select("body").append("svg")
                      }    
              
                  }
-                 tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>"; 
-                 
+                 //tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>"; 
+                  momcArr[i12++]=myArr[pdr][pdc]; 
                }
             }
-            $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+           // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+           relist.push(momcArr);
         }
         for(var pdr = 0; pdr < noOfRows ; pdr++)
             for(var pdc=0; pdc <noOfColumns ; pdc++ )
         {
-           console.log("bhatt"+myArr[pdr][pdc]);
+           //console.log("bhatt"+myArr[pdr][pdc]);
         }
                 
-                var td11="<td>TOTAL :</td>";
+              //  var td11="<td>TOTAL :</td>";
       // $(tbl_id).append("<td>"+poll['uid']+"</td>");
       
-        for(var i=0;i<jsonArr.length;i++)
+      //  for(var i=0;i<jsonArr.length;i++)
+      // {
+        
+     //    td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       
+     // }
+        
+     //   $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
+
+
+      var momcTotal=new Array(jsonArr.length+1);
+      momcTotal[0]="TOTAL";
+        for(var i5=1;i5<jsonArr.length+1;i5++)
        {
         
-         td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       momcTotal[i5]=jsonArr[i5-1]["n"];
       }
         
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
+       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       relist.push(momcTotal);
+ 
        
         }
       }  
@@ -1200,6 +1357,7 @@ var svg = d3.select("body").append("svg")
     "bInfo": true,
     "bAutoWidth": true,
     "asStripClasses": null , 
+      "aoColumnDefs":Tcolumns ,
         "sDom": 'T<"H"fr>t<"F"ip>',
                       "oTableTools": { "sSwfPath": "../../pages/resources/media/swf/eightpixel.swf", 
                                        "aButtons": [ 
@@ -1223,8 +1381,15 @@ var svg = d3.select("body").append("svg")
                                                       "sButtonText": "CSV"
                                                      
 					           } ]
-                                      }  
+                                      }  ,
         
+            
+            "aaData": relist
+                
+              
+            
+            
+            
         });
 
    
