@@ -216,8 +216,9 @@
                   
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
-                    plotBar(qtn_div,j);
-                    tablegen(qtn_div,j);
+                    var ret=plotBar(qtn_div,j);
+                    
+                    var retu=tablegen(qtn_div,j);
                 }
                 }
                 
@@ -476,9 +477,9 @@
                     //console.log("third"+third);*/
                       var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
-                      plotBar(qtn_div,j);
+                      var ret=plotBar(qtn_div,j);
                       plotpie();
-                    tablegen(qtn_div,j);
+                    var retu=tablegen(qtn_div,j);
                 }
                 }
                 
@@ -608,8 +609,8 @@
                     //console.log(jsonArr);
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
-                    plotBar(qtn_div,j);
-                    tablegen(qtn_div,j);
+                    var ret=plotBar(qtn_div,j);
+                    var retu=tablegen(qtn_div,j);
                 }
             }
                 }
@@ -735,8 +736,8 @@
                     
                     var qtn_div="qtn_div_"+j;
                     $("body").append("<div id='"+qtn_div+"'></div>");
-                    plotBar(qtn_div,j);
-                    tablegen(qtn_div,j);
+                    var ret=plotBar(qtn_div,j);
+                    var retu=tablegen(qtn_div,j);
                 }
                 }
                     
@@ -760,6 +761,7 @@ width = 350 - margin.left - margin.right,
 height = 300 - margin.top - margin.bottom;
 // Parse the label / time
 //var parseDate = d3.time.format("%Y-%m").parse;
+var animheight=height;
 color = d3.scale.ordinal()
         //.range(["red", "orange", "green", "violet", "blue", "steelblue", "grey"])
   .range(["grey", "blue", "steelblue", "yellow", "green", "indigo", "orange"])
@@ -819,11 +821,19 @@ svg.selectAll("bar")
 .style("fill", function(d) { return color(d.n*6/colmax); })
 .attr("x", function(d) { return x(d.label); })
 .attr("width", x.rangeBand())
-.attr("y", function(d) { return y(d.n); })
-.attr("height", function(d) { return height - y(d.n); });
+.attr("y", function(d) { return height; })
+.attr("height", function(d) { return 0; })
+
+.transition().delay(function (d,i){ return i * 300;})
+ .duration(3000)
+ .attr("height", function(d) {  return +animheight-y(d.n) - .1; })
+ .attr("y", function(d) { return +y(d.n) - .1; })
+
+ ;
 //});
 //console.log("colmax"+colmax);
 //console.log("out");
+return (0);
  }
  
  
@@ -972,7 +982,7 @@ var relist=new Array();
        mcssTotal[i]=jsonArr[i-1]["n"];
       }
         
-        $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
+        //$(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
        
          //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
@@ -1395,6 +1405,7 @@ var relist=new Array();
    
         
         
+        return(0);
         
    
     }
