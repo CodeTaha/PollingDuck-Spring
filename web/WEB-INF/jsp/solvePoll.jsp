@@ -66,8 +66,9 @@ Gson gson=new Gson();
                 var pid=${pid};
                 var pollJSON=${obj};
                 var solvable=${solvable};
-              
-                var uid=<%= uid %>
+                var anonymous=0;
+                var fish=pollJSON['reward'];
+                var uid=<%= uid %>;
                 function set_metadata(title,description,catl,author)
                 {
                     var keywords="PollingDuck, Polls, Surveys";
@@ -81,9 +82,22 @@ Gson gson=new Gson();
                             .append("<meta name='description' content='"+description+"'>")
                             .append("<meta name='author' content='"+author+"'>");  
                 }
+                
+                $('#anonymous').click(function() {
+                                    var $this = $(this);
+                                    // $this will contain a reference to the checkbox   
+                                    if ($this.is(':checked')) {
+                                        anonymous=1;
+                                        alert("You wont get the rewarded fish if you solve the poll anonymously and your name wont be displayed on the result page.");
+                                    } else {
+                                        anonymous=0;
+                                        // the checkbox was unchecked
+                                    }
+                                });
             $(document).ready(function(){
               
                 set_metadata(pollJSON['title'],pollJSON['description'],pollJSON['cat_list'],pollJSON['user']['name']);
+                 
                  
         
                 if(solvable===1)
@@ -209,7 +223,7 @@ Gson gson=new Gson();
                 }
                 else
                 {
-                    $("#pollArea").append("<p>Sorry but you have already solved this Poll. However you can view the Result</p>").append("<a href='${delimiter}result/"+pid+"' target='blank'>"+data['title']+"</a>");
+                    $("#pollArea").empty().append("<p>Sorry but you have already solved this Poll. However you can view the Result</p>").append("<a href='${delimiter}result/"+pid+"' target='blank'>"+pollJSON['title']+"</a>");
                     $("#submitAns").hide();
                     
                 }
@@ -285,10 +299,11 @@ Gson gson=new Gson();
                   finalJSON=JSON.stringify(finalJSON);
                   console.log("Final string");
                   console.log(finalJSON);
+                  console.log("anonymous="+anonymous+" fish="+fish);
                   $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "${delimiter}submitPollAns",
-                                data: { finalJSON: finalJSON},
+                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish},
                                 success: function(data){alert(data);
                                         if(data)
                                         {
@@ -302,6 +317,7 @@ Gson gson=new Gson();
     </head>
     <body>
         <div id="pollArea">
+            <input type="checkbox" id="anonymous"/>Solve Anonymously
             
         </div>
         <div id='submitSurvey'>

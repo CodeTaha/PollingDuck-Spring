@@ -134,13 +134,12 @@ public class UrlController extends Parent_Controller{
    @RequestMapping(value = "/result/{pid}/{ref_url}",method = RequestMethod.GET)
    public String result(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
             System.out.println("In UrlController>result ");
-            System.out.println("in Result pid="+pid);
-            System.out.println("in Result reflink="+ref_url);
+            
             Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
             if(!poll_tbl.getPoll_link().equals(ref_url))
-            {System.out.println("incorrect reflink="+poll_tbl.getPoll_link());
+            {
                 response.sendRedirect(poll_tbl.getPoll_link());
                return "error";
             }
@@ -148,15 +147,11 @@ public class UrlController extends Parent_Controller{
             model.addAttribute("poll", rslt);
             
             List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
-            System.out.println("Got values properly");
-            String rslt2;
-            try{rslt2=gson.toJson(poll_ans_tbl_list);
-             System.out.println(rslt2);
-            model.addAttribute("result", rslt2);}
-            catch(Exception e)
-            {
-                System.out.println("error="+e);
-            }
+           
+            rslt=gson.toJson(poll_ans_tbl_list);
+             
+            model.addAttribute("result", rslt);
+           
            
             
             

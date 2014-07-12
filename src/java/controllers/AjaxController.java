@@ -136,11 +136,16 @@ public class AjaxController extends Parent_Controller{
    }
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       
+       User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate();
         String finalJSON=request.getParameter("finalJSON");
+        int anonymous=Integer.parseInt(request.getParameter("anonymous"));
+        int fish=Integer.parseInt(request.getParameter("fish"));
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
-        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON);
-        
+        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous);
+        if(anonymous==0)
+        {
+        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);
+        }
 	response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();  
         out.println(rslt);

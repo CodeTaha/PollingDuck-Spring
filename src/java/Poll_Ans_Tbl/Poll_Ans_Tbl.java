@@ -16,7 +16,7 @@ import java.util.List;
  * @author abc
  */
 public class Poll_Ans_Tbl {
-    private int poll_ans_key,pid,uid;
+    private int poll_ans_key,pid,uid,anonymous;
     List<Qtn> qtn;
     String solve_ts;
     Gson gson=new Gson();
@@ -51,12 +51,10 @@ public class Poll_Ans_Tbl {
         return uid;
     }
 
-    public void setUid(int uid) throws SQLException {
+    public void setUid(int uid){
         this.uid = uid;
         
-        User_TblJDBCTemplate user_jdbc= new User_TblJDBCTemplate();
-        
-        user=user_jdbc.get_profile(uid);
+       
  
      
     }
@@ -69,6 +67,22 @@ public class Poll_Ans_Tbl {
 
     public void setSolve_ts(String solve_ts) {
         this.solve_ts = solve_ts;
+    }
+
+    public int getAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(int anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public User_Detail getUser() {
+        return user;
+    }
+
+    public void setUser(User_Detail user) {
+        this.user = user;
     }
 
 }
