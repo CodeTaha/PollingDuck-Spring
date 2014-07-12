@@ -22,7 +22,7 @@
         <title>JSP Page</title>
         <style>
         .axis {
-        font: 10px sans-serif;
+        font: 12px sans-serif;
               }
             .axis path,
             .axis line {
@@ -103,6 +103,7 @@
    //$(document).ready(function(){              
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
+                     var bot=0;
                     var q_id=poll['qtn_json'][jw]['qtn_id'];
                     console.log("question no"+q_id);
                 var choice=poll['qtn_json'][jw]['qtn_type'];    
@@ -198,6 +199,12 @@
                              label:arrayOptions[i],
                              n: count[k][i]
                                     });
+                        if(arrayOptions[i].length>bot)
+                        {
+                            var bot= arrayOptions[i].length;
+                            console.log("bot"+bot);
+                    }
+
                     }
                     k++;
                     console.log("call");
@@ -220,6 +227,7 @@
                     {
                      //   if(flagmcms===1)
                 {
+                       
                         flagmcms=0;
                          console.log("mcms");
                                   
@@ -331,6 +339,7 @@
                                     });
                     }
                     
+                    
                     //count[k][ans-1]=count[k][ans-1]+1;
                     k++;
                 }
@@ -378,7 +387,13 @@
                             label:arrayOptions[i],
                              n: count[k][i]
                                     });
+                         if(arrayOptions[i].length>bot)
+                        {
+                            var bot= arrayOptions[i].length;
+                            console.log("bot"+bot);
                     }
+                    }
+                    
                     console.log(jsonArr.slice(0));
                     k++;
                     console.log("call");
@@ -568,6 +583,13 @@
                              label:arrayRows[ii]+"+"+arrayColumns[jj],
                              n: count[ii][jj]
                                     });
+                                  
+                       if((arrayRows[ii].length+arrayColumns[jj].length)>bot)
+                        {
+                            var bot= (arrayRows[ii].length+arrayColumns[jj].length)+1;
+                            console.log("bot"+bot);
+                    }
+
                     }
                     k++;
                     console.log("call");
@@ -683,7 +705,15 @@
                              label:arrayRows[ii]+"+"+arrayColumns[jj],
                              n: count[ii][jj]
                                     });
+                                                                
+                       if((arrayRows[ii].length+arrayColumns[jj].length)>bot)
+                        {
+                            var bot= (arrayRows[ii].length+arrayColumns[jj].length);
+                            console.log("bot"+bot);
                     }
+
+                    }
+                    
                     k++;
                     console.log("call");
                     console.log(jsonArr);
@@ -709,9 +739,9 @@
      qtn_div="#"+qtn_div;
      var svg_id="svg_"+p;
      console.log("in");
-var margin = {top: 20, right: 20, bottom: 70, left: 40},
+var margin = {top: 20, right: 20, bottom: 15+bot*7, left: 40},
 width = 350 - margin.left - margin.right,
-height = 250 - margin.top - margin.bottom;
+height = 300 - margin.top - margin.bottom;
 // Parse the label / time
 //var parseDate = d3.time.format("%Y-%m").parse;
 var color = d3.scale.ordinal()
