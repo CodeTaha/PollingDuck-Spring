@@ -10,11 +10,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../../pages/resources/js/jquery.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="../../pages/resources/css/jquery.dataTables.css">
 
 
 <!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.jsdelivr.net/jspdf/1.0.178/jspdf.min.js"></script>        
 
         
@@ -96,7 +96,7 @@
         </script>
     </head>
     <body>
-        <script src="http://d3js.org/d3.v3.min.js"></script>   
+        <script src="../../pages/resources/js/d3.min.js"></script>   
     <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
         <h1>Poll Result!</h1>
         <script>
@@ -853,6 +853,54 @@ var svg = d3.select("body").append("svg")
       
        $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
        
+       if(poll['qtn_json'][j]['qtn_type']==="mcss" )
+        {   
+       for(var i=0;i<result.length;i++)
+      {
+          var tUID="<td>"+result[i]['uid']+"</td>"; 
+          
+         var nOptn = jsonArr.length;
+         var mcssArr = new Array(nOptn);
+         
+         for(var t = 0 ; t < nOptn ; t++)
+              mcssArr[t]=0; 
+          
+       //  var  tANS = "<td>"+result[i]['qtn'][p]['ans'][0]+"</td>";
+         mcssArr[result[i]['qtn'][p]['ans'][0]-1]=1;
+          for(var i1=0 ; i1 < mcssArr.length ; i1++)
+          {
+                tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
+          }
+         $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+      }
+         }
+         if( poll['qtn_json'][j]['qtn_type']==="mcms" )
+         {
+              for(var i=0;i<result.length;i++)
+      {
+          var tUID="<td>"+result[i]['uid']+"</td>"; 
+          
+         var nOptn = jsonArr.length;
+         var mcssArr = new Array(nOptn);
+         
+         for(var t = 0 ; t < nOptn ; t++)
+              mcssArr[t]=0; 
+          
+       //  var  tANS = "<td>"+result[i]['qtn'][p]['ans'][0]+"</td>";
+       //  mcssArr[result[i]['qtn'][p]['ans'][0]-1]=1;
+       for(var i1new=0; i1new < result[i]['qtn'][p]['ans'][0].length; i1new++)
+       {
+           mcssArr[result[i]['qtn'][p]['ans'][0][i1new]-1]=1;
+       }
+          for(var i1=0 ; i1 < mcssArr.length ; i1++)
+          {
+                tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
+          }
+         $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+      }
+         }
+        
+        
         }
         
         
@@ -885,7 +933,7 @@ var svg = d3.select("body").append("svg")
         console.log(h);console.log(g);console.log(jsonArr.length);
         console.log("values of jsonArr");
         for(var i=0;i<jsonArr.length;i++)
-            console.log(jsonArr[i]["label"]);
+            console.log("TK"+jsonArr[i]["label"]);
         
         
             //for(var i=0;i<jsonArr.length;i++)
@@ -898,27 +946,23 @@ var svg = d3.select("body").append("svg")
       
        $(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
        
-        }
         
         
         
-            var td11="<td>"+poll['uid']+"</td>";
+            var td11="<td>TOTAL :</td>";
       // $(tbl_id).append("<td>"+poll['uid']+"</td>");
       
         for(var i=0;i<jsonArr.length;i++)
        {
         
          td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-        // var td2="<td>"+jsonArr[i]["n"]+"</td>";
+       
       }
         
         $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
        
-       //$(document).ready(function(){
-      
-      
-       
+        }
         $(tbl_id).dataTable(
           {  
               
