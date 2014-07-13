@@ -32,11 +32,13 @@ int uid=0;
                // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
                 foundCookie = true;
             }
+           
+            
         }  
 
         if (!foundCookie) {
             System.out.println("cookies not found 2");
-            response.sendRedirect("index");
+            //response.sendRedirect("index");
         }
 %>
 <!DOCTYPE html>
@@ -48,8 +50,15 @@ int uid=0;
   <script src="../pages/resources/js/jquery.min.js"></script>
   <script src="../pages/resources/js/jquery-ui.js"></script>
     <script>
+        var followers,following;
         $(document).ready(function(){
-                
+                if(<%=foundCookie%>)
+                {
+                    //followers=${followers};
+                    //following=${following};
+                   // console.log(followers);
+                    //console.log(following);
+                }
         var profile=${profile};  // handle of user
             console.log("profile");
             console.log(profile);
@@ -78,6 +87,13 @@ if(profile['uid']==<%=uid%>)
 {
     $("#dp").append('<br/><button onclick=editProfile();>Edit Profile</button>');
     console.log(handle);
+}
+else
+{
+    if(<%=uid%>!=0)
+    {
+        $("#dp").append('<br/><button onclick="follow();">Follow</button>');
+    }
 }
 console.log("cat");
 console.log(categs);

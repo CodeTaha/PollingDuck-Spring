@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -176,6 +178,7 @@ public class AjaxController extends Parent_Controller{
         int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
         //System.out.println("cat list= "+Arrays.toString(category));
         
+        
        
        
      boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
@@ -185,7 +188,7 @@ public class AjaxController extends Parent_Controller{
    }
    
    @RequestMapping(value = "/loginFB", method = RequestMethod.POST)
-   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -201,11 +204,13 @@ public class AjaxController extends Parent_Controller{
         System.out.println("Adding cookie uid"+user_detail.getUid());
         cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
         response.addCookie(cookie);
+       
         //System.out.print("obj json="+gson.toJson(user_detail));
         //cookie=set_Cookie("",gson.toJson(user_detail),24);
         //response.addCookie(cookie);
         //response.sendRedirect("dashboard");
        out.println(1);
+       
         }
         else   
         {

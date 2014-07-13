@@ -53,7 +53,7 @@ public class User_TblJDBCTemplate {
                             "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
                     }break;
             case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
-                        SQL="select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
+                        SQL="select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
                     }    
         }
         
@@ -120,6 +120,8 @@ public class User_TblJDBCTemplate {
        }
        catch(DataAccessException e)
        {
+          
+       
            System.out.println("In catch");
            SQL = "insert into login_tbl(fb,email) values(?,?)";// Inserting into login_tbl
            try{
@@ -169,7 +171,7 @@ public class User_TblJDBCTemplate {
     public User_Detail get_profile(String handle)
     {
          User_Detail profile=null;
-        SQL="select A.uid,A.fb,A.email, B.handle,B.name,B.city,B.country,B.dob,B.sex,B.state,B.profile_pic,B.phone,B.religion,B.zip ,C.exp_json,C.category_list_json,C.lc,C.fish from login_tbl A, user_detail B, user_store C where A.uid=(select uid from user_detail where handle=?) and B.handle=? and C.uid=A.uid;";
+        SQL="select A.uid,A.followers,A.following,A.fb,A.email, B.handle,B.name,B.city,B.country,B.dob,B.sex,B.state,B.profile_pic,B.phone,B.religion,B.zip ,C.exp_json,C.category_list_json,C.lc,C.fish from login_tbl A, user_detail B, user_store C where A.uid=(select uid from user_detail where handle=?) and B.handle=? and C.uid=A.uid;";
         try
         {
             profile=jdbcTemplateObject.queryForObject(SQL, new Object[]{handle,handle}, new User_Detail_Mapper(2));

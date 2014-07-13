@@ -12,6 +12,7 @@ import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import Poll_Ans_Tbl.Poll_Ans_Tbl;
 import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
+import User_Manager.Follow;
 import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
@@ -166,12 +167,20 @@ public class UrlController extends Parent_Controller{
    } 
    
    @RequestMapping(value = "/profile/{handle}", method = RequestMethod.GET)
-   public String profile(@PathVariable String handle, ModelMap model,HttpServletRequest request) throws SQLException {
+   public String profile(@PathVariable String handle, ModelMap model,HttpServletRequest request) throws SQLException, IOException {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
        
         User_Detail profile=user.get_profile(handle);
         String rslt=gson.toJson(profile);
+        checklogin(request);
        model.addAttribute("profile", rslt);
+       if(user_detail != null)
+       {
+           
+//           Follow follow=user_detail.getFollow();
+//           model.addAttribute("followers", follow.getFollowers());
+//           model.addAttribute("following", follow.getFollowing());
+       }
 	   return "profile";
    }
   @RequestMapping(value = "/editProfile", method = RequestMethod.GET)

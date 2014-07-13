@@ -37,12 +37,18 @@ public class User_Detail_Mapper implements RowMapper<User_Detail>
                     user.setUid(rs.getInt("uid"));
                     user.setCategory_list_json(rs.getString("category_list_json"));
                     user.setHandle(rs.getString("handle"));
+                    String followers=rs.getString("followers");
+                    String following=rs.getString("following");
+                    user.setFollow(rs.getInt("uid"),followers,following);
                     }break;
              case 2:{
                     System.out.println("In User_Detail_Mapper row2");
                     //A.uid,A.fb,A.email, B.handle,B.name,B.city,B.country,B.dob,B.state,B.profile_pic,B.phone,B.religion,B.zip ,C.exp_json,C.category_list_json,C.lc,C.fish
                     user.setUid(rs.getInt("uid"));
                     user.setHandle(rs.getString("handle"));
+                    String followers=rs.getString("followers");
+                    String following=rs.getString("following");
+                    user.setFollow(rs.getInt("uid"),followers,following);
                     user.setExp_json(rs.getString("exp_json"));
                     user.setCategory_list_json(rs.getString("category_list_json"));
                     user.setCity(rs.getString("city"));

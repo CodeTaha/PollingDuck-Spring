@@ -56,7 +56,7 @@ public class Parent_Controller {
            }
            User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
            cat_list=user.get_category_list_json(uid);
-           
+           user_detail=user.get_profile(handle);
         }
        else
        {System.out.println("In checklogin() else");

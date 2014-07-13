@@ -23,7 +23,7 @@ public class User_Detail {
     
     private String name,country,state,zip,city,religion,sex,dob,phone,profile_pic ;
     private String lc ;
-    
+    private Follow follow=new Follow();
     
     
     
@@ -171,6 +171,25 @@ public class User_Detail {
 
     public void setLc(String lc) {
         this.lc = lc;
+    }
+
+    public Follow getFollow() {
+        return follow;
+    }
+
+    public void setFollow(int fuid,String followers, String following) {
+        
+        try{
+            follow.setUid(fuid);
+            
+        follow.setFollowers(gson.fromJson(followers, int[].class));
+        follow.setFollowing(gson.fromJson(following, int[].class));
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+                
     }
  
     

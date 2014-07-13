@@ -314,13 +314,4 @@ Logs:<br/>
         <a href="SignUp">New User?</a>
       
     </body>
-    <script>
-        var test=new Array();
-        test.push(1);
-        test.push(2);
-        test.push(3);
-        test.push(4);
-        console.log(JSON.stringify(test));
-        
-    </script>
 </html>
