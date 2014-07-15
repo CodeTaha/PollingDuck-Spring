@@ -51,15 +51,18 @@ int uid=0;
   <script src="../pages/resources/js/jquery-ui.js"></script>
     <script>
         var followers,following;
+         var profile=${profile}; 
+        var loggedin=${loggedin};
+        followers=${followers};
+        following=${following};           
         $(document).ready(function(){
-                if(<%=foundCookie%>)
-                {
-                    //followers=${followers};
-                    //following=${following};
-                   // console.log(followers);
-                    //console.log(following);
+                if(loggedin)
+                {console.log("foundcookie1");
+                   
+                   console.log(followers);
+                   console.log(following);
                 }
-        var profile=${profile};  // handle of user
+        // handle of user
             console.log("profile");
             console.log(profile);
         //   console.log(profile[]);

@@ -10,14 +10,10 @@ import Category_Manager.Category;
 import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
 import com.google.gson.Gson;
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import model.connectivity;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *

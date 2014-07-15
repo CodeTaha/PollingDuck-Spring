@@ -220,13 +220,13 @@ var profile_pic;
     <body>
         
         <div id="status">
-    This is really cool <br/></div>
+ </div>
  <div id="details">
      
  </div>
         <div id="imgbut">
 <img src="pages/resources/images/LoginWithFacebook.png" style="cursor:pointer;" onclick="Login()"/>
-<br/>We respect your hatred towards membership form filling
+<br/>
 </div>
 <br/><br/><br/><br/><br/>
 <div id="message">

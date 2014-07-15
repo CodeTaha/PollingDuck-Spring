@@ -19,12 +19,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
-import static javax.management.Query.value;
-import static javax.management.Query.value;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static net.sf.cglib.core.CodeEmitter.OR;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -173,14 +170,28 @@ public class UrlController extends Parent_Controller{
         User_Detail profile=user.get_profile(handle);
         String rslt=gson.toJson(profile);
         checklogin(request);
+         
        model.addAttribute("profile", rslt);
+       System.out.println("fol=");
        if(user_detail != null)
-       {
-           
-//           Follow follow=user_detail.getFollow();
-//           model.addAttribute("followers", follow.getFollowers());
-//           model.addAttribute("following", follow.getFollowing());
+       {try{
+          Follow follow=user_detail.getFollow();
+           String foll=gson.toJson(follow.getFollowers());
+           System.out.println("fol="+foll);
+           model.addAttribute("followers", gson.toJson(follow.getFollowers()));
+           model.addAttribute("following", gson.toJson(follow.getFollowing()));
+           model.addAttribute("loggedin", true);
        }
+       catch(Exception e)
+       {
+           System.out.println("error="+e);
+       }
+       }
+       else
+       {
+           model.addAttribute("loggedin", false);
+       }
+       
 	   return "profile";
    }
   @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
