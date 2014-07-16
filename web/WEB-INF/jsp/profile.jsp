@@ -53,6 +53,7 @@ int uid=0;
         var followers,following;
          var profile=${profile}; 
         var loggedin=${loggedin};
+        var uid=<%=uid%>;
         followers=${followers};
         following=${following};           
         $(document).ready(function(){
@@ -84,18 +85,29 @@ int uid=0;
          $("#user_everything").append('<h1>Name : '+name+'</h1><br/><a href="http://www.facebook.com/'+fbid+'" target="_blank">'+fbid+'</a>');
 // <br/><p>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>''<img src="'+profile_pic+'"></p>'    
 $("#user_everything").append('<br/><b>City </b>: '+city+'<br/><b> Country </b>: '+country+'<br/><b>Date Of Birth </b> : '+dob+'<br/><b> Email </b> : '+email+'<br/><b>Sex </b>: '+sex+'<br/><b> Religion </b>: '+religion+'<br/><b> Fishes </b> : '+fish+'<br/><b> Polling Duck Handle</b> : <i>'+handle+'</i><br/><b> Last Change </b> : '+lc+'<br/><b> Contact : </b>'+phone+'<br/>');
-$("#dp").append("<b> Profile Picture</b> <img width='50' height='50' src="+profile_pic+">");
-console.log("ttt "+handle);
-if(profile['uid']==<%=uid%>)
+$("#dp").append("<b> Profile Picture</b> <img width='50' height='50' src="+profile_pic+">").append("<br><b> Followers</b>:"+profile['follow']['followers'].length).append("<b> Following</b>:"+profile['follow']['following'].length);
+if(profile['uid']==uid)
 {
     $("#dp").append('<br/><button onclick=editProfile();>Edit Profile</button>');
     console.log(handle);
 }
 else
 {
-    if(<%=uid%>!=0)
+    if(uid!==0)
     {
-        $("#dp").append('<br/><button onclick="follow();">Follow</button>');
+        if(profile['follow']['followers'].indexOf(uid)!==-1)
+        {
+            $("#dp").append('<br/><button onclick="unfollow();">Following</button>');
+        }
+        else
+        {
+            $("#dp").append('<br/><button onclick="follow();">Follow</button>');
+        }
+        if(profile['follow']['following'].indexOf(uid)!==-1)
+        {
+            $("#dp").append('<b>Follows you<b>');
+        }
+        
     }
 }
 console.log("cat");
