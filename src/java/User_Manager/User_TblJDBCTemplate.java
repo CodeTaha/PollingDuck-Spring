@@ -9,6 +9,7 @@ package User_Manager;
 import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,13 +226,39 @@ public class User_TblJDBCTemplate {
     
     public boolean follow_Unfollow(int follower, int followed, int cmd) throws SQLException
     {
+        /* 
+        follower- is the logged in user sending request to follow/unfollow
+        followed- is the user who follower wants to follow or unfollow
+        */
         
         PreparedStatement st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
         st.setInt(1,follower);
         st.setInt(2, followed);
+        ResultSet rs=st.executeQuery();
+        Integer followers[], following[];
+//        String followers, following;
+        rs.next();
         
+//            followers=rs.getObject("followers", int[].class);
+//            following=rs.getObject("following", int[].class);
+            followers=gson.fromJson(rs.getString("followers"),Integer[].class);
+            following=gson.fromJson(rs.getString("following"),Integer[].class);
             
-        
+            switch(cmd)
+            {
+                case 0:  {//unfollow
+                            List<Integer> list;
+                            list = new ArrayList(Arrays.asList(followers));
+                            list.removeAll(Arrays.asList(followed));
+                            followers = list.toArray(followers);
+                            List<Integer> list2;
+                            list2 = new ArrayList(Arrays.asList(following));
+                            list2.removeAll(Arrays.asList(follower));
+                            following = list2.toArray(following);
+                            
+                        }break;
+            }
+       
         
         return true;
     }

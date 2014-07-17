@@ -190,7 +190,7 @@ function editProfile()
             }
             
 function follow(cmd)
-{alert(cmd)
+{alert(cmd);
     $.ajax({
         type: "POST",       // the dNodeNameefault
            url: "../follow",
