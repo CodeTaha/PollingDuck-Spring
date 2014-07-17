@@ -97,11 +97,11 @@ else
     {
         if(profile['follow']['followers'].indexOf(uid)!==-1)
         {
-            $("#dp").append('<br/><button onclick="unfollow();">Following</button>');
+            $("#dp").append('<br/><button onclick="follow(0);">Following</button>');
         }
         else
         {
-            $("#dp").append('<br/><button onclick="follow();">Follow</button>');
+            $("#dp").append('<br/><button onclick="follow(1);">Follow</button>');
         }
         if(profile['follow']['following'].indexOf(uid)!==-1)
         {
@@ -172,7 +172,7 @@ $("#solvedPolls").append('<h3>Polls Solved </h3></br/>');
                 for(var i=0; i<mysolvedpollJSON.length;i++)
                  {  $("#solvedPolls").append("<p><b>Poll ID : </b>"+mysolvedpollJSON[i]['pid']+"</p>");
                  $("#solvedPolls").append("<p><b>Poll Ans Key: </b>"+mysolvedpollJSON[i]['poll_ans_key']+"</p>");
-           $("#solvedPolls").append('<button onclick="pollResult2('+parseInt(mysolvedpollJSON[i]["pid"])+')">Results</button>');
+           $("#solvedPolls").append('<button onclick="pollResult('+parseInt(mysolvedpollJSON[i]["pid"])+')">Results</button>');
                      
         }   
             }
@@ -184,16 +184,22 @@ function pollResult(pid)
                      var win = window.open("../result/"+pid, '_blank');
                 win.focus();    
             }
-function pollResult2(pid)
-           {    
- 
-                var win = window.open("../result/"+pid, '_blank');
-                win.focus();
-            }
-   function editProfile()
+function editProfile()
            {    
                  
             }
+            
+function follow(cmd)
+{alert(cmd)
+    $.ajax({
+        type: "POST",       // the dNodeNameefault
+           url: "../follow",
+           data: { puid : profile['uid'], cmd:cmd },
+           success: function(data){
+               
+           }
+    });
+}
     </script>
     </head>
     <body>

@@ -8,6 +8,7 @@ package User_Manager;
 
 import com.google.gson.Gson;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,6 +221,19 @@ public class User_TblJDBCTemplate {
            return false;
         }
        return true;
+    }
+    
+    public boolean follow_Unfollow(int follower, int followed, int cmd) throws SQLException
+    {
+        
+        PreparedStatement st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
+        st.setInt(1,follower);
+        st.setInt(2, followed);
+        
+            
+        
+        
+        return true;
     }
     
 }
