@@ -42,12 +42,11 @@
             
             // using the above parameteres
             
-            console.log("Displays title of poll");
-            console.log(poll['title']);
-            
-            console.log("Displays qtn 1 and qtn type of poll");
-            console.log(poll['qtn_json'][0]['qtn']);
-            console.log(poll['qtn_json'][0]['qtn_type']);
+         //   console.log("Displays title of poll");
+       
+          //  console.log("Displays qtn 1 and qtn type of poll");
+          //  console.log(poll['qtn_json'][0]['qtn']);
+          //  console.log(poll['qtn_json'][0]['qtn_type']);
            // console.log("mere upar mcss hai ?");
            
    // console.log("mere niche no of options hai un questions k jinka type mcss hai. ");
@@ -102,7 +101,9 @@
     <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
         <h1>Poll Result!</h1>
         <script>
-  // $(document).ready(function(){              
+  // $(document).ready(function(){       
+                $("body").append("<h1><center>TITLE : <b>"+poll['title']+"</b></center></h1>");
+                $("body").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'><img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a> <i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i></b></h2>");
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
                      var bot=0;
@@ -215,6 +216,7 @@
                     k++;
                   
                     var qtn_div="qtn_div_"+j;
+                     $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     var ret=plotBar(qtn_div,j);
                     
@@ -476,6 +478,7 @@
                     }
                     //console.log("third"+third);*/
                       var qtn_div="qtn_div_"+j;
+                      $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
                     $("body").append("<div id='"+qtn_div+"'></div>");
                       var ret=plotBar(qtn_div,j);
                       plotpie();
@@ -608,6 +611,7 @@
                     //console.log("call");
                     //console.log(jsonArr);
                     var qtn_div="qtn_div_"+j;
+                    $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     var ret=plotBar(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
@@ -735,6 +739,7 @@
                     k++;
                     
                     var qtn_div="qtn_div_"+j;
+                    $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
                     $("body").append("<div id='"+qtn_div+"'></div>");
                     var ret=plotBar(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
@@ -896,7 +901,7 @@ var svg = d3.select("body").append("svg")
  //var tbl2=$("<table/>").attr("id","mytable26");
        //$(tbl_id).append("<tr></tr>");
       
-      var td1="<th>"+"uid"+"</th>";
+      var td1="<th>"+"USER"+"</th>";
     //  console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
       //      console.log(result);// use result which is the compilation of all the answers users have submitted
             
@@ -908,9 +913,8 @@ var svg = d3.select("body").append("svg")
          if(poll['qtn_json'][j]['qtn_type']==="mcss" || poll['qtn_json'][j]['qtn_type']==="mcms" )
        {
            var clistJSON=new Array();
-            // clistJSON.push("uid");
            var header=new Array();
-           header[0]="uid";
+           header[0]="USER";
             for(var i=1;i<jsonArr.length+1;i++)
        {
         header[i]=jsonArr[i-1]["label"];
@@ -954,7 +958,7 @@ var relist=new Array();
          
          for(var t = 0 ; t < nOptn+1 ; t++)
          {     mcssArr[t]=0; }
-          mcssArr[0]=result[i]['uid'];
+          mcssArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
        //  var  tANS = "<td>"+result[i]['qtn'][p]['ans'][0]+"</td>";
          mcssArr[result[i]['qtn'][p]['ans'][0]]=1;
          
@@ -1006,7 +1010,7 @@ var relist=new Array();
          
          for(var t = 0 ; t < nOptn+1 ; t++)
          {     mcmsArr[t]=0; }
-          mcmsArr[0]=result[i]['uid'];
+          mcmsArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
           
        for(var i1new=0; i1new < result[i]['qtn'][p]['ans'][0].length; i1new++)
        {
@@ -1047,9 +1051,8 @@ var relist=new Array();
            
            
            var clistJSON=new Array();
-            // clistJSON.push("uid");
            var header=new Array();
-           header[0]="uid";
+           header[0]="USER";
         
        
 var relist=new Array();
@@ -1149,7 +1152,7 @@ var relist=new Array();
         }
              
                     //var tUID="<td>"+result[i]['uid']+"</td>"; 
-           mocArr[0]=result[i]['uid'];
+           mocArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
            console.log("f1 "+mocArr[0]);
            var i12=1;
                     
@@ -1292,8 +1295,9 @@ var relist=new Array();
             momcArr[t]=0;
         }
              
-                    //var tUID="<td>"+result[i]['uid']+"</td>"; 
-           momcArr[0]=result[i]['uid'];
+                    //var tUID="<td>"+result[i]['uid']+"</td>";
+                    //<i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i>
+           momcArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
            console.log("f1 "+momcArr[0]);
            var i12=1;
            
