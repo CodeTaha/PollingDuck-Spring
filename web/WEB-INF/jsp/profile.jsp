@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 Cookie[] cookies = request.getCookies();
@@ -40,6 +41,8 @@ int uid=0;
             System.out.println("cookies not found 2");
             //response.sendRedirect("index");
         }
+        
+       
 %>
 <!DOCTYPE html>
 <html>

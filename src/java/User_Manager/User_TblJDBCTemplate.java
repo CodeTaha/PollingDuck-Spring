@@ -235,31 +235,43 @@ public class User_TblJDBCTemplate {
         st.setInt(1,follower);
         st.setInt(2, followed);
         ResultSet rs=st.executeQuery();
-        Integer followers[], following[];
-//        String followers, following;
-        rs.next();
+        //Integer followers[], following[];
         
-//            followers=rs.getObject("followers", int[].class);
-//            following=rs.getObject("following", int[].class);
-            followers=gson.fromJson(rs.getString("followers"),Integer[].class);
-            following=gson.fromJson(rs.getString("following"),Integer[].class);
+        rs.next();
+
+        ArrayList<Integer> followers=gson.fromJson(rs.getString("followers"),ArrayList.class);
+        ArrayList<Integer> following=gson.fromJson(rs.getString("following"),ArrayList.class);
+//            followers=gson.fromJson(rs.getString("followers"),Integer[].class);
+//            following=gson.fromJson(rs.getString("following"),Integer[].class);
             
             switch(cmd)
             {
                 case 0:  {//unfollow
-                            List<Integer> list;
-                            list = new ArrayList(Arrays.asList(followers));
-                            list.removeAll(Arrays.asList(followed));
-                            followers = list.toArray(followers);
-                            List<Integer> list2;
-                            list2 = new ArrayList(Arrays.asList(following));
-                            list2.removeAll(Arrays.asList(follower));
-                            following = list2.toArray(following);
+                                followers.remove(follower+.0);
+                                following.remove(followed+.0);
+                                
+//                            List<Integer> list;
+//                            list = new ArrayList(Arrays.asList(followers));
+//                            list.removeAll(Arrays.asList(followed));
+//                            followers = list.toArray(followers);
+//                            List<Integer> list2;
+//                            list2 = new ArrayList(Arrays.asList(following));
+//                            list2.removeAll(Arrays.asList(follower));
+//                            following = list2.toArray(following);
                             
+                        }break;
+                case 1:{
+                        followers.add(follower);
+                        following.add(followed);
+                
                         }break;
             }
        
+        st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
+        st.setObject(1,followers);
+        st.setObject(2, followed);
         
+        //st.execute();
         return true;
     }
     
