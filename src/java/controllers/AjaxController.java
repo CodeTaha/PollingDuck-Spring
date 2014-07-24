@@ -296,12 +296,13 @@ public class AjaxController extends Parent_Controller{
    
    @RequestMapping(value = "/follow", method = RequestMethod.POST)
    public void follow(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       PrintWriter out = response.getWriter();
         checklogin(request);
         int puid = Integer.parseInt(request.getParameter("puid"));
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         User_TblJDBCTemplate user=new User_TblJDBCTemplate();
         boolean rslt=user.follow_Unfollow(user_detail.getUid(), puid, cmd);
-   
+        out.println(rslt);
    }
    }
 

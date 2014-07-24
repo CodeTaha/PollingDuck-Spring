@@ -224,55 +224,63 @@ public class User_TblJDBCTemplate {
        return true;
     }
     
-    public boolean follow_Unfollow(int follower, int followed, int cmd) throws SQLException
+    public boolean follow_Unfollow(int loggedin_user, int profile_user, int cmd) throws SQLException
     {
         /* 
         follower- is the logged in user sending request to follow/unfollow
         followed- is the user who follower wants to follow or unfollow
         */
         
-        PreparedStatement st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
-        st.setInt(1,follower);
-        st.setInt(2, followed);
+        try
+        {PreparedStatement st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
+        st.setInt(1,loggedin_user);
+        st.setInt(2, profile_user);
         ResultSet rs=st.executeQuery();
-        //Integer followers[], following[];
+      
         
         rs.next();
+        ArrayList<Integer> profile_user_followers=gson.fromJson(rs.getString("followers"),ArrayList.class);
+        ArrayList<Integer> loggedin_user_following=gson.fromJson(rs.getString("following"),ArrayList.class);
+        
 
-        ArrayList<Integer> followers=gson.fromJson(rs.getString("followers"),ArrayList.class);
-        ArrayList<Integer> following=gson.fromJson(rs.getString("following"),ArrayList.class);
-//            followers=gson.fromJson(rs.getString("followers"),Integer[].class);
-//            following=gson.fromJson(rs.getString("following"),Integer[].class);
             
             switch(cmd)
             {
                 case 0:  {//unfollow
-                                followers.remove(follower+.0);
-                                following.remove(followed+.0);
+                                profile_user_followers.remove(loggedin_user+.0);
+                                loggedin_user_following.remove(profile_user+.0);
                                 
-//                            List<Integer> list;
-//                            list = new ArrayList(Arrays.asList(followers));
-//                            list.removeAll(Arrays.asList(followed));
-//                            followers = list.toArray(followers);
-//                            List<Integer> list2;
-//                            list2 = new ArrayList(Arrays.asList(following));
-//                            list2.removeAll(Arrays.asList(follower));
-//                            following = list2.toArray(following);
+//                           
                             
                         }break;
-                case 1:{
-                        followers.add(follower);
-                        following.add(followed);
+                case 1:{//follow
+                        profile_user_followers.add(loggedin_user);
+                        loggedin_user_following.add(profile_user);
                 
                         }break;
             }
        
-        st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
-        st.setObject(1,followers);
-        st.setObject(2, followed);
-        
-        //st.execute();
+        // IMPORTANT Make a transaction or a batch execution here
+       
+        st=conn.getCon().prepareStatement("UPDATE login_tbl SET following=? WHERE uid=?;");
+        st.setObject(1, loggedin_user_following.toString());
+        st.setObject(2,loggedin_user);   
+        //System.out.println("query for following"+st);
+        st.execute();
+       //st.addBatch();
+        st=conn.getCon().prepareStatement("UPDATE login_tbl SET followers=? WHERE uid=?;");
+        st.setObject(1, profile_user_followers.toString());
+        st.setObject(2,profile_user);
+        //System.out.println("query for followers"+st);
+        st.execute();
+        //st.addBatch();
+     //int rslt[]=st.executeBatch();
         return true;
+    }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
     
 }

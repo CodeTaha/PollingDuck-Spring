@@ -100,11 +100,11 @@ else
     {
         if(profile['follow']['followers'].indexOf(uid)!==-1)
         {
-            $("#dp").append('<br/><button onclick="follow(0);">Following</button>');
+            $("#dp").append('<br/><button id="followUnfollow" onclick="follow(0);">Following</button>');
         }
         else
         {
-            $("#dp").append('<br/><button onclick="follow(1);">Follow</button>');
+            $("#dp").append('<br/><button id="followUnfollow" onclick="follow(1);">Follow</button>');
         }
         if(profile['follow']['following'].indexOf(uid)!==-1)
         {
@@ -193,13 +193,27 @@ function editProfile()
             }
             
 function follow(cmd)
-{alert(cmd);
+{//alert(cmd);
     $.ajax({
         type: "POST",       // the dNodeNameefault
            url: "../follow",
            data: { puid : profile['uid'], cmd:cmd },
-           success: function(data){
-               
+           success: function(data)
+           {console.log("follow"+data);
+               if(data)
+               {//id="followUnfollow" <button id="followUnfollow" onclick="follow(0);">Following</button>
+                   //$("#followUnfollow").remove();
+                   if(cmd==1)
+                    {
+                        $("#followUnfollow").empty().append("Following").removeAttr("onclick").attr("onclick='follow(0);'");
+                        //$("#dp").append('<button id="followUnfollow" onclick="follow(0);">Following</button>');
+                    }
+                    else
+                    {$("#followUnfollow").empty().append("Follow").removeAttr("onclick").attr("onclick='follow(1);'");
+                        //$("#dp").append('<button id="followUnfollow" onclick="follow(1);">Follow</button>');
+                    }
+                   
+               }
            }
     });
 }
