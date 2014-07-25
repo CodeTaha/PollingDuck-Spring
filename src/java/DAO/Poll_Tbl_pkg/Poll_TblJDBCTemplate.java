@@ -52,7 +52,7 @@ public class Poll_TblJDBCTemplate  {
      return true;
    }
    
-   public List<Poll_Tbl> listPolls(String ts) {
+   public List<Poll_Tbl> listPolls(String ts, int uid) {
        System.out.println("in Poll_tblJDBCTemplate >listPolls()");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
@@ -61,13 +61,17 @@ public class Poll_TblJDBCTemplate  {
         List <Poll_Tbl> poll_tbl;
         if(ts.equals(""))
         {System.out.println("in listPolls() if");
-            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<=? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
-            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{date,date}, new Poll_Tbl_Mapper(conn));
+//            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<=? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            
+            SQL ="SELECT * FROM poll_tbl where pid NOT IN (select pid from poll_ans_tbl where uid=?) and start_ts<=? and end_ts>=? Order by start_ts desc limit 5;"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid,date,date}, new Poll_Tbl_Mapper(conn));
         }
         else
         {System.out.println("in listPolls() else");
-            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
-            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,date}, new Poll_Tbl_Mapper(conn));
+            
+//            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            SQL ="SELECT * FROM pollingduck.poll_tbl where pid NOT IN (select pid from poll_ans_tbl where uid=?) and start_ts<? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid,ts,date}, new Poll_Tbl_Mapper(conn));
         }
       
       return poll_tbl;
