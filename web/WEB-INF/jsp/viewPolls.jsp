@@ -37,7 +37,7 @@
            data: {ts:ts },
            success: function(data){
                $('#loading').hide();
-               //console.log(data);
+               console.log(data);
                pollJSONtemp=null;
                pollJSONtemp=JSON.parse(data);
                console.log("pollJSONtemp");
