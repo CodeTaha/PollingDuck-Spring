@@ -14,6 +14,7 @@ import DAO.Poll_Tbl_pkg.Qtn;
 import DAO.Poll_Tbl_pkg.Qtn_Mapper;
 import Poll_Ans_Tbl.Poll_Ans_Tbl;
 import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
+import User_Manager.Follow;
 import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
 import java.io.IOException;
@@ -303,6 +304,28 @@ public class AjaxController extends Parent_Controller{
         User_TblJDBCTemplate user=new User_TblJDBCTemplate();
         boolean rslt=user.follow_Unfollow(user_detail.getUid(), puid, cmd);
         out.println(rslt);
+   }
+   @RequestMapping(value = "/viewActivityData", method = RequestMethod.POST)
+   public void viewActivityData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       if(checklogin(request))
+       {
+       Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String ts=request.getParameter("ts");
+        Follow follow=user_detail.getFollow();
+       int arrtest[]=follow.getFollowing();
+        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listActivityPolls(ts,arrtest);
+         System.out.println("view Polls PollJSON taha ts="+ts);
+         //String pollJSON=gson.toJson(alist);
+         String pollJSON=gson.toJson(poll_tbl);
+         System.out.println("view Polls PollJSON="+pollJSON);
+         out.println(pollJSON);
+        }
+       else
+       {
+           response.sendRedirect("index");
+       }
    }
    }
 

@@ -200,6 +200,10 @@ public class UrlController extends Parent_Controller{
       return "editProfile";
    }
    
+  @RequestMapping(value = "/activity", method = RequestMethod.GET)
+   public String activity() {
+	   return "activity";
+   }
   
    
 }

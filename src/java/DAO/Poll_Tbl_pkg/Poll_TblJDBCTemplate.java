@@ -112,6 +112,30 @@ public class Poll_TblJDBCTemplate  {
       List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper(conn));
       return poll_tbl;
 }
-   
+   public List<Poll_Tbl> listActivityPolls(String ts, int [] following) {
+        System.out.println("in Poll_tblJDBCTemplate >listPolls()");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        System.out.println("Todays date="+dateFormat.format(date)+" ts="+ts);
+        String SQL;
+        System.out.println("arr2"+Arrays.toString(following));
+        String fp = Arrays.toString(following);
+        fp=fp.replace("[","");
+        fp=fp.replace("]","");
+        System.out.println("neha sharma ..."+fp);
+        List <Poll_Tbl> poll_tbl;
+        if(ts.equals(""))
+        {System.out.println("in listPolls() if");
+            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<=? and end_ts>=? and uid in ("+fp+") Order by start_ts desc"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{date,date}, new Poll_Tbl_Mapper(conn));
+        }
+        else
+        { System.out.println("in listPolls() else");
+            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<? and end_ts>=? and uid in ("+fp+") Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,date}, new Poll_Tbl_Mapper(conn));
+        }
+      
+      return poll_tbl;
+   }
    
 }
