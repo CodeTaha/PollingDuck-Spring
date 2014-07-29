@@ -68,6 +68,7 @@ Gson gson=new Gson();
                 var solvable=${solvable};
                 var anonymous=0;
                 var fish=pollJSON['reward'];
+                var k1=0,k2=0;
                 var uid=<%= uid %>;
                 function set_metadata(title,description,catl,author)
                 {
@@ -116,6 +117,7 @@ Gson gson=new Gson();
                   for(var i=0; i<qtnJSON.length; i++)
                   {
                       $("#pollArea").append("<p>Qtn "+qtnJSON[i]['qtn_id']+":"+qtnJSON[i]['qtn']+"</p>");
+                     
                       switch(qtnJSON[i]['qtn_type'])
                       {
                           case "mcss":{
@@ -144,14 +146,17 @@ Gson gson=new Gson();
                                        $("#pollArea").append('Enter your answer here. If you have multiple answers then separate them with enter<br/><textarea id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></textarea>');
                                       }break;
                             case "moc":{
-                                           
+                                          
                                            var rows=qtnJSON[i]['rows'];
                                            var columns=qtnJSON[i]['columns'];
                                            
                                            var tableid="moc"+(i+1);
+                                         
                                            $("#pollArea").append('<table id="'+tableid+'"></table>');
                                            for(var k=0; k<=rows.length; k++)
-                                           {var row_id="moctr"+k;
+                                           {
+                                               var row_id="moctr"+k1;
+                                               k1++;
                                                $("#"+tableid).append('<tr id="'+row_id+'"></tr>');
                                                for(var l=0; l<=columns.length; l++)
                                                {
@@ -178,6 +183,7 @@ Gson gson=new Gson();
                                            }
                                            
                                           
+                                         
                                        
                                       }break;
                           
@@ -189,7 +195,9 @@ Gson gson=new Gson();
                                            var tableid="momc"+(i+1);
                                            $("#pollArea").append('<table id="'+tableid+'"></table>');
                                            for(var k=0; k<=rows.length; k++)
-                                           {var row_id="momctr"+k;
+                                           {
+                                               var row_id="momctr"+k2;
+                                               k2++;
                                                $("#"+tableid).append('<tr id="'+row_id+'"></tr>');
                                                for(var l=0; l<=columns.length; l++)
                                                {
