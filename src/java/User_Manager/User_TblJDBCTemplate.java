@@ -50,7 +50,7 @@ public class User_TblJDBCTemplate {
         switch(loginType)
         {
             case 1: {
-                        SQL =   "select A.uid,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
+                        SQL =   "select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
                             "OR \n" +
                             "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
                     }break;
