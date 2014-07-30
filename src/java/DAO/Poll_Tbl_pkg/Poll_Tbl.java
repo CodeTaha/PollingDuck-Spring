@@ -69,22 +69,22 @@ public class Poll_Tbl {
     public void setCid_json(String cid_json1, connectivity conn) throws SQLException {
 //        
         //List<Category> cat_list1=new ArrayList();
-        //System.out.println("setCid_json="+cid_json1);
+        
         this.cid_json = cid_json1;
         String cat_arr[]=cid_json.split(",");
-        //System.out.println("cat_arr="+Arrays.toString(cat_arr));
+        
         Category category;
         for(int i=0; i<cat_arr.length; i++)
         {category = new Category();
         String rslt[]=conn.getCategoryName(Integer.parseInt(cat_arr[i]));
-        //System.out.println("getCategoryName="+Arrays.toString(rslt));
+        
         category.setCid(Integer.parseInt(cat_arr[i]));
         category.setCategory_name(rslt[0]);
         category.setGroup(rslt[1]);
             cat_list.add(category);
         }
         String cat_list1=gson.toJson(cat_list);
-        //System.out.println("catlist="+cat_list1);
+       
         
     }
 

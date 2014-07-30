@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
@@ -29,7 +31,7 @@ public class Parent_Controller {
     protected String handle="";
     protected int cat_list[];
     
-    public boolean checklogin(HttpServletRequest request) throws IOException, SQLException
+    public boolean checklogin(HttpServletRequest request)
    {
        try{System.out.println("In checklogin()");
        
@@ -71,11 +73,11 @@ public class Parent_Controller {
                
        return loggedin;
        }
-       catch(NumberFormatException e)
+       catch(Exception e)
        {
            System.out.println("In checklogin() error occured is "+e);
            return false;
-       }
+       } 
     }
     
     public Cookie set_Cookie(String name, String value, int ttl)

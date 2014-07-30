@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,8 +73,15 @@ public class UrlController extends Parent_Controller{
     
    
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-   public String dashboard() {
-	   return "dashboard";
+   public String dashboard(HttpServletRequest request) throws IOException, SQLException {
+       if(checklogin(request))
+       {
+           return "dashboard";
+       }
+       else
+       {
+           return "redirect:index";
+       }
    }
     @RequestMapping(value = "/createPoll", method = RequestMethod.GET)
    public String createPoll(ModelMap model, HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
@@ -102,8 +110,16 @@ public class UrlController extends Parent_Controller{
            }
    }
    @RequestMapping(value = "/viewPolls", method = RequestMethod.GET)
-   public String viewPolls() {
-	   return "viewPolls";
+   public String viewPolls(HttpServletRequest request){
+       if(checklogin(request))
+       {
+           return "viewPolls";
+       }
+       else
+       {
+           return "redirect:index";
+       }
+	  
    }
    
    
@@ -201,9 +217,45 @@ public class UrlController extends Parent_Controller{
    }
    
   @RequestMapping(value = "/activity", method = RequestMethod.GET)
-   public String activity() {
-	   return "activity";
+   public String activity(HttpServletRequest request) throws IOException, SQLException {
+        if(checklogin(request))
+       {
+           return "activity";
+       }
+       else
+       {
+           return "redirect:index";
+       }
+	
+   }
+   
+   @RequestMapping(value = "/logout", method = RequestMethod.GET)
+   public String logout(HttpServletRequest request,HttpServletResponse response) {
+           Cookie[] cookies = request.getCookies();
+           user_detail=null;
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            
+                cookie.setValue(null);
+                cookie.setMaxAge(-1);
+                
+                response.addCookie(cookie);
+            
+        }
+    }
+	   return "index";
    }
   
-   
+   @RequestMapping(value = {"/*","/*/*","/*/*/*"})
+   public void AnyURL( ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
+            String url1=request.getRequestURI();
+            String url2=request.getScheme() + "://" +   // "http" + "://
+             request.getServerName() +       // "myhost"
+             ":" + request.getServerPort() + // ":" + "8080"
+             request.getRequestURI() +       // "/people"
+            (request.getQueryString() != null ? "?" +
+             request.getQueryString() : ""); 
+            request.getRequestDispatcher("").forward(request, response);
+	  // response.sendRedirect("");
+   }
 }

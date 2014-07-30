@@ -47,7 +47,7 @@ Gson gson=new Gson();
         </script>
     </head>
     <body>
-        
+        <div style="float: right"><a href="logout">Logout</a></div>
         <ul>
             <li>
                 <a href="createPoll">Create</a>

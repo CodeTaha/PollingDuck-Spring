@@ -28,13 +28,13 @@ public class Poll_TblJDBCTemplate  {
    Gson gson=new Gson();
    connectivity conn;
     public Poll_TblJDBCTemplate() throws SQLException
-    {System.out.println("in poll_tbl Taha");
+    {
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
     conn=(connectivity)context.getBean("connectivity");
-      System.out.println("in poll_tbl Taha got beaan properly");
+     
       this.dataSource=conn.getDataSource();
       this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-      System.out.println("in poll_tbl Taha got data properly");
+      
     }
    /*@Override
    public void setDataSource(DataSource dataSource) {
@@ -53,10 +53,10 @@ public class Poll_TblJDBCTemplate  {
    }
    
    public List<Poll_Tbl> listPolls(String ts, int uid, int[] user_cat_list) {
-       System.out.println("in Poll_tblJDBCTemplate >listPolls()");
+       
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
-        System.out.println("Todays date="+dateFormat.format(date)+" ts="+ts);
+        
         String SQL;
         List <Poll_Tbl> poll_tbl;//",2,|,9,|,10,"
         String likeClause=","+user_cat_list[0]+",";
