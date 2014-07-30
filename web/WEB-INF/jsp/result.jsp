@@ -19,7 +19,10 @@
 <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/TableTools.js"></script>
 
  <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/ZeroClipboard.js"></script>
-       
+ <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script> 
+ <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
+<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
+
         
               <title>JSP Page</title>
         <style>
@@ -831,16 +834,32 @@ svg.selectAll("bar")
 
 .transition().delay(function (d,i){ return i * 300;})
  .duration(3000)
- .attr("height", function(d) {  return +animheight-y(d.n) - .1; })
+ .attr("height", function(d) {  return +animheight-y(d.n) + .1; })
  .attr("y", function(d) { return +y(d.n) - .1; })
 
  ;
 //});
 //console.log("colmax"+colmax);
 //console.log("out");
+var canvasvar="canvas_"+p;
+console.log(canvasvar);
+var mylink="myALink_"+p;
+var imgname="qtn"+p+".png";
+ $("#qtn_div_"+p).append('<br> <a id="myALink_'+p+'">Download as image</a> ');
+ $("#qtn_div_"+p).append('<div hidden id="can"> <canvas id="canvas_'+p+'" width="1000px" height="600px"></canvas> </div>');
+ 
+        document.getElementById(mylink).addEventListener('click', function() {
+    downloadCanvas(this, canvasvar, imgname); // <- this can be a dynamic name
+}, false);
 return (0);
  }
  
+ function downloadCanvas(link, canvasId, filename) {
+   for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
+    canvg('canvas_'+lkj, $("#qtn_div_"+lkj).html());
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+}
  
  function plotpie()
  {
@@ -1416,7 +1435,7 @@ var relist=new Array();
 
         
         </script>
-        
+       
         <div id="mytable2"></div>
 
     </body>
