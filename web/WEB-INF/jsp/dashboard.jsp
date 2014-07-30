@@ -58,6 +58,9 @@ Gson gson=new Gson();
              <li>
                 <a href="profile/<%=handle%>">Profiles</a>
             </li>
+              <li>
+                <a href="activity">Activity</a>
+            </li>
         </ul>
         <p><%= handle %>! Your uid is <%= uid%> This is the default welcome page for a PollingDuck project.</p>
         <p><i>To display a different welcome page for this project, modify</i>
