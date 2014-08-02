@@ -19,10 +19,9 @@
 <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/TableTools.js"></script>
 
  <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/ZeroClipboard.js"></script>
- <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script> 
- <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
-<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
+ <script type="text/javascript" charset="utf8" src="../../pages/resources/js/canvg.js"></script>
 
+ 
         
               <title>JSP Page</title>
         <style>
@@ -43,14 +42,7 @@
             console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
             console.log(result);// use result which is the compilation of all the answers users have submitted
             
-            // using the above parameteres
-            
-         //   console.log("Displays title of poll");
-       
-          //  console.log("Displays qtn 1 and qtn type of poll");
-          //  console.log(poll['qtn_json'][0]['qtn']);
-          //  console.log(poll['qtn_json'][0]['qtn_type']);
-           // console.log("mere upar mcss hai ?");
+          
            
    // console.log("mere niche no of options hai un questions k jinka type mcss hai. ");
     var noOfques = poll['qtn_json'].length;        
@@ -68,22 +60,7 @@
     //c is the no. of ques jinka type mcss hai
     //now finding no. of options in each. array of length c
     var noOfoptnEachmcss = new Array(noOfmcss);
-    //console.log(noOfoptnEachmcss.length);
-    
-   // console.log(poll['qtn_json'][0]['rows'].length);   //no of options
-     //       console.log("Displays options 1 and 4 of qtn 1 from poll");
-       //     console.log(poll['qtn_json'][0]['rows'][0]);
-         // +  console.log(poll['qtn_json'][0]['rows'][3]);
-            
-           // console.log("Displays all parameteres a user has entered from result");
-            //console.log(result[0]);
-            //console.log("whats this?: this is answer given by first solver to the first question");
-            //console.log(result[0]['qtn'][0]['ans']);
-            //console.log("no. of questions ");
-            //console.log(result[0]['qtn'].length);
-            //console.log("no. of options in qtype=mcss ");
-            //console.log(result[0]['ans'].length);
-            //console.log("the main logic begins");
+  
           
                
                  for(var io=0;io < noOfques ;io++)
@@ -315,11 +292,6 @@
                     }
                         
                    
-                    //var ret=pieOptions.indexOf(ans[0].valueOf());
-                  //  console.log("ret"+ret);
-                  ////  console.log("original"+ans[0].valueOf());
-                  //  console.log(ans[0].valueOf());
-                    
                     if(ret===-1)
                         {
                   //          console.log("in if -1"+ans[0]);
@@ -409,33 +381,6 @@
                     
                   //  console.log(jsonArr.slice(0));
                     k++;
-                  //  console.log("call");
-                 //   //console.log(jsonArr);
-                    
-                    //logic of pie label
-                   /* 
-                    
-                    var pieOptions=new Array();
-                    var pieCount=new Array();
-                    var ret;
-                    for(var ii=0;ii<ans[0].length;ii++)
-                    {
-                        //console.log(ans[0]);
-                        
-                                        
-                        ret=pieOptions.indexOf(ans[0].[ii]);
-                        if(ret===-1)
-                        {
-                            
-                            pieOptions.push(ans[0][ii]);
-                            pieCount[indexOf[ans[0][ii]]]=1;
-                        }
-                        else
-                            pieCount[ret]++;
-                    }
-                    //console.log("piearr"+piearr);
-                                        
-                     */                   
                                         
                     var first=[];
                     var second=[];
@@ -447,44 +392,12 @@
                     first=arrayOptions;
                     
                     second=arrayOptions;
-                    /*for(var u=0;u<noOfOptions;u++)
-                    {
-                        var te=0;
-                        
-                        third=third.concat(first);
-                        temp=[];
-                        for(var ii=0;ii<first.length;ii++)
-                        {
-                            for(jj=ii+cc+1;jj<second.length;jj++)
-                        {
-                            var tit=jj;
-                           // //console.log(temp);
-                            
-                           // //console.log("empty"+temp);
-                            temp[te]=first[ii]+second[jj];
-                            //console.log("first"+first[ii]+"second"+second[jj]);
-                            kk++;
-                            te++;
-                            if(jj===second.length-1 && ii!==first.length-1 )
-                            {
-                                jj=tit+1;
-                                //console.log("inside if");
-                            }
-                            
-                        }
-                        
-                        }
-                        ////console.log(temp);
-                        first=[];
-                        first=temp;
-                        cc++;
-                    }
-                    //console.log("third"+third);*/
-                      var qtn_div="qtn_div_"+j;
+                     var qtn_div="qtn_div_"+j;
                       $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
                     $("body").append("<div id='"+qtn_div+"'></div>");
                       var ret=plotBar(qtn_div,j);
-                      plotpie();
+                      if(ret===0)
+                      plotpie(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
                 }
@@ -759,14 +672,14 @@
         }//forloop
     //});
     
- function plotBar(qtn_div,p)
+ function plotBar(qtn_div_pie,p)
  {
-     qtn_div="#"+qtn_div;
+     qtn_div_pie="#"+qtn_div_pie;
      var svg_id="svg_"+p;
      //console.log("in");
 var margin = {top: 20, right: 20, bottom: 15+bot*7, left: 40},
-width = 350 - margin.left - margin.right,
-height = 300 - margin.top - margin.bottom;
+width = document.body.offsetWidth*0.29- margin.left - margin.right,
+height = document.body.offsetWidth*0.24 - margin.top - margin.bottom;
 // Parse the label / time
 //var parseDate = d3.time.format("%Y-%m").parse;
 var animheight=height;
@@ -786,7 +699,7 @@ var yAxis = d3.svg.axis()
 .orient("left")
 .ticks(maxticks);
 
-var svg = d3.select(qtn_div).append("svg")
+var svg = d3.select(qtn_div_pie).append("svg")
 .attr("id", "svg_"+p)
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
@@ -845,27 +758,36 @@ var canvasvar="canvas_"+p;
 console.log(canvasvar);
 var mylink="myALink_"+p;
 var imgname="qtn"+p+".png";
- $("#qtn_div_"+p).append('<br> <a id="myALink_'+p+'">Download as image</a> ');
+ $("#qtn_div_"+p).append('<br> <a id="myALink_'+p+'">Download as image</a><br> ');
  $("#qtn_div_"+p).append('<div hidden id="can"> <canvas id="canvas_'+p+'" width="1000px" height="600px"></canvas> </div>');
  
         document.getElementById(mylink).addEventListener('click', function() {
     downloadCanvas(this, canvasvar, imgname); // <- this can be a dynamic name
 }, false);
-return (0);
+return 0;
  }
  
  function downloadCanvas(link, canvasId, filename) {
    for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
+   {
     canvg('canvas_'+lkj, $("#qtn_div_"+lkj).html());
+    
+   }
     link.href = document.getElementById(canvasId).toDataURL();
     link.download = filename;
 }
- 
- function plotpie()
+ function downloadCanvasPie(link, canvasId, filename) {
+   
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+}
+ function plotpie(qtn_div,p)
  {
+     qtn_div="#"+qtn_div;
+     var svg_id="svg_pie_"+p;
  
-var width = 350,
-    height = 350,
+var width = document.body.offsetWidth*0.29,
+    height = width,
     radius = Math.min(width, height) / 2;
 
 var color = d3.scale.ordinal()
@@ -880,7 +802,8 @@ var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.n; });
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select(qtn_div).append("svg")
+.attr("id", "svg_pie_"+p)
     .attr("width", width)
     .attr("height", height)
   .append("g")
@@ -908,7 +831,17 @@ var svg = d3.select("body").append("svg")
       .text(function(d) { return (d.data.label+'('+d.data.n+')'); });
 
 //});
-
+var canvasvar="canvas_pie_"+p;
+console.log(canvasvar);
+var mylink="myALink_pie_"+p;
+var imgname="qtn"+p+".png";
+ $("#qtn_div_"+p).append('<br> <a id="myALink_pie_'+p+'">Download as image</a> ');
+ $("#qtn_div_"+p).append('<div hidden id="can"> <canvas id="canvas_pie_'+p+'" width="1000px" height="600px"></canvas> </div>');
+ canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());
+ 
+        document.getElementById(mylink).addEventListener('click', function() {
+    downloadCanvasPie(this, canvasvar, imgname); // <- this can be a dynamic name
+}, false);
  }
  
     function tablegen(qtn_div, p)
