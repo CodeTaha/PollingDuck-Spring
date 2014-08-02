@@ -30,46 +30,43 @@ public class Parent_Controller {
     protected int uid=0;
     protected String handle="";
     protected int cat_list[];
+    Cookie[] cookies;
+    boolean cookiesSet=false;
     
     public boolean checklogin(HttpServletRequest request)
    {
-       try{System.out.println("In checklogin()");
+       try{
+       checkSetCookie(request);
        
-       Cookie[] cookies = request.getCookies();
    
-       if(user_detail==null)
+       if(user_detail!=null && cookiesSet)
        {
-           System.out.println("In checklogin() if");
-           for (Cookie cookie1 : cookies) 
-           {
-            switch (cookie1.getName()) 
-            {
-               case "handle":
-                    System.out.println("Got Handle cookie");
-                   handle=cookie1.getValue();
-                   loggedin = true;
-                   break;
-               case "uid":
-                   System.out.println("Got uid cookie");
-                   uid=Integer.parseInt(cookie1.getValue());
-                   loggedin = true;
-                   break;
-            }
-           }
-           User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
-           cat_list=user.get_category_list_json(uid);
-           user_detail=user.get_profile(handle);
-        }
-       else
-       {System.out.println("In checklogin() else");
-           handle=user_detail.getHandle();
-           uid=user_detail.getUid();
-           cat_list=user_detail.getCategory_list_json();
-           loggedin=true;
+               if(uid==user_detail.getUid() && handle.equals(user_detail.getHandle()))
+               {
+                  loggedin=true;
+                  cat_list=user_detail.getCategory_list_json();
+               }
+               else
+               {
+                   user_detail=null;
+               }
+           
        }
-       System.out.println("handle="+handle);
-       System.out.println("uid="+uid);
-       System.out.println("cat_list="+Arrays.toString(cat_list));
+       
+       else if(user_detail==null && cookiesSet)
+       {
+               User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+               cat_list=user.get_category_list_json(uid);
+               user_detail=user.get_profile(handle);
+               loggedin=true;
+           
+       }
+       
+       else if(user_detail==null && !cookiesSet)
+       {
+         loggedin=false;
+       }
+       
                
        return loggedin;
        }
@@ -86,6 +83,48 @@ public class Parent_Controller {
             cookie.setMaxAge(ttl*60*60);
             return cookie;
             //response.addCookie(cookie); 
+    }
+
+    public User_Detail getUser_detail() {
+        return user_detail;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public String getHandle() {
+        return handle;
+    }
+
+    public int[] getCat_list() {
+        return cat_list;
+    }
+    
+    void checkSetCookie(HttpServletRequest request)
+    {
+        cookies= request.getCookies();
+        int countcookies=0;
+        for (Cookie cookie1 : cookies) 
+           {
+            switch (cookie1.getName()) 
+            {
+               case "handle":
+                    System.out.println("Got Handle cookie");
+                   handle=cookie1.getValue();
+                   countcookies++;
+                   break;
+               case "uid":
+                   System.out.println("Got uid cookie");
+                   uid=Integer.parseInt(cookie1.getValue());
+                   countcookies++;
+                   break;
+            }
+           }
+        if(countcookies==2)
+        {
+            cookiesSet=true;
+        }
     }
     
 }

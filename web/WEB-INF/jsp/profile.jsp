@@ -61,15 +61,13 @@ int uid=0;
         following=${following};           
         $(document).ready(function(){
                 if(loggedin)
-                {console.log("foundcookie1");
+                {console.log("user is logged in");
                    
-                   console.log(followers);
-                   console.log(following);
+                  
                 }
         // handle of user
-            console.log("profile");
-            console.log(profile);
-        //   console.log(profile[]);
+            
+      
          var name=profile['name'];
         var fbid=profile['fb'];
         var city=profile['city'];
@@ -92,7 +90,7 @@ $("#dp").append("<b> Profile Picture</b> <img width='50' height='50' src="+profi
 if(profile['uid']==uid)
 {
     $("#dp").append('<br/><button onclick=editProfile();>Edit Profile</button>');
-    console.log(handle);
+    
 }
 else
 {
@@ -100,31 +98,28 @@ else
     {
         if(profile['follow']['followers'].indexOf(uid)!==-1)
         {
-            $("#dp").append('<br/><button id="followUnfollow" onclick="follow(0);">Following</button>');
+            $("#follUnfoll").append('<button id="followUnfollow" onclick="follow(0);">Following</button>');
         }
         else
         {
-            $("#dp").append('<br/><button id="followUnfollow" onclick="follow(1);">Follow</button>');
+            $("#follUnfoll").append('<button id="followUnfollow" onclick="follow(1);">Follow</button>');
         }
         if(profile['follow']['following'].indexOf(uid)!==-1)
         {
-            $("#dp").append('<b>Follows you<b>');
+            $("#dp").append('<br/> <b>Follows you<b>');
         }
         
     }
 }
-console.log("cat");
-console.log(categs);
-console.log("dog");
+
    $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewUsersCategData",
            data:   {   },
            success: function(data){
-             //  console.log(data);
+            
                userCategJSON=JSON.parse(data);
-               console.log("userCategJSON");
-             //  console.log(userCategJSON);
+             
                 for(var i=0;i<userCategJSON.length;i++)
                 {   for (var j=0; j < categs.length ; j++)
                     { if(userCategJSON[i]['cid']===categs[j])
@@ -141,16 +136,15 @@ console.log("dog");
 //timeline
 
 $("#createdPolls").append('<h3>Polls Created </h3><br/>');
-console.log("requesting viewMyPollsData");      
+      
                 $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewMyPollsData",
            data: { uidp:profile['uid'] },
            success: function(data){
-               console.log(data);
+              
                mypollJSON=JSON.parse(data);
-               console.log("mypollJSON");
-               console.log(mypollJSON);
+               
                  for(var i=0; i<mypollJSON.length;i++)
                  {  $("#createdPolls").append("<p><b>Title </b>"+mypollJSON[i]['title']+"</p>");
                  $("#createdPolls").append("<p><b>Description </b>"+mypollJSON[i]['description']+"</p>");
@@ -162,16 +156,15 @@ console.log("requesting viewMyPollsData");
        
                    
 $("#solvedPolls").append('<h3>Polls Solved </h3></br/>');
-       console.log("requesting viewMySolvedPollsData");      
+            
                 $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewMySolvedPollsData",
            data: { uidp : profile['uid'] },
            success: function(data){
-               console.log(data);
+               
                mysolvedpollJSON=JSON.parse(data);
-               console.log("mysolvedpollJSON");
-               console.log(mysolvedpollJSON);
+              
                 for(var i=0; i<mysolvedpollJSON.length;i++)
                  {  $("#solvedPolls").append("<p><b>Poll ID : </b>"+mysolvedpollJSON[i]['pid']+"</p>");
                  $("#solvedPolls").append("<p><b>Poll Ans Key: </b>"+mysolvedpollJSON[i]['poll_ans_key']+"</p>");
@@ -203,14 +196,15 @@ function follow(cmd)
                if(data)
                {//id="followUnfollow" <button id="followUnfollow" onclick="follow(0);">Following</button>
                    //$("#followUnfollow").remove();
-                   if(cmd==1)
-                    {
-                        $("#followUnfollow").empty().append("Following").removeAttr("onclick").attr("onclick='follow(0);'");
-                        //$("#dp").append('<button id="followUnfollow" onclick="follow(0);">Following</button>');
+                   if(cmd===1)
+                    {//alert(11);
+                        //$("#followUnfollow").empty().append("Following").prop("onclick","follow(0);");
+                        $("#follUnfoll").empty().append('<button id="followUnfollow" onclick="follow(0);">Following</button>');
                     }
                     else
-                    {$("#followUnfollow").empty().append("Follow").removeAttr("onclick").attr("onclick='follow(1);'");
-                        //$("#dp").append('<button id="followUnfollow" onclick="follow(1);">Follow</button>');
+                    {//alert(22);
+                        //$("#followUnfollow").empty().append("Follow").prop("onclick","follow(1);");//.attr("onclick='follow(1);'");
+                        $("#follUnfoll").empty().append('<button id="followUnfollow" onclick="follow(1);">Follow</button>');
                     }
                    
                }
@@ -223,6 +217,7 @@ function follow(cmd)
         
         <div id="user_everything"></div> 
         <div id="dp"></div>
+        <div id="follUnfoll"></div>
         <div id="usercateg">
             <h2>User Experiences</h2><br/>
         </div> 

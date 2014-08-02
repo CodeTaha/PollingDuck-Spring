@@ -4,6 +4,7 @@
     Author     : abc
 --%>
 
+<%@page import="controllers.Parent_Controller"%>
 <%@page import="org.springframework.context.support.ClassPathXmlApplicationContext"%>
 <%@page import="org.springframework.context.ApplicationContext"%>
 <%@page import="model.connectivity"%>
@@ -11,40 +12,25 @@
 <%@page import="com.google.gson.Gson"%>
 <%@page import="User_Manager.User_Detail"%>
 <% 
-Cookie[] cookies = request.getCookies();
-String handle="";
-int uid=0;
-//User_Detail user_detail;
-Gson gson=new Gson();
-        boolean foundCookie = false;
-
-        for(int i = 0; i < cookies.length; i++) { 
-            Cookie cookie1 = cookies[i];
-            if(cookie1.getName().equals("handle"))
-            {
-                handle=cookie1.getValue();
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("uid"))
-            {
-                uid=Integer.parseInt(cookie1.getValue());
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("User_Obj"))
-            {
-                System.out.println(cookie1.getValue());
-               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
-                foundCookie = true;
-            }
-        }  
-
-        if (!foundCookie) {
-            System.out.println("cookies not found 2");
-            response.sendRedirect("index");
-        }
-        
-        
-        
+   /*
+    Parent_Controller pc=new Parent_Controller();
+    boolean foundCookie = false;
+    foundCookie=pc.checklogin(request);
+    String handle="";
+    int uid=0;
+    String t;
+    if(foundCookie)
+    {
+        handle=pc.getHandle();
+        uid=pc.getUid();
+    }
+    else
+    {
+        Gson gson=new Gson();
+        String ref_url=request.getRequestURI();
+        response.sendRedirect("../../index?refurl="+ ref_url);
+    }
+   */     
 %>
 <!DOCTYPE html>
 <html>
@@ -64,12 +50,15 @@ Gson gson=new Gson();
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
-                var pollJSON=${obj};
+                
                 var solvable=${solvable};
                 var anonymous=0;
-                var fish=pollJSON['reward'];
+                var pollJSON;
+                var fish;
                 var k1=0,k2=0;
-                var uid=<%= uid %>;
+                var redirect=${redirect}
+                var uid=${uid};
+                
                 function set_metadata(title,description,catl,author)
                 {
                     var keywords="PollingDuck, Polls, Surveys";
@@ -97,9 +86,17 @@ Gson gson=new Gson();
                                 });
             $(document).ready(function(){
               
+                if(redirect)
+                 {
+                     
+                     window.location.assign("${delimiter}index?red_url=${red_url}");
+                     return;
+                 } 
+                pollJSON=${obj};
+                fish=pollJSON['reward'];
                 set_metadata(pollJSON['title'],pollJSON['description'],pollJSON['cat_list'],pollJSON['user']['name']);
                  
-                 
+                   
         
                 if(solvable===1)
                  {

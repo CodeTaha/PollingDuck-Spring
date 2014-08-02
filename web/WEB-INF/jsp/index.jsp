@@ -1,4 +1,16 @@
+<%@page import="controllers.Parent_Controller"%>
+<%@page import="com.google.gson.Gson"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    Parent_Controller pc=new Parent_Controller();
+    boolean foundCookie = false;
+    foundCookie=pc.checklogin(request);
+    if(foundCookie)
+    {
+        response.sendRedirect("dashboard");
+        //request.getRequestDispatcher("dashboard").forward(request, response);
+    }
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -22,8 +34,12 @@ var link;
 var birthdate;
 var profile_pic;
  var cat_json="";
+ var red_url=window.location.search.replace("?", "").toString();
  var cat_list=new Array();
     $(document).ready(function(){
+        
+        
+       
         $("#SignUp").hide();
         $("#dob").datepicker({
            //showSecond: true,
@@ -117,8 +133,7 @@ var profile_pic;
  //profile_pic=response.data.url;
  FB.api('/me/picture?type=normal', function(response) {
                   profile_pic=response.data.url;
-                  console.log('profile_pic');
-                  console.log(profile_pic);
+                  
                   document.getElementById("profile_pic").value=profile_pic;
                   $("#dp").append("<img src='"+profile_pic+"'/>")
     });
@@ -140,7 +155,18 @@ var profile_pic;
                                 success: function(data){//alert(data);
                                         if(data==1)
                                         {
-                                           window.location.assign("dashboard");
+                                            if(red_url!=="" && red_url.indexOf("red_url")!==-1)
+                                                {
+
+                                                    var tmp=red_url.split("=");
+                                                   window.location.assign(tmp[1]);
+                                                }
+                                            else
+                                                {
+                                                    window.location.assign("dashboard");
+                                                }
+                                           
+                                           
                                         }
                                         else
                                         {
@@ -206,10 +232,16 @@ var profile_pic;
                                 url: "SignUpReg",
                                 data: {handle:handle,name:name,email:email,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
                                 success: function(data){alert(data);
-                                        if(data)
-                                        {
-                                           
-                                        }
+                                       if(red_url!=="" && red_url.indexOf("red_url")!==-1)
+                                                {
+
+                                                    var tmp=red_url.split("=");
+                                                   window.location.assign(tmp[1]);
+                                                }
+                                            else
+                                                {
+                                                    window.location.assign("dashboard");
+                                                }
                                 }
                         });
   }

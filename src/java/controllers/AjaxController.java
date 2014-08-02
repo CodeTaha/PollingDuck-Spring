@@ -103,7 +103,7 @@ public class AjaxController extends Parent_Controller{
            response.sendRedirect("index");
        }
    }
-   @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
+   /*@RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
    public String solvePoll(ModelMap model, HttpServletRequest request) throws IOException, SQLException {
     
        int pid= Integer.parseInt(request.getParameter("pid"));
@@ -117,11 +117,25 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("delimiter", "");//used to load source files properly
 	   return "solvePoll";
   
-   }
+   }*/
    @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
-   public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+   public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, ServletException 
+   {
     
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+       if(!checklogin(request))
+       {
+        model.addAttribute("uid",0);
+        model.addAttribute("redirect",true);
+        model.addAttribute("red_url",request.getRequestURI());
+        model.addAttribute("pid", pid);
+        model.addAttribute("obj", "null");
+        model.addAttribute("solvable", false);
+        model.addAttribute("delimiter", "../../");
+	 
+       }
+       else
+       {    
         connectivity conn=(connectivity)context.getBean("connectivity");
         int cansolve=conn.solvable(pid,uid);
         Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
@@ -131,11 +145,15 @@ public class AjaxController extends Parent_Controller{
                 response.sendRedirect(poll_tbl.getPoll_link());
                return "error";
             }
+        model.addAttribute("uid",uid);
+        model.addAttribute("redirect",false);
         model.addAttribute("pid", pid);
         model.addAttribute("obj", gson.toJson(poll_tbl));
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "../../");
-	   return "solvePoll";
+	
+   }
+          return "solvePoll";
    }
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
