@@ -308,7 +308,7 @@
                   $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "${delimiter}submitPollAns",
-                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish},
+                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish, poll_uid:pollJSON["uid"], poll_title:pollJSON["title"]},
                                 success: function(data){alert(data);
                                         if(data)
                                         {

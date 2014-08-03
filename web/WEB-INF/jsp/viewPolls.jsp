@@ -13,8 +13,8 @@
         <link rel="stylesheet" href="pages/resources/css/jquery-ui.css">
         <link rel="stylesheet" href="pages/resources/css/jquery-ui.min.css">
         <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.css">
-  <script src="pages/resources/js/jquery.min.js"></script>
-  <script src="pages/resources/js/jquery-ui.js"></script>
+        <script src="pages/resources/js/jquery.min.js"></script>
+        <script src="pages/resources/js/jquery-ui.js"></script>
   
         <script>
     var pollJSONtemp;   

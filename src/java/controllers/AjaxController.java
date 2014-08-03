@@ -161,12 +161,17 @@ public class AjaxController extends Parent_Controller{
         String finalJSON=request.getParameter("finalJSON");
         int anonymous=Integer.parseInt(request.getParameter("anonymous"));
         int fish=Integer.parseInt(request.getParameter("fish"));
+        int poll_uid=Integer.parseInt(request.getParameter("poll_uid"));
+        String poll_title=request.getParameter("poll_title");
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
-        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous);
+        String notification= "Congratulations!! @"+ user_detail.getHandle() +" has solved your poll, "+poll_title+" and you earned "+(int)fish/2+" fish for that!!";
+        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_title,notification );
         if(anonymous==0)
         {
-        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);
+        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);// adding fish for solving poll and not anonymously
         }
+        
+        user_tblJDBCTemplate.addreducefishes(poll_uid,(int)fish/2,1);// adding fish to user who created the poll
 	response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();  
         out.println(rslt);

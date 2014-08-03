@@ -82,13 +82,17 @@ public class Poll_TblJDBCTemplate  {
       return poll_tbl;
    }
    
-   public boolean submitPoll(String finalJSON, int anonymous) throws SQLException
+   public boolean submitPoll(String finalJSON, int anonymous, int poll_uid, String poll_title, String notification) throws SQLException
     {System.out.println("in model_polls --> submitPoll()");
         String detail[]= gson.fromJson(finalJSON, String[].class);
         
    String SQL = "insert into poll_ans_tbl(pid,uid,ans_json,anonymous) values(?,?,?,?)";
+   String notify="insert into notifications(uid,notification,link) values(?,?,?)";
       try
-      {int rslt=jdbcTemplateObject.update( SQL, detail[0], detail[1],detail[2], anonymous);
+      {
+          int rslt=jdbcTemplateObject.update( SQL, detail[0], detail[1],detail[2], anonymous);
+          jdbcTemplateObject.update( notify, poll_uid,notification,"result/"+detail[0]+"/"+poll_title);
+          
       System.out.println("Poll ans submitted rslt="+rslt);
       }
       catch(DataAccessException e)
