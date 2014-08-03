@@ -26,8 +26,8 @@ public class Notification_Mapper implements RowMapper<Notification>{
       notification.setUid(rs.getInt("uid"));
       notification.setLink(rs.getString("link"));
       notification.setNotification(rs.getString("notification"));
-      
-      
+      notification.setTs(rs.getString("ts"));
+      notification.setChecked(rs.getShort("checked"));
       return notification;
    }
 }

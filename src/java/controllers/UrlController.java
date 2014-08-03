@@ -71,6 +71,35 @@ public class UrlController extends Parent_Controller{
 	   response.sendRedirect("index");
    }
     
+   @RequestMapping(value = "/logout", method = RequestMethod.GET)
+   public String logout(HttpServletRequest request,HttpServletResponse response) {
+           Cookie[] cookies2 = request.getCookies();
+           user_detail=null;
+    if (cookies2 != null) {
+        for (Cookie cookie : cookies2) {
+            
+                cookie.setValue(null);
+                cookie.setMaxAge(-1);
+                
+                response.addCookie(cookie);
+            
+        }
+    }
+	   return "index";
+   }
+  
+   @RequestMapping(value = {"/*","/*/*","/*/*/*"})
+   public void AnyURL( ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
+            String url1=request.getRequestURI();
+            String url2=request.getScheme() + "://" +   // "http" + "://
+             request.getServerName() +       // "myhost"
+             ":" + request.getServerPort() + // ":" + "8080"
+             request.getRequestURI() +       // "/people"
+            (request.getQueryString() != null ? "?" +
+             request.getQueryString() : ""); 
+            request.getRequestDispatcher("").forward(request, response);
+	  // response.sendRedirect("");
+   }
    
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
    public String dashboard(HttpServletRequest request) throws IOException, SQLException {
@@ -103,7 +132,7 @@ public class UrlController extends Parent_Controller{
                 return "index";
             }
            }
-           catch(Exception e)
+           catch(IOException | SQLException e)
            {
                System.out.println("Exception occured @ UrlController>createPoll is "+e);
            return "index";
@@ -229,33 +258,18 @@ public class UrlController extends Parent_Controller{
 	
    }
    
-   @RequestMapping(value = "/logout", method = RequestMethod.GET)
-   public String logout(HttpServletRequest request,HttpServletResponse response) {
-           Cookie[] cookies = request.getCookies();
-           user_detail=null;
-    if (cookies != null) {
-        for (Cookie cookie : cookies) {
-            
-                cookie.setValue(null);
-                cookie.setMaxAge(-1);
-                
-                response.addCookie(cookie);
-            
-        }
-    }
-	   return "index";
+   @RequestMapping(value = "/notification", method = RequestMethod.GET)
+   public String notication(HttpServletRequest request) throws IOException, SQLException {
+        if(checklogin(request))
+       {
+           return "notification";
+       }
+       else
+       {
+           return "redirect:index";
+       }
+	
    }
-  
-   @RequestMapping(value = {"/*","/*/*","/*/*/*"})
-   public void AnyURL( ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
-            String url1=request.getRequestURI();
-            String url2=request.getScheme() + "://" +   // "http" + "://
-             request.getServerName() +       // "myhost"
-             ":" + request.getServerPort() + // ":" + "8080"
-             request.getRequestURI() +       // "/people"
-            (request.getQueryString() != null ? "?" +
-             request.getQueryString() : ""); 
-            request.getRequestDispatcher("").forward(request, response);
-	  // response.sendRedirect("");
-   }
+   
+   
 }

@@ -12,8 +12,25 @@ package Notification_Manager;
  */
 public class Notification {
      long nid,uid;
-     String notification,link;
+     String notification,link,ts;
+     short checked;
 
+    public String getTs() {
+        return ts;
+    }
+
+    public void setTs(String ts) {
+        this.ts = ts;
+    }
+
+    public short getChecked() {
+        return checked;
+    }
+
+    public void setChecked(short checked) {
+        this.checked = checked;
+    }
+     
      
     public long getNid() {
         return nid;

@@ -12,6 +12,8 @@ import DAO.Poll_Tbl_pkg.Poll_Tbl;
 import DAO.Poll_Tbl_pkg.Poll_TblJDBCTemplate;
 import DAO.Poll_Tbl_pkg.Qtn;
 import DAO.Poll_Tbl_pkg.Qtn_Mapper;
+import Notification_Manager.Notification;
+import Notification_Manager.Notification_TblJDBCTemplate;
 import Poll_Ans_Tbl.Poll_Ans_Tbl;
 import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
 import User_Manager.Follow;
@@ -103,7 +105,7 @@ public class AjaxController extends Parent_Controller{
            response.sendRedirect("index");
        }
    }
-   /*@RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
+   @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
    public String solvePoll(ModelMap model, HttpServletRequest request) throws IOException, SQLException {
     
        int pid= Integer.parseInt(request.getParameter("pid"));
@@ -115,9 +117,13 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("obj", poll_tbl);
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "");//used to load source files properly
+        
+         model.addAttribute("uid",uid);
+        model.addAttribute("redirect",false);
+        
 	   return "solvePoll";
   
-   }*/
+   }
    @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
    public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, ServletException 
    {
@@ -163,9 +169,10 @@ public class AjaxController extends Parent_Controller{
         int fish=Integer.parseInt(request.getParameter("fish"));
         int poll_uid=Integer.parseInt(request.getParameter("poll_uid"));
         String poll_title=request.getParameter("poll_title");
+        String poll_link=request.getParameter("poll_link");
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
         String notification= "Congratulations!! @"+ user_detail.getHandle() +" has solved your poll, "+poll_title+" and you earned "+(int)fish/2+" fish for that!!";
-        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_title,notification );
+        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_link,notification );
         if(anonymous==0)
         {
         boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);// adding fish for solving poll and not anonymously
@@ -350,5 +357,42 @@ public class AjaxController extends Parent_Controller{
            response.sendRedirect("index");
        }
    }
+   
+   @RequestMapping(value = "/getNotifications", method = RequestMethod.POST)
+   public void getNotifications(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       if(checklogin(request))
+       {
+           String ts=request.getParameter("ts");
+       Notification_TblJDBCTemplate notification_TblJDBCTemplate=new Notification_TblJDBCTemplate(); 
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        List<Notification> notifications=notification_TblJDBCTemplate.listNotifications(ts,user_detail.getUid());
+ 
+         String pollJSON=gson.toJson(notifications);
+         
+         out.println(pollJSON);
+        }
+       else
+       {
+           response.sendRedirect("index");
+       }
    }
+   
+   @RequestMapping(value = "/clearNotificationChecked", method = RequestMethod.POST)
+   public void clearNotificationChecked(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       
+        String nid=request.getParameter("nid");
+        Notification_TblJDBCTemplate notification_TblJDBCTemplate=new Notification_TblJDBCTemplate(); 
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        notification_TblJDBCTemplate.clearNotificationChecked(nid);
+ 
+         
+        out.println(true);
+        
+       
+   }
+}
 

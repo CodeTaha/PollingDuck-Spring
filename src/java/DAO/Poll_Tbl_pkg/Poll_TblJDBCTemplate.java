@@ -82,7 +82,7 @@ public class Poll_TblJDBCTemplate  {
       return poll_tbl;
    }
    
-   public boolean submitPoll(String finalJSON, int anonymous, int poll_uid, String poll_title, String notification) throws SQLException
+   public boolean submitPoll(String finalJSON, int anonymous, int poll_uid, String poll_link, String notification) throws SQLException
     {System.out.println("in model_polls --> submitPoll()");
         String detail[]= gson.fromJson(finalJSON, String[].class);
         
@@ -91,7 +91,7 @@ public class Poll_TblJDBCTemplate  {
       try
       {
           int rslt=jdbcTemplateObject.update( SQL, detail[0], detail[1],detail[2], anonymous);
-          jdbcTemplateObject.update( notify, poll_uid,notification,"result/"+detail[0]+"/"+poll_title);
+          jdbcTemplateObject.update( notify, poll_uid,notification,"result/"+detail[0]+"/"+poll_link);
           
       System.out.println("Poll ans submitted rslt="+rslt);
       }
