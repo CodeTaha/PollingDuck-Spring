@@ -72,7 +72,9 @@ public class User_Detail_Mapper implements RowMapper<User_Detail>
                     user.setHandle(rs.getString("handle"));
                     user.setName(rs.getString("name"));
                     user.setProfile_pic(rs.getString("profile_pic"));
-                    
+                    String followers=rs.getString("followers");
+                    String following=rs.getString("following");
+                    user.setFollow(rs.getInt("uid"),followers,following);
                     }break;     
                  
          }
