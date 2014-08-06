@@ -16,7 +16,6 @@ import Notification_Manager.Notification;
 import Notification_Manager.Notification_TblJDBCTemplate;
 import Poll_Ans_Tbl.Poll_Ans_Tbl;
 import Poll_Ans_Tbl.Poll_Ans_TblJDBCTemplate;
-import User_Manager.Exp_Json;
 import User_Manager.Follow;
 import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
@@ -171,10 +170,6 @@ public class AjaxController extends Parent_Controller{
         int poll_uid=Integer.parseInt(request.getParameter("poll_uid"));
         String poll_title=request.getParameter("poll_title");
         String poll_link=request.getParameter("poll_link");
-        String cid_JSON = request.getParameter("poll_cat");
-       // String exp = request.getParameter("exp");
-        System.out.print("ALIA BHAT cid JSON   "+cid_JSON);
-       // System.out.print("ALIA BHAT exp   "+exp);
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
         String notification= "Congratulations!! @"+ user_detail.getHandle() +" has solved your poll, "+poll_title+" and you earned "+(int)fish/2+" fish for that!!";
         boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_link,notification );
@@ -182,12 +177,9 @@ public class AjaxController extends Parent_Controller{
         {
         boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);// adding fish for solving poll and not anonymously
         }
-       List<Exp_Json> expjsonlist =user_detail.getExp_json();
-       String exp = expjsonlist.toString();
-       System.out.print("Exp json  "+exp);
+        
         user_tblJDBCTemplate.addreducefishes(poll_uid,(int)fish/2,1);// adding fish to user who created the poll
-	user_tblJDBCTemplate.updateExp(uid,cid_JSON,exp);
-        response.setContentType("text/html;charset=UTF-8");
+	response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();  
         out.println(rslt);
    }
@@ -402,7 +394,5 @@ public class AjaxController extends Parent_Controller{
         
        
    }
-  
-   
 }
 
