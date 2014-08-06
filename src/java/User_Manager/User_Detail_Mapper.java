@@ -73,8 +73,7 @@ public class User_Detail_Mapper implements RowMapper<User_Detail>
                     user.setName(rs.getString("name"));
                     user.setProfile_pic(rs.getString("profile_pic"));
                     
-                    }break;     
-                 
+                    }break;    
          }
         
       
