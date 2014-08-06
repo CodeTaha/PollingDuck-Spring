@@ -18,14 +18,19 @@
   
         <script>
     var pollJSONtemp;   
-    var pollJSON=new Array();
+    var pollJSONvp=new Array();
     var ts="";
     var canLoadMore=true;
+    //var dialog=  $("#selector1").dialog({autoOpen: true,height: 550,width: 830,modal: true});
+    var dialog;
     $(document).ready(function(){
                 $('#loading').hide();
                 $('#NoMoreData').hide();
                  loadData();
-               
+               dialog=$( "#selector1" ).dialog({autoOpen: false,show: {effect: "clip",duration: 10},hide: {effect: "fade",duration: 1000},close : function() {
+           $( "#dialog-modal" ).empty();
+          //location.reload(true);
+       }});
             });
             function loadData()
             {$('#loading').show();
@@ -75,7 +80,7 @@
             {
                 for(var i=0; i<pollJSONtemp.length;i++)
                      { 
-                         pollJSON.push(pollJSONtemp[i]);
+                         pollJSONvp.push(pollJSONtemp[i]);
                       $("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
                       <h3>'+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+'</h3>\n\
                          \n\<a href="/PollingDuck-Spring/profile/'+pollJSONtemp[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSONtemp[i]["user"]["profile_pic"]+"></a>  <a href='/PollingDuck-Spring/profile/"+pollJSONtemp[i]["user"]["handle"]+"'>"+pollJSONtemp[i]["user"]["name"]+"</a>  <a href='/PollingDuck-Spring/profile/"+pollJSONtemp[i]["user"]["handle"]+"'  >@"+pollJSONtemp[i]["user"]["handle"]+'</a>\n\
@@ -91,13 +96,16 @@
                      }
             }
            function openPoll(i)
-       {$( "#dialog-modal").empty();
+       {
+           var poll_js=pollJSONvp;
+          // alert();
+           //$("#dialog-modal").empty();
            var ind;
-           console.log('pollJSON=');
-           console.log(pollJSON)
-           for(k=0; k<pollJSON.length; k++)
-           {console.log(pollJSON[k])
-               if(pollJSON[k]['pid']===i)
+           console.log('pollJSONvp=');
+           console.log(pollJSONvp)
+           for(k=0; k<pollJSONvp.length; k++)
+           {//console.log(pollJSONvp[k])
+               if(pollJSONvp[k]['pid']===i)
                {
                    ind=k;
                    console.log("k="+k);
@@ -106,21 +114,16 @@
            }
           
                  
-               var pollJson_obj=pollJSON[ind];
+               var pollJson_obj=pollJSONvp[ind];
                console.log("In OpenPoll");
                console.log(pollJson_obj);
-            $( ".selector" ).dialog({  
-   open: function(event, ui) {   $( "#dialog-modal").load( 'solvePoll', {pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1}, function( response, status, xhr ) 
-               {  
-  if ( status === "error" ) {
-    var msg = "Sorry but there was an error: "; 
-    $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText ); 
-
-  }}
-);
-           },
-       close : function() {location.reload(true);}
-   });
+               var poll_js=pollJSONvp;
+              
+       dialog.dialog( "open" );
+       $( "#dialog-modal" ).load( "solvePoll", { pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1} ); 
+       
+   
+   pollJSONvp=poll_js;
    }
           
            function pollResult(pid)
@@ -137,7 +140,7 @@
     </head>
     <body>
         
-        <h1>HEllo World!</h1>
+        <h1>View Polls </h1>
         <div id="pollList" style="float:left">
             
         </div>
@@ -145,10 +148,10 @@
         <div id="loading">Loading polls..</div>
         
      <!--   <div id="dialog-modal" title="Solve Poll" style="float:right">   -->
-            <div class="selector">
+            <div id="selector1">
                 <div id="dialog-modal" title="Solve Poll" >
-  <p>.</p>
-</div>
+                    
+                </div>
             </div>
      <div id="NoMoreData" style="padding-bottom: 3px;">Sorry No More Polls to load</div>
     </body>

@@ -87,19 +87,6 @@ public class UrlController extends Parent_Controller{
     }
 	   return "index";
    }
-  
-   @RequestMapping(value = {"/*","/*/*","/*/*/*"})
-   public void AnyURL( ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
-            String url1=request.getRequestURI();
-            String url2=request.getScheme() + "://" +   // "http" + "://
-             request.getServerName() +       // "myhost"
-             ":" + request.getServerPort() + // ":" + "8080"
-             request.getRequestURI() +       // "/people"
-            (request.getQueryString() != null ? "?" +
-             request.getQueryString() : ""); 
-            request.getRequestDispatcher("").forward(request, response);
-	  // response.sendRedirect("");
-   }
    
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
    public String dashboard(HttpServletRequest request) throws IOException, SQLException {
@@ -271,5 +258,23 @@ public class UrlController extends Parent_Controller{
 	
    }
    
+   @RequestMapping(value = "/template", method = RequestMethod.GET)
+   public String template(ModelMap model,HttpServletRequest request) throws IOException, SQLException {
+             model.addAttribute("delimiter", "");
+           return "template";
+	
+   }
    
+     @RequestMapping(value = {"/*","/*/*","/*/*/*"})
+   public void AnyURL(@PathVariable String link, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
+            String url1=request.getRequestURI();
+            String url2=request.getScheme() + "://" +   // "http" + "://
+             request.getServerName() +       // "myhost"
+             ":" + request.getServerPort() + // ":" + "8080"
+             request.getRequestURI() +       // "/people"
+            (request.getQueryString() != null ? "?" +
+             request.getQueryString() : ""); 
+            //request.getRequestDispatcher("").forward(request, response);
+	  // response.sendRedirect("");
+   }
 }

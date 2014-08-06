@@ -45,7 +45,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <script>
-                console.log("In solvePoll");
+                //console.log("In solvePoll");
                // var pollJSON;
                 var qtnJSON;
                 var ansJSON;
@@ -67,7 +67,7 @@
                     {
                         keywords=keywords+", "+catl[i]['category_name'];
                     }
-                    console.log(catl);
+                    //console.log(catl);
                   $("head").append("<title>"+title+"</title>")
                             .append("<meta name='keywords' content='"+keywords+"'>")
                             .append("<meta name='description' content='"+description+"'>")
@@ -101,13 +101,13 @@
         
                 if(solvable===1)
                  {
-                console.log("dataIn solvePoll");
+               // console.log("dataIn solvePoll");
                //console.log(data);
                //pollJSON=data;//JSON.parse(data);
-               console.log(pollJSON);
+               //console.log(pollJSON);
                qtnJSON=pollJSON['qtn_json'];
                console.log("qtn JSON");
-               console.log(qtnJSON);
+               //console.log(qtnJSON);
                //ansJSON=JSON.parse(pollJSON['ans_json']);
                  //alert(data);
                  
