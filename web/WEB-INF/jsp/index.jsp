@@ -36,14 +36,15 @@ var profile_pic;
  var cat_json="";
  var red_url=window.location.search.replace("?", "").toString();
  var cat_list=new Array();
+   var array2 = new Array();
+            var array3 = new Object();
     $(document).ready(function(){
         
         
        
         $("#SignUp").hide();
         $("#dob").datepicker({
-           //showSecond: true,
-           //timeFormat: 'hh:mm:ss',
+          
            dateFormat:"mm/dd/yy" 
                    });
     $("#category").select2({
@@ -105,7 +106,7 @@ var profile_pic;
 
   function getUserInfo() {
 	    FB.api('/me', function(response) {
-
+  
 	var str="<b>Name</b> : "+response.name+"<br>";
 	  	  str +="<b>Link: </b>"+response.link+"<br>";
 	  	  str +="<b>Username:</b> "+response.username+"<br>";
@@ -113,9 +114,13 @@ var profile_pic;
 	  	  str +="<b>Email:</b> "+response.email+"<br>";
                   
 	  	
-                  
+                  if(response.location!==undefined)
+                  {
 	  	  str +="<b>Location:</b> "+response.location.name+"<br>";
-                  
+                  }
+                  else 
+                  str +="<b>Location:</b> Private <br>";
+              
 	  	  str +="<b>Birthday:</b> "+response.birthday+"<br>";
                   
 	  	  str +="<b>Gender:</b> "+response.gender+"<br>";
@@ -147,7 +152,15 @@ var profile_pic;
    console.log(userid);
     console.log(email);
    console.log(link);
-    
+    	$.ajax({
+                                type: "POST",       
+                                url: "viewUsersCategData",
+                                data: {},
+                                success: function(data){
+                                    cat_json=JSON.parse(data);
+                                         //   abc();
+                                        }
+                                 });
   	$.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "loginFB",
@@ -171,7 +184,7 @@ var profile_pic;
                                         else
                                         {
                                             $("#SignUp").show();
-                                            cat_json=JSON.parse(data);
+                                        //    cat_json=JSON.parse(data);
                                             document.getElementById("email").value =email;
                                             document.getElementById("email").readOnly = true;
                                             document.getElementById("dob").value =birthdate;
@@ -179,22 +192,44 @@ var profile_pic;
                                             document.getElementById("name").value=name;
                                             console.log(cat_json);
                                            
-                                              for(var i=0; i<cat_json.length; i++)
+                                          /*    for(var i=0; i<cat_json.length; i++)
                                                         {
                                                             cat_list.push({id:cat_json[i]['cid'], text:cat_json[i]['category_name']});
                                                             $("#category").append("<option value="+cat_json[i]['cid']+">"+cat_json[i]['category_name']+"</option>");
                                                         }
                                                        
-                                            
+                                           */
+                                             abc();
                                                          
                                             
                                         }
                                         
                                 }
-                        });    
+                        });
+                        
     });
     }
-	
+	function abc()
+     {  for(var i=0; i<cat_json.length;i++)
+        { if( array2.indexOf(cat_json[i]['group'])===-1)
+            {
+                array2.push(cat_json[i]['group']);
+                array3[cat_json[i]['group']]=new Array();
+                array3[cat_json[i]['group']].push(cat_json[i]);
+            }
+          else
+          {
+               array3[cat_json[i]['group']].push(cat_json[i]);   
+          }  
+        }
+       for(var i=0;i<array2.length;i++)
+       { $("#category").append("<b>"+array2[i]+"</b></br>");
+        for(var j=0;j<array3[array2[i]].length;j++)
+          $("#category").append("<input type='checkbox' id='"+array3[array2[i]][j].cid +"'value='"+array3[array2[i]][j].cid+"'>"+array3[array2[i]][j].category_name+"&nbsp;&nbsp;");
+      $("#category").append("</br>");
+       }
+     }
+        
 	function Logout()
 	{
 		FB.logout(function(){document.location.reload();});

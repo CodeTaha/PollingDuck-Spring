@@ -58,6 +58,7 @@
                 var k1=0,k2=0;
                 var redirect=${redirect}
                 var uid=${uid};
+              //  var profile=${profile};
                 
                 function set_metadata(title,description,catl,author)
                 {
@@ -304,11 +305,14 @@
                   finalJSON=JSON.stringify(finalJSON);
                   console.log("Final string");
                   console.log(finalJSON);
+               //   console.log("alia bhatt"+pollJSON);
                   console.log("anonymous="+anonymous+" fish="+fish);
-                  $.ajax({
+               //   console.log("profile "+ profile);
+           
+        $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "${delimiter}submitPollAns",
-                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish, poll_uid:pollJSON["uid"], poll_title:pollJSON["poll_title"],poll_link:pollJSON["poll_link"]},
+                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish, poll_uid:pollJSON["uid"], poll_title:pollJSON["poll_title"],poll_link:pollJSON["poll_link"],poll_cat:pollJSON["cid_json"]},
                                 success: function(data){alert(data);
                                         if(data)
                                         {
@@ -317,6 +321,7 @@
                                                 location.reload(true);
                                 }
                         });
+              
             }
         </script>
     </head>
