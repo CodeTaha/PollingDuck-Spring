@@ -232,11 +232,11 @@ public class UrlController extends Parent_Controller{
       return "editProfile";
    }
    
-  @RequestMapping(value = "/activity", method = RequestMethod.GET)
-   public String activity(HttpServletRequest request) throws IOException, SQLException {
+  @RequestMapping(value = "/home", method = RequestMethod.GET)
+   public String home(HttpServletRequest request) throws IOException, SQLException {
         if(checklogin(request))
        {
-           return "activity";
+           return "home";
        }
        else
        {

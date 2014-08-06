@@ -136,7 +136,7 @@
     </head>
     <body>
         
-        <h1>HEllo World!</h1>
+        <h1>Home</h1>
         <div id="pollList" style="float:left">
             
         </div>

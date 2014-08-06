@@ -2300,9 +2300,10 @@ $(document).ready(function () {
 		$('div#main').toggleClass('sidebar-show');
 		setTimeout(MessagesMenuWidth, 250);
 	});
-	var ajax_url = location.hash.replace(/^#/, '');
+	var ajax_url = location.hash.replace(/^#/, '');//
+        console.log("ajax_url"+ajax_url);
 	if (ajax_url.length < 1) {
-		ajax_url = 'activity';
+		ajax_url = 'home';
 	}
 	LoadAjaxContent(ajax_url);
 	$('.main-menu').on('click', 'a', function (e) {

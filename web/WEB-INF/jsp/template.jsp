@@ -48,7 +48,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             
-            <li class="active"><a class="ajax-link" href="activity">Activity</a></li><!-- -->
+            <li class="active"><a class="ajax-link" href="home">Home</a></li><!-- -->
             <li><a class="ajax-link" href="viewPolls">View Polls</a></li>
             <li><a class="ajax-link" href="createPoll">Create Polls</a></li>
             <li><a class="ajax-link" href="profile">Profile</a></li>
