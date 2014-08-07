@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.google.gson.Gson"%>
 <% 
 Cookie[] cookies = request.getCookies();

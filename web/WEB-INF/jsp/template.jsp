@@ -48,10 +48,10 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             
-            <li class="active"><a class="ajax-link" href="home">Home</a></li><!-- -->
-            <li><a class="ajax-link" href="viewPolls">View Polls</a></li>
-            <li><a class="ajax-link" href="createPoll">Create Polls</a></li>
-            <li><a class="ajax-link" href="profile">Profile</a></li>
+            <li class="active" onclick="LoadAjaxContent('home')"><a href="#">Home</a></li><!-- -->
+            <li onclick="LoadAjaxContent('viewPolls')"><a href="#">View Polls</a></li>
+            <li onclick="LoadAjaxContent('createPoll')"><a href="#">Create Polls</a></li>
+            <li onclick="LoadAjaxContent('profile')"><a href="#">Profile</a></li>
           </ul>
           
         </div>

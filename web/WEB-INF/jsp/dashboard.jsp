@@ -1,75 +1,115 @@
-<%@page import="com.google.gson.Gson"%>
-<%@page import="User_Manager.User_Detail"%>
-<% 
-Cookie[] cookies = request.getCookies();
-String handle="";
-int uid=0;
-//User_Detail user_detail;
-Gson gson=new Gson();
-        boolean foundCookie = false;
-
-        for(int i = 0; i < cookies.length; i++) { 
-            Cookie cookie1 = cookies[i];
-            if(cookie1.getName().equals("handle"))
-            {
-                handle=cookie1.getValue();
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("uid"))
-            {
-                uid=Integer.parseInt(cookie1.getValue());
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("User_Obj"))
-            {
-                System.out.println(cookie1.getValue());
-               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
-                foundCookie = true;
-            }
-        }  
-
-        if (!foundCookie) {
-            System.out.println("cookies not found 2");
-            response.sendRedirect("index");
-        }
-%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pollican</title>
+    <link rel="icon" href="${delimiter}pages/resources/img/favicon-1.png">
+    <!-- Bootstrap -->
+    <link href="${delimiter}pages/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${delimiter}pages/resources/css/style2.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Pollican</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://www.facebook.com">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li class="actual_link"><a href="${delimiter}logout">Logout</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </div>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to PollingDuck project</title>
-        <script>
-      
-           
-        </script>
-    </head>
-    <body>
-        <div style="float: right"><a href="logout">Logout</a></div>
-        <ul>
-            <li>
-                <a href="createPoll">Create</a>
-            </li>
-            <li>
-                <a href="viewPolls">View</a>
-            </li>
-             <li>
-                <a href="profile/<%=handle%>">Profiles</a>
-            </li>
-              <li>
-                <a href="activity">Activity</a>
-            </li>
-            <li>
-                <a href="notification">Notifications</a>
-            </li>
-        </ul>
-        <p><%= handle %>! Your uid is <%= uid%> This is the default welcome page for a PollingDuck project.</p>
-        <p><i>To display a different welcome page for this project, modify</i>
-            <tt>index.jsp</tt> <i>, or create your own welcome page then change
-                the redirection in</i> <tt>redirect.jsp</tt> <i>to point to the new
-                welcome page and also update the welcome-file setting in</i>
-            <tt>web.xml</tt>.</p>
-    </body>
+    <div id="top-panel" class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            
+            <li class="active" onclick="LoadAjaxContent('home')"><a href="#">Home</a></li><!-- -->
+            <li onclick="LoadAjaxContent('viewPolls')"><a href="#">View Polls</a></li>
+            <li onclick="LoadAjaxContent('createPoll')"><a href="#">Create Polls</a></li>
+            <li onclick="LoadAjaxContent('profile/'+user['handle'])"><a href="#">Profile</a></li>
+          </ul>
+          
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Dashboard</h1>
+            
+          <h2 class="sub-header">Section title</h2>
+          
+          <!--Start Content-->
+		<div id="content" class="col-xs-12 col-sm-10">
+			<div class="preloader">
+				<img src="${delimiter}pages/resources/img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
+			</div>
+			<div id="ajax-content"></div>
+		</div>
+		<!--End Content-->
+        </div>
+      </div>
+    </div>
+
+      <div class="footer col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-4">
+      <div class="container">
+        <p class="text-muted">Place sticky footer content here.</p>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="${delimiter}pages/resources/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="${delimiter}pages/resources/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!--<script src="${delimiter}pages/resources/js/docs.min.js"></script>-->
+    <script src="${delimiter}pages/resources/js/devoops.js"></script>
+    <script>
+        var user=${user};
+        $(document).ready(function () {
+            
+            console.log("user");
+            console.log(user);
+    $('.nav li a').click(function(e) {
+
+        $('.nav li').removeClass('active');
+
+        var $parent = $(this).parent();
+        if (!$parent.hasClass('active')) {
+            $parent.addClass('active');
+        }
+        if ($parent.hasClass('actual_link')) {
+            alert(1);
+            //$parent.addClass('active');
+        }
+        else
+        {
+            alert(2);
+        e.preventDefault();
+        }
+        //e.preventDefault();
+    });
+});
+</script>
+  </body>
 </html>

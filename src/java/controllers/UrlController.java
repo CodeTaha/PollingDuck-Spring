@@ -89,9 +89,13 @@ public class UrlController extends Parent_Controller{
    }
    
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-   public String dashboard(HttpServletRequest request) throws IOException, SQLException {
+   public String dashboard(ModelMap model,HttpServletRequest request) throws IOException, SQLException {
        if(checklogin(request))
        {
+           model.addAttribute("delimiter", "");
+           //model.addAttribute("uid",user_detail.getUid());
+           //model.addAttribute("handle",user_detail.getHandle());
+           model.addAttribute("user",gson.toJson(user_detail));
            return "dashboard";
        }
        else
