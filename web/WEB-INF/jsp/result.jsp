@@ -21,6 +21,7 @@
  <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/ZeroClipboard.js"></script>
  <script type="text/javascript" charset="utf8" src="../../pages/resources/js/canvg.js"></script>
 
+
  
         
               <title>JSP Page</title>
@@ -77,13 +78,26 @@
         </script>
     </head>
     <body>
-        <script src="../../pages/resources/js/d3.min.js"></script>   
+        <button onclick="createpdf()" style="float: right">whole page as pdf</button>
+        <div id="whole" style="background-color:white">
+        <script src="../../pages/resources/js/d3.min.js"></script> 
+        <script src="../../pages/resources/js/jspdf.js"></script>
+        <script src="../../pages/resources/js/canvg.js"></script>
+        
+
+<script src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/jspdf.plugin.addimage.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/jspdf.plugin.png_support.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/jspdf.plugin.cell.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/png.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/zlib.js"></script>
+<script type="text/javascript" charset="utf8" src="../../pages/resources/js/FileSaver.js"></script>
     <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
         <h1>Poll Result!</h1>
         <script>
   // $(document).ready(function(){       
-                $("body").append("<h1><center>TITLE : <b>"+poll['title']+"</b></center></h1>");
-                $("body").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'><img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a> <i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i></b></h2>");
+                $("#whole").append("<h1><center>TITLE : <b>"+poll['title']+"</b></center></h1>");
+                $("#whole").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'><img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a> <i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i></b></h2>");
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
                      var bot=0;
@@ -196,8 +210,8 @@
                     k++;
                   
                     var qtn_div="qtn_div_"+j;
-                     $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("body").append("<div id='"+qtn_div+"'></div>");
+                     $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
+                    $("#whole").append("<div id='"+qtn_div+"'></div>");
                     var ret=plotBar(qtn_div,j);
                     
                     var retu=tablegen(qtn_div,j);
@@ -393,8 +407,8 @@
                     
                     second=arrayOptions;
                      var qtn_div="qtn_div_"+j;
-                      $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("body").append("<div id='"+qtn_div+"'></div>");
+                      $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
+                    $("#whole").append("<div id='"+qtn_div+"'></div>");
                       var ret=plotBar(qtn_div,j);
                       if(ret===0)
                       plotpie(qtn_div,j);
@@ -527,8 +541,8 @@
                     //console.log("call");
                     //console.log(jsonArr);
                     var qtn_div="qtn_div_"+j;
-                    $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("body").append("<div id='"+qtn_div+"'></div>");
+                    $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
+                    $("#whole").append("<div id='"+qtn_div+"'></div>");
                     var ret=plotBar(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
@@ -655,8 +669,8 @@
                     k++;
                     
                     var qtn_div="qtn_div_"+j;
-                    $("body").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("body").append("<div id='"+qtn_div+"'></div>");
+                    $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
+                    $("#whole").append("<div id='"+qtn_div+"'></div>");
                     var ret=plotBar(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
@@ -701,6 +715,7 @@ var yAxis = d3.svg.axis()
 
 var svg = d3.select(qtn_div_pie).append("svg")
 .attr("id", "svg_"+p)
+.attr("style","background-color:white")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
 .append("g")
@@ -759,7 +774,7 @@ console.log(canvasvar);
 var mylink="myALink_"+p;
 var imgname="qtn"+p+".png";
  $("#qtn_div_"+p).append('<br> <a id="myALink_'+p+'">Download as image</a><br> ');
- $("#qtn_div_"+p).append('<div hidden id="can"> <canvas id="canvas_'+p+'" width="1000px" height="600px"></canvas> </div>');
+ $("#qtn_div_"+p).append('<div  id="can" style="background-color:white" ><canvas id="canvas_'+p+'" width="300" height="320" style="background-color:white"></canvas> </div>');
  
         document.getElementById(mylink).addEventListener('click', function() {
     downloadCanvas(this, canvasvar, imgname); // <- this can be a dynamic name
@@ -770,6 +785,9 @@ return 0;
  function downloadCanvas(link, canvasId, filename) {
    for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
    {
+       if(poll['qtn_json'][lkj]['qtn_type']==="tb")
+       {}
+       else
     canvg('canvas_'+lkj, $("#qtn_div_"+lkj).html());
     
    }
@@ -781,6 +799,17 @@ return 0;
     link.href = document.getElementById(canvasId).toDataURL();
     link.download = filename;
 }
+
+ for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
+   {
+            if(poll['qtn_json'][lkj]['qtn_type']==="tb")
+       {}
+       else
+       {
+    var im = document.getElementById('canvas_'+lkj);
+        im.style.display = 'none';
+    }     
+   }
  function plotpie(qtn_div,p)
  {
      qtn_div="#"+qtn_div;
@@ -802,11 +831,14 @@ var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.n; });
 
-var svg = d3.select(qtn_div).append("svg")
+var svg = d3.select(qtn_div)
+        .append("svg")
 .attr("id", "svg_pie_"+p)
     .attr("width", width)
     .attr("height", height)
+    .attr("style","background-color:white")
   .append("g")
+    .style("visibility", "visible")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 //d3.json("json/bars.json", function(error, jsonarr) {
@@ -815,11 +847,12 @@ var svg = d3.select(qtn_div).append("svg")
     d.n = +d.n;
   });
 
-  var g = svg.selectAll(".arc")
+  var g = svg
+          .selectAll(".arc")
       .data(pie(data))
     .enter().append("g")
       .attr("class", "arc");
-
+      
   g.append("path")
       .attr("d", arc)
       .style("fill", function(d) { return color(d.data.label); });
@@ -836,7 +869,7 @@ console.log(canvasvar);
 var mylink="myALink_pie_"+p;
 var imgname="qtn"+p+".png";
  $("#qtn_div_"+p).append('<br> <a id="myALink_pie_'+p+'">Download as image</a> ');
- $("#qtn_div_"+p).append('<div hidden id="can"> <canvas id="canvas_pie_'+p+'" width="1000px" height="600px"></canvas> </div>');
+ $("#qtn_div_"+p).append('<div id="can"> <canvas hidden id="canvas_pie_'+p+'" width="351px" height="351px"></canvas> </div>');
  canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());
  
         document.getElementById(mylink).addEventListener('click', function() {
@@ -1036,7 +1069,7 @@ var relist=new Array();
                // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
                  // for(var i=1;i<jsonArr.length+1;i++)
       // {
-        header[i12]="row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
+        header[i12]="row:"+jsonArr[i]["label"].slice(0,h)+", column:"+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
             i12++;
        // }     
              }
@@ -1045,16 +1078,7 @@ var relist=new Array();
         
             }       
          }
-       // console.log("values of moc");
-       // console.log(h);console.log(g);console.log(jsonArr.length);
-       // console.log("values of jsonArr");
-        //for(var i=0;i<jsonArr.length;i++)
-          //  console.log("TK"+jsonArr[i]["label"]);
-        
-        //console.log("rows :  " + noOfRows);
-        //console.log("columns :  " + noOfColumns);
-            //for(var i=0;i<jsonArr.length;i++)
-       //{
+      
         
          //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
@@ -1180,7 +1204,7 @@ var relist=new Array();
                 g=y;            
                 
                // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
-                header[i12]="row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
+                header[i12]="row:"+jsonArr[i]["label"].slice(0,h)+", column:"+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
             i12++;     
              }
             x++;
@@ -1370,6 +1394,184 @@ var relist=new Array();
         </script>
        
         <div id="mytable2"></div>
+        </div>
+        
+        <!--<canvas id="wholecanvas" width="1000px" height="600px"></canvas>-->
+        <script>
+                
+            function convert(convertcanvas) {
+                
+       					}   
+                                        
+             var pdfseo = new jsPDF('landscape');                           
+        function createpdf()
+        {
+            
+           var x=10;
+            var title="TITLE : "+poll['title'];
+            var pollby="POLL BY : "+poll['user']['name']+"@"+poll['user']['handle'];
+            pdfseo.setFontSize(16);
+         pdfseo.text(pdfseo.internal.pageSize.width/2-title.length, 20, title);  
+         pdfseo.text(pdfseo.internal.pageSize.width/2-pollby.length,30,pollby);
+         
+         var y=40;
+          for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
+   {
+       if(y+60>=pdfseo.internal.pageSize.height)
+       {
+           y=10;
+           pdfseo.addPage();
+       }
+       console.log(y);
+        var question="Question : "+poll['qtn_json'][lkj]['qtn']; 
+        console.log(question);
+        pdfseo.setFontSize(16);
+        pdfseo.text(10,y,question);
+     //barcharts
+         if(poll['qtn_json'][lkj]['qtn_type']==="tb")
+       {}
+       else
+       {
+        canvg('canvas_'+lkj, $("#svg_"+lkj).html());
+        pdfseo.addImage(document.getElementById('canvas_'+lkj), 'png', 35, y, 80, 80);
+          y=y+80;
+      }
+      //pie chart
+      
+      if(poll['qtn_json'][lkj]['qtn_type']==="mcms")
+          {
+        
+           
+             y=y+10;
+             //var chal=document.getElementById('canvas_pie_'+lkj).toDataURL();
+        pdfseo.addImage(document.getElementById('canvas_pie_'+lkj), 'png', 35, y, 80, 80);
+        //pdfseo.addImage(chal, 'jpeg', 35, y, 80, 80);
+        
+          y=y+85;
+      }
+      
+     //table--------------------
+     if(y+40>=pdfseo.internal.pageSize.height)
+       {
+           pdfseo.setFontSize(16);
+           y=10;
+           pdfseo.addPage();
+       }
+       var ch=y;
+     //table = tableToJson($('#tbl_'+lkj+'_wrapper').get(0));
+     if(poll['qtn_json'][lkj]['qtn_type']==="tb")
+       {}
+       else
+     {
+     table = tableToJson($("#tbl_"+lkj).get(0));
+       //current height
+  var ph= pdfseo.internal.pageSize.height;
+        pdfseo.cellInitialize();
+        $.each(table, function (i, row){
+           
+        if(ch>=ph)
+        {
+          //  pdfseo.addPage();
+         
+        }
+            if(i===0)
+            {
+                var flagj=1;
+             pdfseo.setFontSize(8);
+               $.each(row, function (j, cell){
+               if(flagj===1)
+               {
+                   pdfseo.cell(2, ch,25, 10, cell, i);
+                   flagj=0;
+               }
+               else
+                pdfseo.cell(2, ch,15, 10, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
+                
+             });
+             
+             ch=ch+15;
+        
+            }
+            else
+            {   
+                var flagj=1;
+                pdfseo.setFontSize(8);
+            $.each(row, function (j, cell){
+                if(flagj===1)
+               {
+                   pdfseo.cell(2, ch,25, 10, cell, i);
+                   flagj=0;
+               }
+               else
+                pdfseo.cell(2, ch,15, 10, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
+            
+            });
+                ch=ch+10;
+           
+            }
+        });
+        
+            }//table finished  
+        y=ch+10;
+   }
+        pdfseo.save('res.pdf');
+        }
+        
+     
+    
+    function tableToJson(table) {
+    var data = [];
+    console.log(table.rows[0]);
+    // first row needs to be headers
+    var headers = [];
+    for (var i=0; i<table.rows[0].cells.length; i++) {
+        headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi,'');
+    }
 
+
+    // go through cells
+    for (var i=0; i<table.rows.length; i++) {
+
+        var tableRow = table.rows[i];
+        var rowData = {};
+
+        for (var j=0; j<tableRow.cells.length; j++) {
+            var str=tableRow.cells[j].innerHTML;
+            var divn=str.search("div");
+            var hrefn=str.search("href");
+            if(divn>0)
+            {
+                var String=str.substring(str.lastIndexOf('pper">')+6,str.lastIndexOf('<span'));
+                var inc1=String.substring(String.indexOf('row:')+4,String.lastIndexOf(','));
+                var inc2=String.substring(String.lastIndexOf('column:')+7,String.length);
+                if(String.indexOf('row:')===-1)
+                rowData[ headers[j] ] =String;
+                else
+                rowData[ headers[j] ] =inc1+" ,"+inc2;
+                console.log("string");
+                console.log(String);
+                console.log("inc1"+inc1);
+                console.log("inc2"+inc2);
+            }
+            else
+            if(hrefn>0)
+            {
+                var hstring=str.substring(str.lastIndexOf('">')+2,str.lastIndexOf('</a'));
+                rowData[ headers[j] ] =hstring;
+            }
+            else
+            {
+            rowData[ headers[j] ] = tableRow.cells[j].innerHTML;
+            console.log("rowdata");
+            console.log(tableRow.cells[j].innerHTML);
+            }
+        }
+
+        data.push(rowData);
+    }       
+
+    return data;
+}
+        </script>
     </body>
 </html>
