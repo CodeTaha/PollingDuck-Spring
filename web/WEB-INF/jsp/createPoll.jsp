@@ -1,4 +1,3 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.google.gson.Gson"%>
 <% 
 Cookie[] cookies = request.getCookies();
@@ -56,10 +55,12 @@ Gson gson=new Gson();
 <!--<h1>create poll</h1>-->
  
 <script type="text/javascript">
-
+var iq=0,ie=0,del=0;
+var questions,qtypes,divqid,answer,column,row,divsqid,buttonid,buttonval,buttondelid,buttondelval,diveditid,tt,selectbutton,flag=0,diveditid,sss;
 var detailArray=new Array();
 var qtnArray= new Array();
 var ansArray= new Array();
+var deltrackArray= new Array();
 var count=0;
 var uid=<%=uid%>;
 console.log(${cat_list});
@@ -74,7 +75,7 @@ $(document).ready(function(){
     $("#category").select2({
        // multiple: true,
   placeholder:"tag poll categories",
-  maximumSelectionSize:5,
+  maximumSelectionSize:5
   //allowClear: true,
   //tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
 });
@@ -94,76 +95,242 @@ $(document).ready(function(){
   
   function addQuestion()
     {//console.log($("#category").val());
+        iq++;ie++; console.log("ie value in addqtn");console.log(ie);
+         divqid="divq"+iq;
+         questions="question"+iq;
+         qtypes="Qtype"+iq;
         $("#addQuestion").prop("disabled", true);
-        $("#d3").append('Question: <input type="text" name="question" id="question"/><br/>Question Type: <select id="Qtype" onchange="createQtn()"><option>Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
+        $("#d3").append('<div id="'+divqid+'"></div>');
+        $("#"+divqid).append('Question: <input type="text" name="question" id="'+questions+'"/><br/>Question Type: <select id="'+qtypes+'" onchange="createQtn()"><option>Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
     }
     function createQtn()
     {
-        var qtype=$('#Qtype').val();
+        
+         answer="answers"+iq;
+         column="columns"+iq;
+         row="rows"+iq;
+         tt="t"+(iq+1);
+        var qtype=$('#'+qtypes).val();
         //alert(qtype);
         //$("#d3").empty();
         switch(qtype)
         {
-            case 'mcss':    {$("#t1").remove();$("#d3").append('<div id="t1">Answer choices:<textarea id="answers" ></textarea></div>');}break;
-            case 'mcms':    {$("#t1").remove();$("#d3").append('<div id="t1">Answer choices:<textarea id="answers" ></textarea></div>');}break;
-            case 'tb':      {$("#t1").remove();$("#d3").append('<div id="t1">A textbox will be created for the user to fill in the answer <input type="hidden" id="answers"/></div>');}break;
-            case 'moc':     {$("#t1").remove();$("#d3").append('<div id="t1">Enter columns and rows <textarea id="columns" ></textarea><textarea id="rows" ></textarea></div>');}break;
-            case 'momc':    {$("#t1").remove();$("#d3").append('<div id="t1">Enter columns and rows <textarea id="columns" ></textarea><textarea id="rows" ></textarea></div>');}break;
+            case 'mcss':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
+            case 'mcms':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
+            case 'tb':      {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');}break;
+            case 'moc':     {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
+            case 'momc':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
         }
-        $("#t1").append('<button onclick="submitQtn()">Submit Question</button>');
+        $("#"+tt).append('<button onclick="submitQtn()">Submit Question</button>');
+       
     }
     
     function submitQtn()
     {
-        var question=$('#question').val();
-        var qtype=$('#Qtype').val();
-        var qtnArray2=new Array();
+        if(flag===1)
+        {
+            divsqid="divsq"+selectbutton;console.log("divsqid initail wen created with iq ");console.log(divsqid);
+        buttonid="buttons"+selectbutton;
+        buttonval=selectbutton;
+        buttondelid="buttonsdel"+selectbutton;
+        buttondelval=selectbutton;    
+        }
+        else
+        {
+        divsqid="divsq"+iq;console.log("divsqid initail wen created with iq ");console.log(divsqid);
+        buttonid="buttons"+iq;
+        buttonval=iq;
+        buttondelid="buttonsdel"+iq;
+        buttondelval=iq;
+       }
+    console.log("buttonval");
+          console.log(buttonval);
+       // diveditid="diveditid"+iq;
+       if(flag===1)
+       {
+           var question=$("#question"+selectbutton).val();
+           var qtype=$("#Qtype"+selectbutton).val();
+       }
+       else
+       {
+        var question=$("#"+questions).val();
+        var qtype=$("#"+qtypes).val();
+       }
+            var qtnArray2=new Array();
         //qtnArray[count]=new Array(6);
+        if(flag===1)
+        {
+            qtnArray2[0]=selectbutton;
+        }
+        else
+        {
         qtnArray2[0]=count+1;
+        }
         qtnArray2[1]=count+1;
         qtnArray2[2]=qtype;
         qtnArray2[3]=question;
         
+        $("#d2").append('<div id="'+divsqid+'"></div>');
         if(qtype==="moc" || qtype==="momc")
         {
-            var columns=$('#columns').val();
-            var rows=$('#rows').val();
+           if(flag===1)
+           {
+               var columns=$('#columns'+selectbutton).val();
+            var rows=$('#rows'+selectbutton).val();
           
         qtnArray2[4]=JSON.stringify(rows.split("\n"));
         qtnArray2[5]=JSON.stringify(columns.split("\n"));
         
         
   
-        $("#d2").append("Question:"+question+"<br/>Type: "+qtype+"<br>Columns: "+columns+"<br>rows:"+rows);
+        $("#divsq"+selectbutton).append("Question:"+question+"<br/>Type: "+qtype+"<br>Columns: "+columns+"<br>rows:"+rows);
+           }
+            
+            else
+            {
+            
+            var columns=$('#'+column).val();
+            var rows=$('#'+row).val();
+          
+        qtnArray2[4]=JSON.stringify(rows.split("\n"));
+        qtnArray2[5]=JSON.stringify(columns.split("\n"));
+        
+        
+  
+        $("#"+divsqid).append("Question:"+question+"<br/>Type: "+qtype+"<br>Columns: "+columns+"<br>rows:"+rows);
+        
+            } 
         }
         else
         {
-        var answers=$('#answers').val();
+           if(flag===1)
+           {
+                var answers=$("#answers"+selectbutton).val();
         qtnArray2[4]=JSON.stringify(answers.split("\n"));
         qtnArray2[5]="";
         
-        $("#d2").append("Question:"+question+"<br/>Type: "+qtype+"<br>Options:"+answers);
-        }
+        $("#divsq"+selectbutton).append("Question:"+question+"<br/>Type: "+qtype+"<br>Options:"+answers);
+           }
+            
+            else
+            {
+              var answers=$("#"+answer).val();
+                qtnArray2[4]=JSON.stringify(answers.split("\n"));
+                 qtnArray2[5]="";
+        
+               $("#"+divsqid).append("Question:"+question+"<br/>Type: "+qtype+"<br>Options:"+answers);
+        
+            }
+            
+         }
         console.log("qtnArray2=");
         console.log(qtnArray2);
+        
+        if(flag===1)
+        {
+            qtnArray.splice(selectbutton-1,1);
+            qtnArray.splice(selectbutton-1,0,qtnArray2);
+        }
+        else
+        {
         qtnArray.push(qtnArray2);
-        console.log(qtnArray);
-        $("#d3").empty();
-        var json=JSON.stringify(qtnArray);
-        console.log(json);
         count++;
+        }
+    console.log(qtnArray);
+        
+        if(flag===1)
+        {
+            //$("#"+sss).
+            //$("#"+diveditid);
+        $("#divq"+selectbutton).hide();
+        }
+        else
+        {
+            $("#"+divqid).hide();
+        }
+            var json=JSON.stringify(qtnArray);
+        console.log(json);
+        //count++;
         
         
         $("#addQuestion").prop("disabled", false);
         
-            
+        
+        if(flag===1)
+        {
+            //var butn="buttons"+selectbutton;
+            $("#divsq"+selectbutton).append('<button id="'+buttonid+'" value="'+buttonval+'" onclick="editQtn(id)">edit Question</button>');
+            $("#divsq"+selectbutton).append('<button id="'+buttondelid+'" value="'+buttondelval+'" onclick="deleteQtn(id)">delete Question</button>');
+            flag=0
+           
+            for(var i=1;i<=iq;i++)
+        {
+            if(i!=selectbutton)
+            {
+                $("#buttons"+i).prop("disabled", false);
+            }
+        }
+        }
+        else
+        {
+        $("#"+divsqid).append('<button id="'+buttonid+'" value="'+buttonval+'" onclick="editQtn(id)">edit Question</button>');
+        $("#"+divsqid).append('<button id="'+buttondelid+'" value="'+buttondelval+'" onclick="deleteQtn(id)">delete Question</button>');
+        flag=0;
+        var edit = "divedit"+ie;
+         $("#d2").append('<div id="'+edit+'"></div>');
+        }
+        
+        console.log("ie value in submitqtn");console.log(ie);
+    }
+    
+    function editQtn(id)
+    {
+        flag=1;
+      
+        console.log("ie value in editqtn");console.log(ie);
+        selectbutton=document.getElementById(id).value;
+       console.log("value of selected button");
+       console.log(selectbutton); 
+        diveditid="divedit"+selectbutton;
+        sss="divsq"+selectbutton;
+      
+      $("#"+sss).empty();
+        console.log("divsqid"); console.log(sss);
+      
+        
+        console.log(diveditid);
+        $("#"+diveditid).append( $("#divq"+selectbutton).show());
+      
+        console.log("iq =  "+iq)
+        for(var i=1;i<=iq;i++)
+        {
+            if(i!=selectbutton)
+            {
+                $("#buttons"+i).prop("disabled", true);
+            }
+        }
+    }
+    
+    function deleteQtn(id)
+    {
+        var selectbuttondel=document.getElementById(id).value;
+        deltrackArray[del]=selectbuttondel-1;
+        del++;
+        $("#divsq"+selectbuttondel).remove();
+         qtnArray.splice(selectbuttondel-1,1);
+          qtnArray.splice(selectbuttondel-1,0,"del");
+        
+        
     }
     function send()
     {
+        deltrackArray=deltrackArray.sort();
+        console.log("delTrackArray contains id");console.log(deltrackArray);
         detailArray[0]=uid;
         detailArray[1]=$("#title").val();
         detailArray[2]=$("#desc").val();
         var category_temp=$("#category").val();
+        console.log(category_temp);
         detailArray[3]=category_temp[0];
         for(var i=1; i<category_temp.length;i++)
         {
@@ -172,6 +339,17 @@ $(document).ready(function(){
         //detailArray[3]=$("#category").val();
         
         detailArray[4]=count;
+        for(var i=0;i<deltrackArray.length;i++)
+        {
+            var xdel=deltrackArray[i];
+            console.log("xdel");console.log(xdel);
+            qtnArray.splice(xdel,1);
+            for(var j=i+1;j<deltrackArray.length;j++)
+            {
+                deltrackArray[j]=deltrackArray[j]-1;
+            }
+        }
+       // qtnArray.splice(xdel-1,1);
         var detailJSON=JSON.stringify(detailArray);
         var qtnJSON=JSON.stringify(qtnArray);
         //var ansJSON=JSON.stringify(ansArray);
@@ -186,7 +364,10 @@ $(document).ready(function(){
         alert(ed);
         //console.log(ansArray);
         //, std:startdate,etd:enddate
-       $.ajax({
+        console.log("alia bhatt details "+detailJSON);
+         console.log("alia bhatt qtns "+qtnJSON);
+           console.log("alia bhatt start "+sd+" end "+ed+" uid "+uid+" hhahhha ");
+        $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "submitPollData",
            data: { detailJSON:detailJSON, qtnJSON:qtnJSON ,start:sd,end:ed,uid:uid },
@@ -194,13 +375,16 @@ $(document).ready(function(){
                console.log(data);
                if (data)
                {  alert('Your Poll has been created Successfully');
-                  
+                   window.location.reload();
                }   
                else 
                {alert('unsuccesful');
                 }
             }
             });
+    
+   
+    
     }
    
             
@@ -234,6 +418,7 @@ Category :<select id="category" multiple="multiple" style="width:300px;" tabinde
     
     <input type='button'onclick="send()" value='Submit Survey' id='Submit'>
 </div>
+
 
 
 </body>
