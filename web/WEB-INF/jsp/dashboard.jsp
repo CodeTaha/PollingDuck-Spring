@@ -99,12 +99,12 @@
             $parent.addClass('active');
         }
         if ($parent.hasClass('actual_link')) {
-            alert(1);
+            //alert(1);
             //$parent.addClass('active');
         }
         else
         {
-            alert(2);
+            //alert(2);
         e.preventDefault();
         }
         //e.preventDefault();

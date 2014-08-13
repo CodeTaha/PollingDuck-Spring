@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import model.connectivity;
 import org.springframework.context.ApplicationContext;
@@ -26,52 +28,62 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author Taha
  */
 public class User_TblJDBCTemplate {
-    private final DataSource dataSource;
+    //private final DataSource dataSource;
    private final JdbcTemplate jdbcTemplateObject;
    Gson gson=new Gson();
    String SQL="";
    connectivity conn=null;
     public User_TblJDBCTemplate() throws SQLException
     {
+        try{
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
      conn=(connectivity)context.getBean("connectivity");
-      
-      this.dataSource=conn.getDataSource();
-      this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-      
+        }
+        catch(Exception e)
+        {
+            System.out.println("error creating object of User_TblJDBCTemplate="+e);
+        }
+      //this.dataSource=conn.getDataSource();
+      //this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+      this.jdbcTemplateObject=conn.getJdbcTemplateObject();
+     
     }
 
     public User_Detail authenticate(String username, String password, int loginType) {
-        //loginType can be 
-        //local=1
-        //fb=2
-        //twitter=3
-        // google=4
-        switch(loginType)
-        {
-            case 1: {
-                        SQL =   "select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
-                            "OR \n" +
-                            "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
-                    }break;
-            case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
-                        SQL="select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
-                    }    
-        }
-        
-        
-       User_Detail user_detail;
-       
-      try{
-           user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
-      }
-      catch(DataAccessException e)
-      {System.out.println("User does not exist "+e);
+      User_Detail user_detail=null;
+        try{
+          //loginType can be
+          //local=1
+          //fb=2
+          //twitter=3
+          // google=4
+          
+          switch(loginType)
+          {
+              case 1: {
+                  SQL =   "select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
+                          "OR \n" +
+                          "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
+              }break;
+              case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
+              SQL="select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
+              }
+          }
+          try{
+              user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
+          }
+          catch(DataAccessException e)
+          {System.out.println("User does not exist "+e);
           user_detail=null;
+          }
+          //return rslt;
+          conn.closeConnection();
+          
       }
-      //return rslt;
-        
-        return user_detail;
+      catch(SQLException ex)
+      {     Logger.getLogger(User_TblJDBCTemplate.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      return user_detail;
     }
     
     public int[] get_category_list_json(int uid)

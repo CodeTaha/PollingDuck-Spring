@@ -13,6 +13,7 @@ package model;
 
 import java.sql.*;
 import javax.sql.DataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class connectivity{
 private final String driver="com.mysql.jdbc.Driver";
@@ -22,6 +23,7 @@ private final String mysqlpass="";
 private final String mysqlurl="jdbc:mysql:///"+database_name;
 private Connection con=null;
 private DataSource dataSource;
+private JdbcTemplate jdbcTemplateObject;
 PreparedStatement st;
 ResultSet rs;
     public DataSource getDataSource() {
@@ -31,22 +33,29 @@ public void setDataSource(DataSource dataSource) throws SQLException {
       this.dataSource = dataSource;
       System.out.println("DataSource is set"); 
       System.out.println(dataSource);
-      con=dataSource.getConnection();
-      System.out.println("Connection set");
+      try{
+          con=dataSource.getConnection();
+           this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+      System.out.println("connected to db");
+      }
+      catch(Exception e)
+      {
+          System.out.println("Error in connectivity ="+e);
+      }
      
    }
+
 /* Adjust the above two as per the username
- * password combination of your MySql databse */
+     * password combination of your MySql databse */
+    public JdbcTemplate getJdbcTemplateObject() {
+        return jdbcTemplateObject;
+    }
 
 @SuppressWarnings("empty-statement")
 public connectivity() throws SQLException
 {
 
-    System.out.println("Creating Connectivity Object");
-    String[] arr=new String[3];
-    System.out.println("connected to db");
-       
-            
+    System.out.println("Creating Connectivity Object");            
 }
 public Connection getCon()
 {
@@ -89,5 +98,10 @@ public String[] getCategoryName(int cid) throws SQLException
     
     return rslt;
     
+}
+
+public void closeConnection() throws SQLException
+{
+    con.close();
 }
 }
