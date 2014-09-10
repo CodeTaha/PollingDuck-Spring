@@ -103,7 +103,10 @@
                      var bot=0;
                      var colmax=0;
                     var q_id=poll['qtn_json'][jw]['qtn_id'];
-                  
+                    var qtn_div="qtn_div_"+jw;
+                     $("#whole").append("<b>Question : "+poll['qtn_json'][jw]['qtn']+"</b>");
+                    $("#whole").append("<div id='"+qtn_div+"'></div>");
+                    
                 var choice=poll['qtn_json'][jw]['qtn_type'];    
                 switch(choice)
                 {
@@ -111,7 +114,7 @@
                     
                     
                     
-                    case ( (choice.match(/mcss/) )? choice : undefined ) :
+            case ( (choice.match(/mcss/) )? choice : undefined ) :
                                 {
                                     
                    // if(flagmcss===1)
@@ -135,6 +138,7 @@
                        for(var l=0;l<noOfOptions;l++)
                            
                  k++;
+             
              }
                 }
                 }
@@ -209,10 +213,7 @@
                     }
                     k++;
                   
-                    var qtn_div="qtn_div_"+j;
-                     $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("#whole").append("<div id='"+qtn_div+"'></div>");
-                    var ret=plotBar(qtn_div,j);
+                  var ret=plotBar(qtn_div,j);
                     
                     var retu=tablegen(qtn_div,j);
                 }
@@ -225,7 +226,7 @@
                                 
                                 
                                 
-             case ( (choice.match(/mcms/) )? choice : undefined ) :
+            case ( (choice.match(/mcms/) )? choice : undefined ) :
                     {
                      //   if(flagmcms===1)
                 {
@@ -406,9 +407,7 @@
                     first=arrayOptions;
                     
                     second=arrayOptions;
-                     var qtn_div="qtn_div_"+j;
-                      $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("#whole").append("<div id='"+qtn_div+"'></div>");
+                     
                       var ret=plotBar(qtn_div,j);
                       if(ret===0)
                       plotpie(qtn_div,j);
@@ -422,7 +421,7 @@
                      
                      break;
                      
-                     case ( (choice.match(/moc/) )? choice : undefined ) :
+            case ( (choice.match(/moc/) )? choice : undefined ) :
                                 {
                   for(var j=0;j<result[0]['qtn'].length;j++)
                 {
@@ -540,19 +539,17 @@
                     k++;
                     //console.log("call");
                     //console.log(jsonArr);
-                    var qtn_div="qtn_div_"+j;
-                    $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("#whole").append("<div id='"+qtn_div+"'></div>");
+                    
                     var ret=plotBar(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
             }
                 }
             
-                    break;
+                    
                                  }//case moc
-                                 
-                                  case ( (choice.match(/momc/) )? choice : undefined ) :
+                                 break;
+            case ( (choice.match(/momc/) )? choice : undefined ) :
                                 {
                   for(var j=0;j<result[0]['qtn'].length;j++)
                 {
@@ -668,10 +665,7 @@
                     
                     k++;
                     
-                    var qtn_div="qtn_div_"+j;
-                    $("#whole").append("<b>Question : "+poll['qtn_json'][j]['qtn']+"</b>");
-                    $("#whole").append("<div id='"+qtn_div+"'></div>");
-                    var ret=plotBar(qtn_div,j);
+                   var ret=plotBar(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
                 }
@@ -681,6 +675,45 @@
                     
                                  }//case momc
                                  break;
+            case ( (choice.match(/tb/) )? choice : undefined ) :
+                        {
+                            
+                          console.log("tb in");
+                 
+                   var jsonArr = [];
+                    for(var i=0;i<result.length;i++)
+            {
+                 
+                for(var j=0;j<result[0]['qtn'].length;j++)
+                {
+                if(poll['qtn_json'][j]['qtn_type']==="tb")
+                { 
+                    if(poll['qtn_json'][j]['qtn_id']===q_id)
+                    {
+                    var ans=result[i]['qtn'][j]['ans'];
+               
+                    if(ans[0]!==null)
+                    {
+                        for( io=0;io<ans[0].length;io++)
+                        {
+                           
+                    
+                        jsonArr.push({
+                            label:ans[0][io]
+                            });
+                        }
+                   
+                    var retu=tablegen(qtn_div,j);
+                    }
+                 }
+            }
+                }
+                
+            }
+            console.log(jsonArr);
+                        }
+                        
+                break;
                 }//switch  
                
         }//forloop
@@ -944,15 +977,15 @@ var relist=new Array();
          for(var t = 0 ; t < nOptn+1 ; t++)
          {     mcssArr[t]=0; }
           mcssArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
-       //  var  tANS = "<td>"+result[i]['qtn'][p]['ans'][0]+"</td>";
+       
          mcssArr[result[i]['qtn'][p]['ans'][0]]=1;
          
-              //  tUID = tUID + "<td>"+mcssArr[i1]+"</td>";
+             
          
                  relist.push(mcssArr);   
                     
            
-        // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+       
          
          console.log("relist data");
          console.log(relist);
@@ -1028,6 +1061,48 @@ var relist=new Array();
         
         
         }
+         
+        
+         if(poll['qtn_json'][j]['qtn_type']==="tb" )
+         {
+             
+               var clistJSON=new Array();
+           var header=new Array();
+           header[0]="USER";
+           header[1]="Answers";
+       
+        for(var i=0;i<header.length;i++)
+            clistJSON.push(header[i]);
+        
+        
+            var Tcolumns = [];
+                                              
+                             for (var i=0; i< clistJSON.length; i++ ) 
+                             {
+                         Tcolumns.push({
+                               "sTitle": clistJSON[i],
+                               "aTargets": [i]
+                           });
+       }
+var relist=new Array();
+           
+       for(var i=0;i<result.length;i++)
+      {
+        var nOptn = jsonArr.length;
+         var mcssArr = new Array(nOptn+1);
+         
+         mcssArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
+      
+        mcssArr[1]=[result[i]['qtn'][p]['ans'][0]];
+             
+         
+                 relist.push(mcssArr);   
+         console.log("relist data");
+         console.log(relist);
+      }
+      
+              
+         }
         
         
            if(poll['qtn_json'][j]['qtn_type']==="moc" || poll['qtn_json'][j]['qtn_type']==="momc" )
