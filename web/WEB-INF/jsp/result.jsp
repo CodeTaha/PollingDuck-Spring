@@ -39,10 +39,11 @@
         <script>
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll
+            var logged=${logged};
             console.log("Poll_Ans_Tbl");
             console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
             console.log(result);// use result which is the compilation of all the answers users have submitted
-            
+            console.log("logged"+logged);
           
            
    // console.log("mere niche no of options hai un questions k jinka type mcss hai. ");
@@ -95,6 +96,8 @@
     <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
         <h1>Poll Result!</h1>
         <script>
+                    if(logged==0)
+                        $("#whole").append("<p>still not a member..hurry..<a href='../../index'>sign up nw</a></p>");
   // $(document).ready(function(){       
                 $("#whole").append("<h1><center>TITLE : <b>"+poll['title']+"</b></center></h1>");
                 $("#whole").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'><img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a> <i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i></b></h2>");
@@ -1534,9 +1537,7 @@ var relist=new Array();
        }
        var ch=y;
      //table = tableToJson($('#tbl_'+lkj+'_wrapper').get(0));
-     if(poll['qtn_json'][lkj]['qtn_type']==="tb")
-       {}
-       else
+     
      {
      table = tableToJson($("#tbl_"+lkj).get(0));
        //current height
@@ -1544,6 +1545,11 @@ var relist=new Array();
         pdfseo.cellInitialize();
         $.each(table, function (i, row){
            
+           var cellwidth;
+           if(poll['qtn_json'][lkj]['qtn_type']==="tb")
+                cellwidth=50;
+            else
+                 cellwidth=15;
         if(ch>=ph)
         {
           //  pdfseo.addPage();
@@ -1560,7 +1566,7 @@ var relist=new Array();
                    flagj=0;
                }
                else
-                pdfseo.cell(2, ch,15, 10, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
+                pdfseo.cell(2, ch,cellwidth, 10, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
                 
              });
              
@@ -1578,7 +1584,7 @@ var relist=new Array();
                    flagj=0;
                }
                else
-                pdfseo.cell(2, ch,15, 10, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
+                pdfseo.cell(2, ch,cellwidth, 10, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
             
             });
                 ch=ch+10;

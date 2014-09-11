@@ -185,7 +185,10 @@ public class UrlController extends Parent_Controller{
             rslt=gson.toJson(poll_ans_tbl_list);
              
             model.addAttribute("result", rslt);
-           
+           if(checklogin(request))
+               model.addAttribute("logged", 1);
+           else
+               model.addAttribute("logged", 0);
            
             
             
