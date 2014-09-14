@@ -52,6 +52,8 @@ int uid=0;
       <link rel="stylesheet" href="../pages/resources/css/jquery-ui.css">
   <script src="../pages/resources/js/jquery.min.js"></script>
   <script src="../pages/resources/js/jquery-ui.js"></script>
+  <script src="../pages/resources/bootstrap/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="../pages/resources/bootstrap/css/bootstrap.css">
     <script>
         var followers,following;
          var profile=${profile}; 
@@ -83,7 +85,7 @@ int uid=0;
         var profile_pic =profile['profile_pic'];
         var categs = profile['category_list_json'];
         var exp_json = profile['exp_json'];
-         $("#user_everything").append('<h1>Name : '+name+'</h1><br/><a href="http://www.facebook.com/'+fbid+'" target="_blank">'+fbid+'</a>');
+         $("#user_everything").append('<h1> '+name+'</h1><br/><a href="http://www.facebook.com/'+fbid+'" target="_blank">'+fbid+'</a>');
 // <br/><p>'+city+'<br/>'+country+'<br/>'+dob+'<br/>'+email+'<br/>'+sex+'<br/>'+religion+'<br/>'+fish+'<br/>'+handle+'<br/>'+lc+'<br/>'+phone+'<br/>''<img src="'+profile_pic+'"></p>'    
 $("#user_everything").append('<br/><b>City </b>: '+city+'<br/><b> Country </b>: '+country+'<br/><b>Date Of Birth </b> : '+dob+'<br/><b> Email </b> : '+email+'<br/><b>Sex </b>: '+sex+'<br/><b> Religion </b>: '+religion+'<br/><b> Fishes </b> : '+fish+'<br/><b> Polling Duck Handle</b> : <i>'+handle+'</i><br/><b> Last Change </b> : '+lc+'<br/><b> Contact : </b>'+phone+'<br/>');
 $("#dp").append("<b> Profile Picture</b> <img width='50' height='50' src="+profile_pic+">").append("<br><b> Followers</b>:"+profile['follow']['followers'].length).append("<b> Following</b>:"+profile['follow']['following'].length);
@@ -172,8 +174,31 @@ $("#solvedPolls").append('<h3>Polls Solved </h3></br/>');
                      
         }   
             }
-           });  
-         
+           });
+           
+           
+           console.log(profile['follow']['followers']);
+           
+           console.log(profile['follow']['following']);
+           
+$("#following").append('<h3>Follows</h3></br/>');  
+           /* $.ajax({
+           type: "POST",       // the dNodeNameefault
+           url: "../viewFollowings",
+           data: { uidfollowings : profile['follow']['followers'] },
+           success: function(data){
+               
+               myFollowings=JSON.parse(data);
+              
+                  $("#following").append("<p><b>Handle : </b>"+myFollowings+"</p>");
+                
+           
+            }
+           }); */
+$("#followers").append('<h3>Followed By</h3></br/>');  
+
+
+
 });
 function pollResult(pid)
            {    
@@ -215,24 +240,51 @@ function follow(cmd)
     </head>
     <body>
         
-        <div id="user_everything"></div> 
-        <div id="dp"></div>
-        <div id="follUnfoll"></div>
-        <div id="usercateg">
+        <div id="user_everything" style="margin-left: 20px ; margin-top: 10px ; "></div> 
+        <div id="dp" style="margin-left: 20px ; margin-top: 10px ; "></div>
+        <div id="follUnfoll"style="margin-left: 20px ; margin-top: 10px ; "></div>
+        <div id="usercateg" style="margin-left: 20px ; margin-top: 10px ; ">
             <h2>User Experiences</h2><br/>
         </div> 
-        
-        <div id="timeline"><center> <h1> <b>TimeLine  </b></h1>
-                <div id="createdPolls">
-        
+     
+   <ul id="myTab1" class="nav nav-tabs" style="margin-left: 20px ; margin-top: 10px ; ">
+   <li class="active">
+      <a href="#createdPolls" data-toggle="tab">
+         Created Polls
+      </a>
+   </li>
+   <li><a href="#solvedPolls" data-toggle="tab">
+           Solved Polls
+       </a>
+   </li>
+   <li><a href="#following" data-toggle="tab">
+           Following
+       </a>
+   </li>
+   <li><a href="#followers" data-toggle="tab">
+           Followers
+       </a>
+   </li>
+   </ul>
+           <div id="timeline" class="tab-content"  style="margin-left: 20px ; margin-top: 10px ; "   >
+            
+               <div class="tab-pane fade in active" id="createdPolls" style="margin-left: 20px ; margin-top: 10px ; margin-bottom: 30px ">
+                
                 </div>
-                <div id="solvedPolls">
+                <div class="tab-pane fade" id="solvedPolls"style="margin-left: 20px ; margin-top: 10px; margin-bottom: 30px" >
              
                 </div>
-             </center>
+                <div class="tab-pane fade in active" id="following" style="margin-left: 20px ; margin-top: 10px ; margin-bottom: 30px ">
+                
+                </div>
+                <div class="tab-pane fade in active" id="followers" style="margin-left: 20px ; margin-top: 10px ; margin-bottom: 30px ">
+                
+                </div>
             
-        </div>
+           </div>
         
         
-    </body>
+        
+        
+        </body>
 </html>
