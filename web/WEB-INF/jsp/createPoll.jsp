@@ -101,7 +101,7 @@ $(document).ready(function(){
          qtypes="Qtype"+iq;
         $("#addQuestion").prop("disabled", true);
         $("#d3").append('<div id="'+divqid+'"></div>');
-        $("#"+divqid).append('Question: <input type="text" name="question" id="'+questions+'"/><br/>Question Type: <select id="'+qtypes+'" onchange="selector()"><option>Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
+        $("#"+divqid).append('Question: <input type="text" name="question" id="'+questions+'"/><br/>Question Type: <select id="'+qtypes+'" onchange="selector()"><option value="no_questiontype">Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
     }
     
     function selector()
@@ -145,13 +145,19 @@ $(document).ready(function(){
            {      
            switch(qtype)
            {
-            case 'mcss':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
-            case 'mcms':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
-            case 'tb':      {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');}break;
-            case 'moc':     {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
-            case 'momc':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
+            case 'mcss':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcms':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'tb':      {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'moc':     {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'momc':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'no_questiontype' :  {$("#t1").remove();$("#"+te).remove();alert("please select a question type");$("#submitqtn").prop("disabled",true);}break;
            }   
-             $("#"+te).append('<button onclick="submitQtn()">Submit Question</button>');  
+           if(qtype!='no_questiontype')
+           { 
+               
+             $("#"+te).append('<button id="submitqtn" onclick="submitQtn()">Submit Question</button>');  
+           }
+                
            }
         }
         else
@@ -160,28 +166,43 @@ $(document).ready(function(){
           {       
          switch(qtype)
         {
-            case 'mcss':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
-            case 'mcms':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
-            case 'tb':      {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');}break;
-            case 'moc':     {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
-            case 'momc':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
-        }
-          $("#"+tt).append('<button onclick="submitQtn()">Submit Question</button>');
-          }
+            case 'mcss':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcms':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'tb':      {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'moc':     {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'momc':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+             case 'no_questiontype' :  {$("#t1").remove();alert("please select a question type");$("#submitqtn").prop("disabled",true);}break;
+         }
+         if(qtype!='no_questiontype')
+           { 
+             
+          $("#"+tt).append('<button id="submitqtn" onclick="submitQtn()">Submit Question</button>');
+           } 
+                
+         }
           else
           {
          
          switch(qtype)
         {
-            case 'mcss':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
-            case 'mcms':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');}break;
-            case 'tb':      {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');}break;
-            case 'moc':     {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
-            case 'momc':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');}break;
+            case 'mcss':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcms':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'tb':      {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'moc':     {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'momc':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+             case 'no_questiontype' :  {$("#t1").remove();$("#"+tt).remove();alert("please select a question type");$("#submitqtn").prop("disabled",true);}break;
+                
         } 
-        //$("#"+tt).empty();
-        $("#"+tt).append('<button onclick="submitQtn()">Submit Question</button>');
-          }
+        if(qtype!='no_questiontype')
+           {  
+               
+           
+                $("#"+tt).append('<button id="submitqtn" onclick="submitQtn()">Submit Question</button>');
+           } 
+                
+                
+                
+         }
          } 
          // $("#"+qtypes).prop("disabled",true);
          console.log("ttval value: ");console.log(tt);
