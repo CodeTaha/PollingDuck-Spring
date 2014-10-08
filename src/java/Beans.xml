@@ -7,10 +7,10 @@
    <!-- Initialization for data source -->
    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-   <property name="url" value="jdbc:mysql://54.200.121.133/pollingduck"/><!--server:jdbc:mysql://54.200.121.133/pollingduck  local:jdbc:mysql:///pollingduck -->
-   <property name="username" value="PollicanDuck28"/><!-- root PollicanDuck28 -->
+   <property name="url" value="jdbc:mysql:///pollingduck"/><!--server:jdbc:mysql://54.200.121.133/pollingduck  local:jdbc:mysql:///pollingduck -->
+   <property name="username" value="root"/><!-- root PollicanDuck28 -->
    <!--<property name="password" value="Pollikan51^5272@MySql#$052013"/>-->
-   <property name="password" value="Pollikan51^5272@MySql#$052013"/>
+   <property name="password" value=""/>
    </bean>
 
    <!-- Definition for studentJDBCTemplate bean

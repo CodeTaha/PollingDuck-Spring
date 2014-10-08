@@ -33,56 +33,37 @@ public class User_TblJDBCTemplate {
    Gson gson=new Gson();
    String SQL="";
    connectivity conn=null;
+   private Connection con=null;
     public User_TblJDBCTemplate() throws SQLException
     {
-        try{
-    ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
      conn=(connectivity)context.getBean("connectivity");
-        }
-        catch(Exception e)
-        {
-            System.out.println("error creating object of User_TblJDBCTemplate="+e);
-        }
-      //this.dataSource=conn.getDataSource();
-      //this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-      this.jdbcTemplateObject=conn.getJdbcTemplateObject();
+      
      
+      this.jdbcTemplateObject = new JdbcTemplate(conn.getDataSource());
+      
     }
 
     public User_Detail authenticate(String username, String password, int loginType) {
       User_Detail user_detail=null;
-        try{
-          //loginType can be
-          //local=1
-          //fb=2
-          //twitter=3
-          // google=4
-          
-          switch(loginType)
-          {
-              case 1: {
-                  SQL =   "select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
-                          "OR \n" +
-                          "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
-              }break;
-              case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
-              SQL="select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
-              }
+      switch(loginType)
+      {
+          case 1: {
+              SQL =   "select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
+                      "OR \n" +
+                      "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
+          }break;
+          case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
+          SQL="select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
           }
-          try{
-              user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
-          }
-          catch(DataAccessException e)
-          {System.out.println("User does not exist "+e);
-          user_detail=null;
-          }
-          //return rslt;
-          conn.closeConnection();
-          
       }
-      catch(SQLException ex)
-      {     Logger.getLogger(User_TblJDBCTemplate.class.getName()).log(Level.SEVERE, null, ex);
-      }
+       try{
+           user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
+       }
+       catch(DataAccessException e)
+       {System.out.println("User does not exist "+e);
+       user_detail=null;
+       }
       return user_detail;
     }
     
@@ -244,7 +225,9 @@ public class User_TblJDBCTemplate {
         */
         
         try
-        {PreparedStatement st=conn.getCon().prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
+        {
+        con=conn.getDataSource().getConnection();
+        PreparedStatement st=con.prepareStatement("SELECT A.following,B.followers FROM login_tbl A, login_tbl B where A.uid=? and B.uid=?;");
         st.setInt(1,loggedin_user);
         st.setInt(2, profile_user);
         ResultSet rs=st.executeQuery();
@@ -274,13 +257,13 @@ public class User_TblJDBCTemplate {
        
         // IMPORTANT Make a transaction or a batch execution here
        
-        st=conn.getCon().prepareStatement("UPDATE login_tbl SET following=? WHERE uid=?;");
+        st=con.prepareStatement("UPDATE login_tbl SET following=? WHERE uid=?;");
         st.setObject(1, loggedin_user_following.toString());
         st.setObject(2,loggedin_user);   
         //System.out.println("query for following"+st);
         st.execute();
        //st.addBatch();
-        st=conn.getCon().prepareStatement("UPDATE login_tbl SET followers=? WHERE uid=?;");
+        st=con.prepareStatement("UPDATE login_tbl SET followers=? WHERE uid=?;");
         st.setObject(1, profile_user_followers.toString());
         st.setObject(2,profile_user);
         //System.out.println("query for followers"+st);
@@ -292,6 +275,10 @@ public class User_TblJDBCTemplate {
         catch(Exception e)
         {
             return false;
+        }
+        finally
+        {
+            con.close();
         }
     }
     public boolean updateExp(int uid,String cid_JSON,String exp)
@@ -350,6 +337,11 @@ public class User_TblJDBCTemplate {
        return true;
        
        
+    }
+    
+    public void closeConnection()
+    {
+        
     }
     
 }

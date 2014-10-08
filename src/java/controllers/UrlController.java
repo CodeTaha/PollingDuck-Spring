@@ -93,10 +93,9 @@ public class UrlController extends Parent_Controller{
        if(checklogin(request))
        {
            model.addAttribute("delimiter", "");
-           //model.addAttribute("uid",user_detail.getUid());
-           //model.addAttribute("handle",user_detail.getHandle());
-           model.addAttribute("user",gson.toJson(user_detail));
-           return "dashboard";
+           
+           model.addAttribute("user",gson.toJson(get_UserDetails(request)));
+           return "dashboard_ole";
        }
        else
        {
@@ -207,14 +206,21 @@ public class UrlController extends Parent_Controller{
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
        
         User_Detail profile=user.get_profile(handle);
+        User_Detail ud;
         String rslt=gson.toJson(profile);
-        checklogin(request);
-         
+        if(checklogin(request))
+        {
+            ud=get_UserDetails(request);
+        }
+        else
+        {
+            ud=null;
+        }
        model.addAttribute("profile", rslt);
        System.out.println("fol=");
-       if(user_detail != null)
+       if(ud != null)
        {try{
-          Follow follow=user_detail.getFollow();
+          Follow follow=ud.getFollow();
            String foll=gson.toJson(follow.getFollowers());
            System.out.println("fol="+foll);
            model.addAttribute("followers", gson.toJson(follow.getFollowers()));

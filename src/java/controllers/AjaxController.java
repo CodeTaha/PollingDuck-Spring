@@ -85,11 +85,12 @@ public class AjaxController extends Parent_Controller{
    public void viewPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        if(checklogin(request))
        {
+           User_Detail ud=get_UserDetails(request);
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String ts=request.getParameter("ts");
-        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listPolls(ts,user_detail.getUid(),user_detail.getCategory_list_json());
+        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listPolls(ts,ud.getUid(),ud.getCategory_list_json());
          System.out.println("view Polls PollJSON taha ts="+ts);
          //String pollJSON=gson.toJson(alist);
          String pollJSON=gson.toJson(poll_tbl);
@@ -160,6 +161,9 @@ public class AjaxController extends Parent_Controller{
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate();
+       if(checklogin(request))
+       {
+        User_Detail ud=get_UserDetails(request);
         String finalJSON=request.getParameter("finalJSON");
         int anonymous=Integer.parseInt(request.getParameter("anonymous"));
         int fish=Integer.parseInt(request.getParameter("fish"));
@@ -171,20 +175,22 @@ public class AjaxController extends Parent_Controller{
         System.out.print("ALIA BHAT cid JSON   "+cid_JSON);
        // System.out.print("ALIA BHAT exp   "+exp);
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
-        String notification= "Congratulations!! @"+ user_detail.getHandle() +" has solved your poll, "+poll_title+" and you earned "+(int)fish/2+" fish for that!!";
+        String notification= "Congratulations!! @"+ ud.getHandle() +" has solved your poll, "+poll_title+" and you earned "+(int)fish/2+" fish for that!!";
         boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_link,notification );
         if(anonymous==0)
         {
         boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);// adding fish for solving poll and not anonymously
         }
-       List<Exp_Json> expjsonlist =user_detail.getExp_json();
+       List<Exp_Json> expjsonlist =ud.getExp_json();
        String exp = expjsonlist.toString();
        System.out.print("Exp json  "+exp);
         user_tblJDBCTemplate.addreducefishes(poll_uid,(int)fish/2,1);// adding fish to user who created the poll
-	user_tblJDBCTemplate.updateExp(uid,cid_JSON,exp);
+	user_tblJDBCTemplate.updateExp(ud.getUid(),cid_JSON,exp);
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();  
         out.println(rslt);
+       }
+       
    }
    
     @RequestMapping(value = "/SignUpReg", method = RequestMethod.POST)
@@ -330,23 +336,25 @@ public class AjaxController extends Parent_Controller{
    
    @RequestMapping(value = "/follow", method = RequestMethod.POST)
    public void follow(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+       User_Detail ud=get_UserDetails(request);
        PrintWriter out = response.getWriter();
         checklogin(request);
         int puid = Integer.parseInt(request.getParameter("puid"));
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         User_TblJDBCTemplate user=new User_TblJDBCTemplate();
-        boolean rslt=user.follow_Unfollow(user_detail.getUid(), puid, cmd);
+        boolean rslt=user.follow_Unfollow(ud.getUid(), puid, cmd);
         out.println(rslt);
    }
    @RequestMapping(value = "/viewActivityData", method = RequestMethod.POST)
    public void viewActivityData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        if(checklogin(request))
        {
+           User_Detail ud=get_UserDetails(request);
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String ts=request.getParameter("ts");
-        Follow follow=user_detail.getFollow();
+        Follow follow=ud.getFollow();
        int arrtest[]=follow.getFollowing();
         List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listActivityPolls(ts,arrtest);
          System.out.println("view Polls PollJSON taha ts="+ts);
@@ -369,8 +377,8 @@ public class AjaxController extends Parent_Controller{
        Notification_TblJDBCTemplate notification_TblJDBCTemplate=new Notification_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
-        List<Notification> notifications=notification_TblJDBCTemplate.listNotifications(ts,user_detail.getUid());
+        User_Detail ud=get_UserDetails(request);
+        List<Notification> notifications=notification_TblJDBCTemplate.listNotifications(ts,ud.getUid());
  
          String pollJSON=gson.toJson(notifications);
          

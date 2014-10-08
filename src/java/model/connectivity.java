@@ -34,8 +34,8 @@ public void setDataSource(DataSource dataSource) throws SQLException {
       System.out.println("DataSource is set"); 
       System.out.println(dataSource);
       try{
-          con=dataSource.getConnection();
-           this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+          //con=dataSource.getConnection();
+          //this.jdbcTemplateObject = new JdbcTemplate(dataSource);
       System.out.println("connected to db");
       }
       catch(Exception e)
@@ -47,9 +47,7 @@ public void setDataSource(DataSource dataSource) throws SQLException {
 
 /* Adjust the above two as per the username
      * password combination of your MySql databse */
-    public JdbcTemplate getJdbcTemplateObject() {
-        return jdbcTemplateObject;
-    }
+    
 
 @SuppressWarnings("empty-statement")
 public connectivity() throws SQLException
@@ -57,13 +55,15 @@ public connectivity() throws SQLException
 
     System.out.println("Creating Connectivity Object");            
 }
-public Connection getCon()
-{
-    return con;
-}
+//public Connection getCon()
+//{
+//    return con;
+//}
 
 public int solvable(int pid, int uid) throws SQLException
     {
+        int rslt=0;
+    try{con=dataSource.getConnection();
     System.out.println("in connectivity > solvable() uid="+uid+" pid="+pid);
     st=con.prepareStatement("Select pid from poll_ans_tbl where pid=? and uid=?");
     st.setInt(1,pid);
@@ -73,18 +73,27 @@ public int solvable(int pid, int uid) throws SQLException
     rs=st.executeQuery();
     if(rs.next())
         {
-            return 0;
+            rslt= 0;
         }
     else
         {
-            return 1;
+            rslt= 1;
         }
-
+    }
+    catch(Exception e)
+    {
+        System.out.println("Error occurred in connectivity> solvable() ="+e);
+    }
+    finally
+    {
+        con.close();
+    }
+    return rslt;
     }
 
 public String[] getCategoryName(int cid) throws SQLException
 {// Returns category name on entering cid
-    //System.out.println("in connectivity > getCategoryName()");
+    con=dataSource.getConnection();
     st=con.prepareStatement("Select category_name,group_name from category_tbl where cid=?");
     st.setInt(1,cid);
     //System.out.println("query="+st);
@@ -98,10 +107,5 @@ public String[] getCategoryName(int cid) throws SQLException
     
     return rslt;
     
-}
-
-public void closeConnection() throws SQLException
-{
-    con.close();
 }
 }

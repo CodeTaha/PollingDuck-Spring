@@ -36,10 +36,10 @@ public class Parent_Controller {
     public boolean checklogin(HttpServletRequest request)
    {
        try{
-       checkSetCookie(request);
+       int cs=checkSetCookie(request);
        
    
-       if(user_detail!=null && cookiesSet)
+       if(user_detail!=null && cs==2)
        {
                if(uid==user_detail.getUid() && handle.equals(user_detail.getHandle()))
                {
@@ -101,7 +101,7 @@ public class Parent_Controller {
         return cat_list;
     }
     
-    void checkSetCookie(HttpServletRequest request)
+    public int checkSetCookie(HttpServletRequest request)
     {
         cookies= request.getCookies();
         int countcookies=0;
@@ -124,7 +124,27 @@ public class Parent_Controller {
         if(countcookies==2)
         {
             cookiesSet=true;
+            return 2;
         }
+        else
+        {
+            return 0;
+        }
+    }
+    
+    public User_Detail get_UserDetails(HttpServletRequest request) throws SQLException
+    {
+        User_Detail ud;
+        int cs= checkSetCookie(request);
+        if(cs==2)
+        {User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+        ud=user.get_profile(handle);
+        }
+        else
+        {
+            ud=null;
+        }
+        return ud;
     }
     
 }
