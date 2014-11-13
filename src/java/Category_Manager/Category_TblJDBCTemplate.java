@@ -36,7 +36,7 @@ public class Category_TblJDBCTemplate {
     }
 
     public List<Category> Category_list() {
-       String SQL = "select * from category_tbl";
+       String SQL = "select * from category_tbl ORDER BY group_name ASC, category_name ASC";
       List <Category> category = jdbcTemplateObject.query(SQL, new Category_Mapper());
       return category;
     }

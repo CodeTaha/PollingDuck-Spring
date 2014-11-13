@@ -68,6 +68,8 @@ public class UrlController extends Parent_Controller{
     
     @RequestMapping(value = "", method = RequestMethod.GET)
    public void index1(HttpServletRequest request,HttpServletResponse response) throws IOException {
+       Cookie cookie=set_Cookie("validity","xyz",24);
+        response.addCookie(cookie);
 	   response.sendRedirect("index");
    }
     

@@ -20,11 +20,12 @@
         <title>Welcome to PollingDuck project</title>
          <link href="pages/resources/select2/select2.css" rel="stylesheet"/>
         <link rel="stylesheet" href="pages/resources/css/jquery-ui-timepicker-addon.css" >
-        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
         <script src="pages/resources/js/jquery.min.js"></script>
         <script src="pages/resources/select2/select2.js"></script>
         <script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
         <script type="text/javascript" src="pages/resources/js/jquery-ui-timepicker-addon.js"></script>
+        
         <script type="text/javascript">
 var name;
 var username;
@@ -34,6 +35,7 @@ var link;
 var birthdate;
 var profile_pic;
  var cat_json="";
+ var cat_list=new Array();// maintains list for categories
  var red_url=window.location.search.replace("?", "").toString();
  var cat_list=new Array();
    var array2 = new Array();
@@ -47,13 +49,10 @@ var profile_pic;
           
            dateFormat:"mm/dd/yy" 
                    });
-    $("#category").select2({
-                                                            // multiple: true,
-                                                       placeholder:"Select The Categories you are interested in",
-                                                       maximumSelectionSize:20
-                                                       //allowClear: true,
-                                                       //tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
-                                                     });  
+   
+   
+                                                     
+    
     });
      window.fbAsyncInit = function() {
     FB.init({
@@ -152,7 +151,7 @@ var profile_pic;
    console.log(userid);
     console.log(email);
    console.log(link);
-    	$.ajax({
+    	/*$.ajax({
                                 type: "POST",       
                                 url: "viewUsersCategData",
                                 data: {},
@@ -160,7 +159,7 @@ var profile_pic;
                                     cat_json=JSON.parse(data);
                                          //   abc();
                                         }
-                                 });
+                                 });*/
   	$.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "loginFB",
@@ -181,10 +180,15 @@ var profile_pic;
                                            
                                            
                                         }
+                                        else if(data==0)
+                                        {
+                                            alert("login again");
+                                        }
+                                     
                                         else
                                         {
                                             $("#SignUp").show();
-                                        //    cat_json=JSON.parse(data);
+                                            cat_json=JSON.parse(data);
                                             document.getElementById("email").value =email;
                                             document.getElementById("email").readOnly = true;
                                             document.getElementById("dob").value =birthdate;
@@ -222,14 +226,65 @@ var profile_pic;
                array3[cat_json[i]['group']].push(cat_json[i]);   
           }  
         }
-       for(var i=0;i<array2.length;i++)
-       { $("#category").append("<b>"+array2[i]+"</b></br>");
-        for(var j=0;j<array3[array2[i]].length;j++)
-          $("#category").append("<input type='checkbox' id='"+array3[array2[i]][j].cid +"'value='"+array3[array2[i]][j].cid+"'>"+array3[array2[i]][j].category_name+"&nbsp;&nbsp;");
-      $("#category").append("</br>");
-       }
-     }
+        console.log("Tahas category list");
+        console.log(array2);
+        console.log(array3);
+    
+        for(var i=0;i<array2.length;i++)
+       { $("#accordion").append("<h3>"+array2[i]+"</h3><div id='cat_"+i+"'></div>");
         
+        for(var j=0;j<array3[array2[i]].length;j++)
+        {
+            $("#cat_"+i).append("<input class='cat_checkbox' type='checkbox' id='"+array3[array2[i]][j].cid +" 'value='"+array3[array2[i]][j].cid+"'>"+array3[array2[i]][j].category_name+"&nbsp;&nbsp;");
+        }
+          
+       }
+        $( "#accordion" ).accordion({
+      heightStyle: "fill"
+    });
+    $( "#accordion-resizer" ).resizable({
+      minHeight: 70,
+      minWidth: 200,
+      maxHeight:130,
+      resize: function() {
+        $( "#accordion" ).accordion( "refresh" );
+      }
+    });
+    $('.cat_checkbox').click(function() {//for checkbox
+       
+    var mcCbxCheck = $(this);
+    //console.log(mcCbxCheck.val())
+    if(mcCbxCheck.is(':checked')) {
+        if(cat_list.length<20)
+        {
+        addRemoveList(mcCbxCheck.val(),1);
+        }
+        else
+        { alert("You can select maximum of 20 categories");
+            return false;}
+    
+    }
+    else{
+       addRemoveList(mcCbxCheck.val(),0);
+        
+    }
+        });
+     }
+     
+     
+    
+    function addRemoveList(cat_id,addRemove)
+    {
+        if(addRemove==1)
+        {
+           cat_list.push(parseInt(cat_id));
+        }
+        else
+        {
+             cat_list.splice(cat_list.indexOf(cat_id), 1);
+        }
+        console.log(cat_list)
+    }
 	function Logout()
 	{
 		FB.logout(function(){document.location.reload();});
@@ -253,15 +308,26 @@ var profile_pic;
       var state=$("#state").val();
       var city=$("#city").val();
       var zip=$("#zip").val();
-      var religion=$("#religion").val();
+      var religion="";
       var sex=$('input[name=sex]:checked').val();
       var dob=$("#dob").val();
       var phone=$("#phone").val();
       var profile_pic=$("#profile_pic").val();
-      var category=$("#category").val();
+      var category;//$("#category").val();
+      for(var i=0; i<cat_list.length; i++)
+      {if(i==0)
+          {category="["+cat_list[i];}
+       else
+       {
+          category=category+","+cat_list[i];
+      }
+      }
       var fb=username;// Enter fb username here//it was testfb earlier
       
-      category=JSON.stringify(category);
+      category=JSON.stringify(category+"]");
+      category=JSON.stringify(cat_list);
+      console.log(category);
+     
       $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "SignUpReg",
@@ -280,8 +346,16 @@ var profile_pic;
                                 }
                         });
   }
+  
 </script>
-
+        <style>
+             #accordion-resizer {
+    padding: 10px;
+    width: 150px;
+    height: 120px;
+  }
+        </style>
+        
     </head>
 
     <body>
@@ -315,10 +389,7 @@ Logs:<br/>
                     <td>Name</td>
                     <td><input type="text" id="name" name="name"/></td>
                 </tr>
-                <tr>
-                    <td>Categories</td>
-                    <td><select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select></td>
-                </tr>
+                
                 <tr>
                     <td>E-mail</td>
                     <td><input type="text" id="email" name="email"/></td>
@@ -339,17 +410,13 @@ Logs:<br/>
                     <td>Zip</td>
                     <td><input type="text" id="zip" name="zip"/></td>
                 </tr>
-                <tr>
-                    <td>Religion</td>
-                    <td><input type="text" id="religion" name="religion"/></td>
-                </tr>
+              
                 <tr>
                     <td>Sex</td>
                     <td> 
                         <input type="radio"  name="sex" value="M" checked/>Male
                         <input type="radio"  name="sex" value="F"/>Female
-                        <input type="radio"  name="sex" value="T"/>Transgender
-                        <input type="radio"  name="sex" value="O"/>I do not want to mention
+                        <input type="radio"  name="sex" value="O"/>I prefer not want to mention
                     </td>
                 </tr>
                 <tr>
@@ -361,15 +428,12 @@ Logs:<br/>
                     <td>Phone</td>
                     <td><input type="text" id="phone" name="phone"/></td>
                 </tr>
-               
-               
-                <tr>
-                    <td></td>
-                    <td>
-                        <button onclick="validate()">Register</button>
-                    </td>
-                </tr>
+             
             </table>
+                <div id="accordion">
+    
+                </div>
+             <button onclick="validate()">Register</button>
             </div>
 </div>
         <form action="login" method="post">
