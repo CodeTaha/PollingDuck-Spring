@@ -1,59 +1,93 @@
-<%@page import="com.google.gson.Gson"%>
-<% 
-Cookie[] cookies = request.getCookies();
-String handle="";
-int uid=0;
-//User_Detail user_detail;
-Gson gson=new Gson();
-        boolean foundCookie = false;
 
-        for(int i = 0; i < cookies.length; i++) { 
-            Cookie cookie1 = cookies[i];
-            if(cookie1.getName().equals("handle"))
-            {
-                handle=cookie1.getValue();
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("uid"))
-            {
-                uid=Integer.parseInt(cookie1.getValue());
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("User_Obj"))
-            {
-                System.out.println(cookie1.getValue());
-               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
-                foundCookie = true;
-            }
-        }  
+<%@include file="header.jspf" %>
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                     <li>
+                        <a href="home"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    
+                    <li>
+                        <a href="viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a>
+                    </li>
+                    <li class="active">
+                        <a href="createPoll"><i class="fa fa-fw fa-edit"></i> Create Poll</a>
+                    </li>
+                    <!--<li>
+                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+                    </li>-->
+                </ul>
+            </div>
+                </nav>
+            <!-- /.navbar-collapse do not change uptil here-->
+      
 
-        if (!foundCookie) {
-            System.out.println("cookies not found 2");
-            response.sendRedirect("index");
-        }
-%>
-<html>
-<head>
-<title>form</title>
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Create Poll
+                        </h1>
+                        <div id='d1'>
+ Title:<input type="text" name="t1" id="title"><br/> 
+ Description:<textarea name="t1" id="desc"></textarea><br/>
  
-<script src="pages/resources/js/jquery.js"></script>
-<script src="pages/resources/js/jquery.min.js"></script>
-<script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
-<script type="text/javascript" src="pages/resources/js/jquery.datetimepicker.js"></script>
-  <script type="text/javascript" src="pages/resources/js/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="pages/resources/css/jquery.datetimepicker.css" >
-         <link rel="stylesheet" href="pages/resources/css/jquery-ui.css" >
-         <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.css" >
-          <link rel="stylesheet" href="pages/resources/css/jquery-ui.structure.css" >
-                   <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.css" >
-           <link rel="stylesheet" href="pages/resources/css/jquery-ui.theme.min.css" >
-           
-<link href="pages/resources/select2/select2.css" rel="stylesheet"/>
-<script src="pages/resources/select2/select2.js"></script>
-</head>
-<body>
-<!--<h1>create poll</h1>-->
+</div>
+Category :<select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select>
+
+<!--Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>-->
+<div id="datetimediv">
+     Start Date  : <input type="text" id="sd" name="sd"/> 
+     End Date  : <input type="text" id="ed" name="ed"/>
+</div>
+<div id='d2'>
+
+
+</div>
+<div id='d3'>
+
+
+</div>
+<div id='d1'>
+    <button onclick="addQuestion()" id="addQuestion">Add Question</button>
+    
+    <input type='button'onclick="send()" value='Submit Survey' id='Submit'>
+</div>
+                    </div>
+                </div>
+                
+
+                 
+                             
+                                 
+                                </div>
+                            </div>
+</div>
  
+
 <script type="text/javascript">
 var iq=0,ie=0,del=0,ttval=0,mapper=0,editmapper=0;
 var questions,qtypes,divqid,answer,column,row,divsqid,buttonid,buttonval,buttondelid,buttondelval,diveditid,tt,selectbutton,flag=0,diveditid,sss,flag1=0;
@@ -487,31 +521,6 @@ $(document).ready(function(){
     
     
 </script>
-<div id='d1'>
- Title:<input type="text" name="t1" id="title"><br/> 
- Description:<textarea name="t1" id="desc"></textarea><br/>
- 
-</div>
-Category :<select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select>
-
-<!--Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>-->
-<div id="datetimediv">
-     Start Date  : <input type="text" id="sd" name="sd"/> 
-     End Date  : <input type="text" id="ed" name="ed"/>
-</div>
-<div id='d2'>
-
-
-</div>
-<div id='d3'>
-
-
-</div>
-<div id='d1'>
-    <button onclick="addQuestion()" id="addQuestion">Add Question</button>
-    
-    <input type='button'onclick="send()" value='Submit Survey' id='Submit'>
-</div>
 
 
 

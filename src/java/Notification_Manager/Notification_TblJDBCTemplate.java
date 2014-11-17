@@ -49,12 +49,12 @@ public class Notification_TblJDBCTemplate {
        
         if(ts.equals(""))
         {
-            SQL ="SELECT * FROM notifications where uid=? Order by ts desc limit 5;"; 
+            SQL ="SELECT * FROM notifications where uid=? Order by ts desc limit 15;"; 
             notification_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Notification_Mapper());
         }
         else
         {
-            SQL ="SELECT * FROM notifications where uid=? and ts<? Order by ts desc limit 5"; 
+            SQL ="SELECT * FROM notifications where uid=? and ts<? Order by ts desc limit 15"; 
             notification_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid,ts}, new Notification_Mapper());
         }
       

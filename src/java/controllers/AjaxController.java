@@ -233,22 +233,8 @@ public class AjaxController extends Parent_Controller{
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         cookies= request.getCookies();
-        boolean valid=false;
-        for (Cookie cookie1 : cookies) 
-           {
-            switch (cookie1.getName()) 
-            {
-               case "validity":
-                    System.out.println("Got validity cookie");// checks for nuance
-                   
-                   valid=true;
-                   System.out.println("valid");
-                   break;
-            
-            }
-           }
-        if(valid)
-        {
+      
+       
         String username= request.getParameter("username");
         String password= request.getParameter("password");// its actually e-mail
         user_detail=user.authenticate(username,password,2);
@@ -279,9 +265,7 @@ public class AjaxController extends Parent_Controller{
 //            model.addAttribute("cat_list", cat_json);
             out.println(cat_json);
         }
-   }
-        else
-            out.println(0);
+   
    }
     
    @RequestMapping(value = "/viewMyPollsData", method = RequestMethod.POST)

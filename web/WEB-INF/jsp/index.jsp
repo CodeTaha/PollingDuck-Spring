@@ -67,18 +67,18 @@ var profile_pic;
 	{
  	 if (response.status === 'connected') 
   	{
-  		document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
+  		//document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
   		//SUCCESS
   		
   	}	 
 	else if (response.status === 'not_authorized') 
     {
-    	document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
+    	//document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
 
 		//FAILED
     } else 
     {
-    	document.getElementById("message").innerHTML +=  "<br>Logged Out";
+    	//document.getElementById("message").innerHTML +=  "<br>Logged Out";
 
     	//UNKNOWN ERROR
     }
@@ -125,8 +125,8 @@ var profile_pic;
 	  	  str +="<b>Gender:</b> "+response.gender+"<br>";
 	  	  str +="<input type='button' value='Get Photo' onclick='getPhoto();'/>";
 	  	  str +="<input type='button' value='Logout' onclick='Logout();'/>"; 
- document.getElementById("status").innerHTML=str;  
- document.getElementById("imgbut").innerHTML="";
+  
+ $("#imgbut").hide();
     
  name = response.name;
  username=response.username;
@@ -180,10 +180,7 @@ var profile_pic;
                                            
                                            
                                         }
-                                        else if(data==0)
-                                        {
-                                            alert("login again");
-                                        }
+                                       
                                      
                                         else
                                         {
@@ -359,44 +356,39 @@ var profile_pic;
     </head>
 
     <body>
-        
-        <div id="status">
- </div>
- <div id="details">
-     
- </div>
-        <div id="imgbut">
-<img src="pages/resources/images/LoginWithFacebook.png" style="cursor:pointer;" onclick="Login()"/>
+        <div style="float:left; width:70%; background-color: #222222">
+            <br><br><br><br><br><br><br><br><br>
+        </div>   
+
+        <div style="float:right; width:30%;"><div id="imgbut">
+<img src="pages/resources/img/fbconnect.png" style="cursor:pointer; width:50px;" onclick="Login()"/>
 <br/>
 </div>
-<br/><br/><br/><br/><br/>
-<div id="message">
-Logs:<br/>
-</div>
+
 <div id="SignUp">
     <div id="signUpForm">
-             <h1>Fill Up!</h1>
+             <h2>Register!</h2>
             <table>
                 <tr>
                     <td>Profile <input type="hidden" id="profile_pic" name="profile_pic"/></td></td>
                     <td id="dp"></td>
                 </tr>
                 <tr>
-                    <td>Handle</td>
-                    <td><input type="text" id="handle" name="handle"/></td>
+                    <td>Handle @:</td>
+                    <td><input type="text" id="handle" name="handle" required/></td>
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td><input type="text" id="name" name="name"/></td>
+                    <td><input type="text" id="name" name="name" required/></td>
                 </tr>
                 
                 <tr>
                     <td>E-mail</td>
-                    <td><input type="text" id="email" name="email"/></td>
+                    <td><input type="text" id="email" name="email" required/></td>
                 </tr>
                 <tr>
                     <td>Country</td>
-                    <td><input type="text" id="country" name="country"/></td>
+                    <td><input type="text" id="country" name="country" required/></td>
                 </tr>
                 <tr>
                     <td>State</td>
@@ -416,7 +408,6 @@ Logs:<br/>
                     <td> 
                         <input type="radio"  name="sex" value="M" checked/>Male
                         <input type="radio"  name="sex" value="F"/>Female
-                        <input type="radio"  name="sex" value="O"/>I prefer not want to mention
                     </td>
                 </tr>
                 <tr>
@@ -436,13 +427,13 @@ Logs:<br/>
              <button onclick="validate()">Register</button>
             </div>
 </div>
-        <form action="login" method="post">
+        <!--<form action="login" method="post">
             User id <input type="text" name="username"><br>
             password <input type="password" name="password">
             <input type="submit"/>
-        </form>
+        </form>-->
         
-        <a href="SignUp">New User?</a>
-      
+       
+        </div>
     </body>
 </html>
