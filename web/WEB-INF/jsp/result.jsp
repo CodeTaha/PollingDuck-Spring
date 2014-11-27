@@ -752,11 +752,11 @@ var yAxis = d3.svg.axis()
 var svg = d3.select(qtn_div_pie).append("svg")
 .attr("id", "svg_"+p)
 .attr("style","background-color:white")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
+.attr("width", width + margin.left + margin.right+10 )
+.attr("height", height + margin.top + margin.bottom+10 )
 .append("g")
 .attr("transform",
-"translate(" + margin.left + "," + margin.top + ")");
+"translate(" + width + "," + margin.top + ") rotate (90) ");
 
 //d3.json("bars", function() {
   
