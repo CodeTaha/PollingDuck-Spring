@@ -38,7 +38,7 @@ Gson gson=new Gson();
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=2">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
   <!-- jQuery -->
@@ -56,9 +56,9 @@ Gson gson=new Gson();
     <title>Welcome <%=handle %></title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="${delimiter}pages/resources/template/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${delimiter}pages/resources/template/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Custom CSS-->
     <link href="${delimiter}pages/resources/template/css/sb-admin.css" rel="stylesheet">
 
     <!-- Morris Charts CSS 
@@ -78,9 +78,9 @@ Gson gson=new Gson();
     var notify=new Array();
     var ts="";
     var canLoadMore=true;
-   
+   $("#alert_box").hide();
                  loadData();
-              
+           
          
             function loadData()
             {
@@ -130,12 +130,12 @@ Gson gson=new Gson();
                           if(notify_temp[i]["checked"]===0)
                           {
                               //$("#notifications").append("<div id=n_"+notify_temp[i]["nid"]+" onclick=openLink("+notify_temp[i]["checked"]+","+notify_temp[i]["nid"]+")><a href="+notify_temp[i]["link"]+" target='blank'>"+notify_temp[i]["notification"]+"</a></div>");
-                              $("#notifications").append("<li onclick=openLink("+notify_temp[i]["checked"]+","+notify_temp[i]["nid"]+")><a href="+notify_temp[i]["link"]+">"+notify_temp[i]["notification"]+" <span class='label label-danger'>new</span></a></li>");
+                              $("#notifications").append("<div class='row' style='background-color:#D7FFEF;'><div class='col-xs-12' onclick=openLink("+notify_temp[i]["checked"]+","+notify_temp[i]["nid"]+")><a href="+notify_temp[i]["link"]+" style='text-decoration: none;'>"+notify_temp[i]["notification"]+" <span class='label label-danger'>new</span></a></div></div>");
                               //$("#n_"+notify_temp[i]["nid"]).css("background-color","white");
                           }
                           else
                           {
-                              $("#notifications").append("<li><a href="+notify_temp[i]["link"]+">"+notify_temp[i]["notification"]+" <span class='label label-default'>seen</span></a></li>");
+                              $("#notifications").append("<div class='row' style='background-color:white;'><div class='col-xs-12'><a href="+notify_temp[i]["link"]+" style='text-decoration: none;'>"+notify_temp[i]["notification"]+" <span class='label label-default'>seen</span></a></div></div>");
                               //$("#n_"+notify_temp[i]["nid"]).css("background-color","grey");
                           }
                       }
@@ -162,14 +162,65 @@ Gson gson=new Gson();
                 });
                 }
             }
+            /* make the API call */
+function Alerts(alert_type,alert_mesg)
+  {
+       $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
+  }
    </script>
 </head>
 
 <body>
-
-    <div id="wrapper">
-
-        <!-- Navigation -->
+<div id='alert_box'>
+        
+</div>
+   
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+         <img src="pages/resources/img/logo.png" style="width: 45px;height: 45px;margin-left: 35px;padding-top: 5px;"/>
+                <a class="navbar-brand" href="index"  style="width:50px; height:50px;">Pollican</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="${dashboard_active}"><a href="home"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a></li>
+            <li class="${viewpoll_active}"><a href="viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a></li>
+            <li class="${createpoll_active}"><a href="createPoll"><i class="fa fa-fw fa-edit"></i> Create Poll</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification_window" ><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown" id="notifications" style="max-height: 260px;
+ overflow: auto; width:200px;">
+                        
+                        
+                    </ul>
+                </li>
+            <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <%=handle %> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="profile/<%=handle%>"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        
+                        <li class="divider"></li>
+                        <li>
+                            <a href="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <%-- <div id="wrapper">    
+    <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -184,59 +235,6 @@ Gson gson=new Gson();
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-                <!--<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-footer">
-                            <a href="#">Read All New Messages</a>
-                        </li>
-                    </ul>
-                </li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification_window" ><i class="fa fa-bell"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu alert-dropdown" id="notifications" style="max-height: 260px;
@@ -251,16 +249,11 @@ Gson gson=new Gson();
                         <li>
                             <a href="profile/<%=handle%>"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
-                        <!--<li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>-->
+                        
                         <li class="divider"></li>
                         <li>
                             <a href="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
-            </ul>
+            </ul>--%>

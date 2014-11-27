@@ -117,7 +117,7 @@ public class Poll_TblJDBCTemplate  {
       List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper(conn));
       return poll_tbl;
 }
-   public List<Poll_Tbl> listActivityPolls(String ts, int [] following) {
+   public List<Poll_Tbl> listActivityPolls(String ts, int [] following,int[] user_cat_list,int uid) {
         System.out.println("in Poll_tblJDBCTemplate >listPolls()");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
@@ -127,17 +127,27 @@ public class Poll_TblJDBCTemplate  {
         String fp = Arrays.toString(following);
         fp=fp.replace("[","");
         fp=fp.replace("]","");
+        String likeClause=","+user_cat_list[0]+",";
+        for(int i=1; i<user_cat_list.length;i++)
+        {
+            likeClause=likeClause+"|,"+user_cat_list[i]+",";
+        }
         System.out.println("neha sharma ..."+fp);
+        if(fp.equals(""))
+        {
+            fp="0";
+        }
         List <Poll_Tbl> poll_tbl;
+        //"SELECT * FROM poll_tbl where (cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)) and (start_ts<=? and end_ts>=?) Order by start_ts desc limit 5;"; //"select * from poll_tbl";
         if(ts.equals(""))
         {System.out.println("in listPolls() if");
-            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<=? and end_ts>=? and uid in ("+fp+") Order by start_ts desc"; //"select * from poll_tbl";
-            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{date,date}, new Poll_Tbl_Mapper(conn));
+            SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{date,date,uid}, new Poll_Tbl_Mapper(conn));
         }
         else
         { System.out.println("in listPolls() else");
-            SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<? and end_ts>=? and uid in ("+fp+") Order by start_ts desc limit 5"; //"select * from poll_tbl";
-            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,date}, new Poll_Tbl_Mapper(conn));
+            SQL ="SELECT * FROM poll_tbl where start_ts<? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,date,uid}, new Poll_Tbl_Mapper(conn));
         }
       
       return poll_tbl;

@@ -58,7 +58,7 @@ public class User_Detail_Mapper implements RowMapper<User_Detail>
                     user.setFb(rs.getString("fb"));
                     user.setFish(rs.getInt("fish"));
                    user.setLc(rs.getString("lc"));
-                   user.setName(rs.getString("name"));
+                   user.setName(rs.getString("username"));
                    user.setPhone(rs.getString("phone"));
                    user.setProfile_pic(rs.getString("profile_pic"));
                    user.setReligion(rs.getString("religion"));
@@ -70,7 +70,7 @@ public class User_Detail_Mapper implements RowMapper<User_Detail>
                     System.out.println("In User_Detail_Mapper row3");
                     user.setUid(rs.getInt("uid"));
                     user.setHandle(rs.getString("handle"));
-                    user.setName(rs.getString("name"));
+                    user.setName(rs.getString("username"));
                     user.setProfile_pic(rs.getString("profile_pic"));
                     String followers=rs.getString("followers");
                     String following=rs.getString("following");

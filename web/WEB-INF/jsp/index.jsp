@@ -24,8 +24,9 @@
         <script src="pages/resources/js/jquery.min.js"></script>
         <script src="pages/resources/select2/select2.js"></script>
         <script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="pages/resources/js/jquery-ui-timepicker-addon.js"></script>
-        
+        <!--<script type="text/javascript" src="pages/resources/js/jquery-ui-timepicker-addon.js"></script>-->
+        <script src="pages/resources/template/js/bootstrap.min.js"></script>
+        <link href="pages/resources/template/css/bootstrap.css" rel="stylesheet">
         <script type="text/javascript">
 var name;
 var username;
@@ -34,6 +35,7 @@ var email;
 var link; 
 var birthdate;
 var profile_pic;
+var gender;
  var cat_json="";
  var cat_list=new Array();// maintains list for categories
  var red_url=window.location.search.replace("?", "").toString();
@@ -45,12 +47,14 @@ var profile_pic;
         
        
         $("#SignUp").hide();
-        $("#dob").datepicker({
+        $("#alert_box").hide();
+        /*$("#dob").datepicker({
           
            dateFormat:"mm/dd/yy" 
-                   });
+                   });*/
    
-   
+        $('#dob').datepicker();
+          
                                                      
     
     });
@@ -67,8 +71,7 @@ var profile_pic;
 	{
  	 if (response.status === 'connected') 
   	{
-  		//document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
-  		//SUCCESS
+  		getUserInfo();
   		
   	}	 
 	else if (response.status === 'not_authorized') 
@@ -97,69 +100,42 @@ var profile_pic;
   			{
   	    	 console.log('User cancelled login or did not fully authorize.');
    			}
-		 },{scope: 'email,user_photos,user_videos,user_location,user_hometown,user_birthday'});
-	
-
-	
+		 },{scope: 'email,user_location,user_hometown,user_birthday,user_friends,user_interests'});
+	}
+function Logout()
+	{
+		FB.logout(function(){document.location.reload();});
 	}
 
+  // Load the SDK asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
   function getUserInfo() {
 	    FB.api('/me', function(response) {
   
-	var str="<b>Name</b> : "+response.name+"<br>";
-	  	  str +="<b>Link: </b>"+response.link+"<br>";
-	  	  str +="<b>Username:</b> "+response.username+"<br>";
-	  	  str +="<b>id: </b>"+response.id+"<br>";
-	  	  str +="<b>Email:</b> "+response.email+"<br>";
-                  
-	  	
-                  if(response.location!==undefined)
-                  {
-	  	  str +="<b>Location:</b> "+response.location.name+"<br>";
-                  }
-                  else 
-                  str +="<b>Location:</b> Private <br>";
-              
-	  	  str +="<b>Birthday:</b> "+response.birthday+"<br>";
-                  
-	  	  str +="<b>Gender:</b> "+response.gender+"<br>";
-	  	  str +="<input type='button' value='Get Photo' onclick='getPhoto();'/>";
-	  	  str +="<input type='button' value='Logout' onclick='Logout();'/>"; 
-  
- $("#imgbut").hide();
-    
+ 
+  console.log('response');
+    console.log(response);
+      console.log('responseend');
  name = response.name;
  username=response.username;
  userid = response.id;
  email = response.email;
  link = response.link; 
  birthdate = response.birthday;
+ gender=response.gender;
  //profile_pic=response.data.url;
  FB.api('/me/picture?type=normal', function(response) {
                   profile_pic=response.data.url;
-                  
-                  document.getElementById("profile_pic").value=profile_pic;
-                  $("#dp").append("<img src='"+profile_pic+"'/>")
+               
+                  $("#dp").empty().append("<img src='"+profile_pic+"'/>");
     });
- 
-                  
 
-
-                  
-   console.log(name);
-    console.log(username);
-   console.log(userid);
-    console.log(email);
-   console.log(link);
-    	/*$.ajax({
-                                type: "POST",       
-                                url: "viewUsersCategData",
-                                data: {},
-                                success: function(data){
-                                    cat_json=JSON.parse(data);
-                                         //   abc();
-                                        }
-                                 });*/
   	$.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "loginFB",
@@ -191,6 +167,15 @@ var profile_pic;
                                             document.getElementById("dob").value =birthdate;
                                             document.getElementById("email").readOnly = true;
                                             document.getElementById("name").value=name;
+                                            if(gender=='female')
+                                            {
+                                                $("#sex_f").attr('checked', 'checked');
+                                                
+                                            }
+                                            else
+                                            {
+                                                $("#sex_m").attr('checked', 'checked');
+                                            }
                                             console.log(cat_json);
                                            
                                           /*    for(var i=0; i<cat_json.length; i++)
@@ -200,7 +185,7 @@ var profile_pic;
                                                         }
                                                        
                                            */
-                                             abc();
+                                             get_accordion();
                                                          
                                             
                                         }
@@ -210,7 +195,7 @@ var profile_pic;
                         
     });
     }
-	function abc()
+	function get_accordion()
      {  for(var i=0; i<cat_json.length;i++)
         { if( array2.indexOf(cat_json[i]['group'])===-1)
             {
@@ -223,10 +208,9 @@ var profile_pic;
                array3[cat_json[i]['group']].push(cat_json[i]);   
           }  
         }
-        console.log("Tahas category list");
         console.log(array2);
         console.log(array3);
-    
+    $("#accordion").empty();
         for(var i=0;i<array2.length;i++)
        { $("#accordion").append("<h3>"+array2[i]+"</h3><div id='cat_"+i+"'></div>");
         
@@ -257,7 +241,7 @@ var profile_pic;
         addRemoveList(mcCbxCheck.val(),1);
         }
         else
-        { alert("You can select maximum of 20 categories");
+        { Alerts('alert-danger',"You can select maximum of 20 categories");
             return false;}
     
     }
@@ -266,6 +250,7 @@ var profile_pic;
         
     }
         });
+       $( "#accordion_div" ).hide(); 
      }
      
      
@@ -280,36 +265,45 @@ var profile_pic;
         {
              cat_list.splice(cat_list.indexOf(cat_id), 1);
         }
-        console.log(cat_list)
+        
     }
-	function Logout()
-	{
-		FB.logout(function(){document.location.reload();});
-	}
-
-  // Load the SDK asynchronously
-  (function(d){
-     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement('script'); js.id = id; js.async = true;
-     js.src = "//connect.facebook.net/en_US/all.js";
-     ref.parentNode.insertBefore(js, ref);
-   }(document));
+     var handle;
+      var name;
+      var email_i;
+      var country;
+      var state;
+      var city;
+      var zip;
+      var religion;
+      var sex;
+      var dob;
+      var phone;
+    function select_categories()
+    {
+       handle=$("#handle").val();
+       name=$("#name").val();
+       email_i=email;
+       country="";//$("#country").val();
+       state="";//$("#state").val();
+       city="";//$("#city").val();
+       zip="";//$("#zip").val();
+       religion="";
+       sex=$('input[name=sex]:checked').val();
+       dob=$("#dob").val();
+       phone=$("#phone").val();
+        if(handle==null || handle==''|| name==null||name=='')
+      {alert();
+          return;
+      }
+        
+        $("#signUpForm").hide();
+        $("#accordion_div").show();
+    }
    
    function validate()
   {
-      var handle=$("#handle").val();
-      var name=$("#name").val();
-      var email=$("#email").val();
-      var country=$("#country").val();
-      var state=$("#state").val();
-      var city=$("#city").val();
-      var zip=$("#zip").val();
-      var religion="";
-      var sex=$('input[name=sex]:checked').val();
-      var dob=$("#dob").val();
-      var phone=$("#phone").val();
-      var profile_pic=$("#profile_pic").val();
+      
+      //var profile_pic=$("#profile_pic").val();
       var category;//$("#category").val();
       for(var i=0; i<cat_list.length; i++)
       {if(i==0)
@@ -329,7 +323,7 @@ var profile_pic;
                                 type: "POST",       // the dNodeNameefault
                                 url: "SignUpReg",
                                 data: {handle:handle,name:name,email:email,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
-                                success: function(data){alert(data);
+                                success: function(data){
                                        if(red_url!=="" && red_url.indexOf("red_url")!==-1)
                                                 {
 
@@ -343,7 +337,16 @@ var profile_pic;
                                 }
                         });
   }
-  
+  function SignUp()
+  {
+      
+    //$("#alert_box").append("<div class='bs-example' ><div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Sorry for the inconvenience!</strong>As we are currently developing our system and we want to keep scamters away. Please use <strong>Facebook login</strong></div></div>").show();
+      Alerts('alert-warning','<strong>Sorry for the inconvenience!</strong>As we are currently developing our system and we want to keep scamters away. Please use <strong>Facebook login</strong>');
+  }
+  function Alerts(alert_type,alert_mesg)
+  {
+       $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
+  }
 </script>
         <style>
              #accordion-resizer {
@@ -356,77 +359,117 @@ var profile_pic;
     </head>
 
     <body>
-        <div style="float:left; width:70%; background-color: #222222">
-            <br><br><br><br><br><br><br><br><br>
-        </div>   
+        <div id='alert_box'>
+        
+        </div>
+        <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+         <img src="pages/resources/img/logo.png" style="width: 45px;height: 45px;margin-left: 35px;padding-top: 5px;"/>
+                <a class="navbar-brand" href="index"  style="width:50px; height:50px;">Pollican</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+         
+          <ul class="nav navbar-nav navbar-right">
+              <li>
+                  
+                    <img src="pages/resources/img/fbconnect.png" style="cursor:pointer; width: 130px;height: 40px;margin-top: 5px;" onclick="Login()" id='fb_login_btn'/>
+              </li>
+              <li>
+                    <button type="button" class="btn btn-primary" style="margin-top: 9px;" onclick="SignUp()">Sign-up</button>
+              </li>
+              
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+       <div id="myCarousel" class="col-sm-4 col-md-7 col-lg-8 carousel slide">
+   <!-- Carousel indicators -->
+   <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+   </ol>   
+   <!-- Carousel items -->
+   <div class="carousel-inner">
+      <div class="item active">
+         <img src="pages/resources/images/slide1.jpg" alt="First slide">
+      </div>
+      <div class="item">
+         <img src="pages/resources/images/slide2.gif" alt="Second slide">
+      </div>
+      <div class="item">
+         <img src="pages/resources/images/slide3.gif" alt="Third slide">
+      </div>
+   </div>
+   <!-- Carousel nav -->
+   <a class="carousel-control left" href="#myCarousel" 
+      data-slide="prev">&lsaquo;</a>
+   <a class="carousel-control right" href="#myCarousel" 
+      data-slide="next">&rsaquo;</a>
+</div>   
 
-        <div style="float:right; width:30%;"><div id="imgbut">
-<img src="pages/resources/img/fbconnect.png" style="cursor:pointer; width:50px;" onclick="Login()"/>
-<br/>
-</div>
+        <div class="col-sm-8 col-md-5 col-lg-4">
 
 <div id="SignUp">
-    <div id="signUpForm">
-             <h2>Register!</h2>
-            <table>
-                <tr>
-                    <td>Profile <input type="hidden" id="profile_pic" name="profile_pic"/></td></td>
-                    <td id="dp"></td>
-                </tr>
-                <tr>
-                    <td>Handle @:</td>
-                    <td><input type="text" id="handle" name="handle" required/></td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td><input type="text" id="name" name="name" required/></td>
-                </tr>
-                
-                <tr>
-                    <td>E-mail</td>
-                    <td><input type="text" id="email" name="email" required/></td>
-                </tr>
-                <tr>
-                    <td>Country</td>
-                    <td><input type="text" id="country" name="country" required/></td>
-                </tr>
-                <tr>
-                    <td>State</td>
-                    <td><input type="text" id="state" name="state"/></td>
-                </tr>
-                <tr>
-                    <td>City</td>
-                    <td><input type="text" id="city" name="city"/></td>
-                </tr>
-                <tr>
-                    <td>Zip</td>
-                    <td><input type="text" id="zip" name="zip"/></td>
-                </tr>
-              
-                <tr>
-                    <td>Sex</td>
-                    <td> 
-                        <input type="radio"  name="sex" value="M" checked/>Male
-                        <input type="radio"  name="sex" value="F"/>Female
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date Of Birth</td>
-                    <td></td><td></td><td></td><td></td>
-                    <td><input type="text" id="dob" name="dob"/></td>
-                </tr>
-                <tr>
-                    <td>Phone</td>
-                    <td><input type="text" id="phone" name="phone"/></td>
-                </tr>
-             
-            </table>
-                <div id="accordion">
-    
+    <div id="signUpForm" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-3 col-md-3 col-lg-4" id="dp"></div>
+            <div class="col-sm-9 col-md-9 col-lg-8">
+                <div class="input-group">
+                <span class="input-group-addon input-group">@</span>
+                <input type="text" class="form-control" id="handle" placeholder="handle" required>
                 </div>
-             <button onclick="validate()">Register</button>
+            
             </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="Enter your FullName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Email:</label>
+            <div class="col-sm-10">
+            <input type="email" class="form-control" id="email" placeholder="Enter email">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="radio col-sm-6">
+            <label><input type="radio" name="sex" value="M" id='sex_m'>Male</label>
+            </div>
+            <div class="radio col-sm-6">
+            <label><input type="radio" name="sex" value="F" id='sex_f'>Female</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="DOB">Date of Birth:</label>
+            <div class="well col-sm-10">
+            <!--<button id="btn2" style="float: right">manual set to 03/17/12</button>-->
+            <input type="text" name="dob" class="span2" data-date-format="mm/dd/yy" id="dob">
+            </div>
+        </div>
+            
+                
+             <button class="btn btn-default" onclick="select_categories()">Next</button>
+            </div>
+<div id='accordion_div'> 
+    Please select 20 categories that describes your interests.
+<div id="accordion">
+    
 </div>
+<button class="btn btn-default" onclick="validate()">Register</button>
+</div>
+</div>
+
         <!--<form action="login" method="post">
             User id <input type="text" name="username"><br>
             password <input type="password" name="password">
@@ -435,5 +478,8 @@ var profile_pic;
         
        
         </div>
+</div><!--row -->
+
+</div><!--container -->
     </body>
 </html>

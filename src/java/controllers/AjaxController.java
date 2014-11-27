@@ -15,15 +15,24 @@ import User_Manager.Exp_Json;
 import User_Manager.Follow;
 import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.connectivity;
@@ -221,9 +230,9 @@ public class AjaxController extends Parent_Controller{
         
        
        
-     boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
-      
-	 out.println(rslt);
+    boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
+
+ out.println(rslt);
       
    }
    
@@ -359,8 +368,9 @@ public class AjaxController extends Parent_Controller{
         PrintWriter out = response.getWriter();
         String ts=request.getParameter("ts");
         Follow follow=ud.getFollow();
+        int[] category_list_json=ud.getCategory_list_json();
        int arrtest[]=follow.getFollowing();
-        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listActivityPolls(ts,arrtest);
+        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.listActivityPolls(ts,arrtest,category_list_json,ud.getUid());
          System.out.println("view Polls PollJSON taha ts="+ts);
          //String pollJSON=gson.toJson(alist);
          String pollJSON=gson.toJson(poll_tbl);

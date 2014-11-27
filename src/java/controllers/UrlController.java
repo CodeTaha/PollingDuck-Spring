@@ -94,9 +94,11 @@ public class UrlController extends Parent_Controller{
        if(checklogin(request))
        {
            model.addAttribute("delimiter", "");
-           
+           model.addAttribute("dashboard_active", "active");
+           model.addAttribute("viewpoll_active", "");
+           model.addAttribute("createpoll_active", "");
            model.addAttribute("user",gson.toJson(get_UserDetails(request)));
-           return "home";
+           return "dashboard";
        }
        else
        {
@@ -115,6 +117,9 @@ public class UrlController extends Parent_Controller{
             String cat_json=gson.toJson(category);
             System.out.println("cat list "+cat_json);
             model.addAttribute("cat_list", cat_json);
+            model.addAttribute("dashboard_active", "");
+           model.addAttribute("viewpoll_active", "");
+           model.addAttribute("createpoll_active", "active");
             return "createPoll";
             }
             else
@@ -130,9 +135,12 @@ public class UrlController extends Parent_Controller{
            }
    }
    @RequestMapping(value = "/viewPolls", method = RequestMethod.GET)
-   public String viewPolls(HttpServletRequest request){
+   public String viewPolls(ModelMap model,HttpServletRequest request){
        if(checklogin(request))
        {
+           model.addAttribute("dashboard_active", "");
+           model.addAttribute("viewpoll_active", "active");
+           model.addAttribute("createpoll_active", "");
            return "viewPolls";
        }
        else
@@ -247,10 +255,13 @@ public class UrlController extends Parent_Controller{
    }
    
   @RequestMapping(value = "/home", method = RequestMethod.GET)
-   public String home(HttpServletRequest request) throws IOException, SQLException {
+   public String home(ModelMap model,HttpServletRequest request) throws IOException, SQLException {
         if(checklogin(request))
        {
-           return "home";
+           model.addAttribute("dashboard_active", "active");
+           model.addAttribute("viewpoll_active", "");
+           model.addAttribute("createpoll_active", "");
+           return "dashboard";
        }
        else
        {
@@ -290,5 +301,12 @@ public class UrlController extends Parent_Controller{
              request.getQueryString() : ""); 
             //request.getRequestDispatcher("").forward(request, response);
 	  // response.sendRedirect("");
+   }
+   
+   @RequestMapping(value = "/test", method = RequestMethod.GET)
+   public String test(HttpServletRequest request) throws IOException, SQLException {
+        
+           return "test";
+     
    }
 }

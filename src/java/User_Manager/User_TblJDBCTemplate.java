@@ -7,6 +7,7 @@
 package User_Manager;
 
 import com.google.gson.Gson;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
@@ -22,6 +24,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 /**
  *
@@ -83,8 +88,70 @@ public class User_TblJDBCTemplate {
             return fail;
         }
     }
-    
-    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb )
+    /*URL url = new URL(profile_pic);
+                InputStream in = new BufferedInputStream(url.openStream());
+                ByteArrayOutputStream out1 = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                int n = 0;
+                while (-1!=(n=in.read(buf)))
+                {
+                   out1.write(buf, 0, n);
+                }
+                out1.close();
+                in.close();
+                byte[] response1 = out1.toByteArray();
+                 java.util.Date date= new java.util.Date();
+                Timestamp ts=new Timestamp(date.getTime());
+                String profile_pic1=handle+ts+".jpg";
+                FileOutputStream fos = new FileOutputStream("C:/Users/Taha/Documents/GitHub/PollingDuck-Spring/PollingDuck-Spring/web/WEB-INF/pages/profile_pics/"+profile_pic1);
+                fos.write(response1);
+                fos.close();*/
+    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb ) throws SQLException
+   {
+       System.out.println("In User_Tbl_JDBCTemplate> createUser");
+        /* Code for User_Store */
+            
+            String category_list_json=Arrays.toString(category);
+            System.out.println("Category list="+category_list_json);
+            List<Exp_Json> exp = new ArrayList();
+            Exp_Json obj = null;
+            for(int i=0; i<category.length; i++)
+            {
+            obj=new Exp_Json(category[i]);
+                try{exp.add(obj);}
+                catch(Exception e)
+                {
+                    System.out.println("Errror in Exp_json="+e);
+                    return false;
+                }
+                
+            }
+            //System.out.println("reached3");
+            String exp_json=gson.toJson(exp);
+             CallableStatement st;
+       /* (IN handle_i varchar(45),IN username_i varchar(45),IN email_i varchar(45),IN country_i varchar(45),
+IN state_i varchar(45),IN city_i varchar(45),IN zip_i varchar(45),IN religion_i varchar(45),IN sex_i varchar(45),IN dob_i varchar(45),IN phone_i varchar(45),
+IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varchar(1000),IN exp_json_i varchar(1000),IN fish_i int)*/
+            try{
+               
+             con=conn.getDataSource().getConnection();
+                st=con.prepareCall("call createUser('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
+                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+")");
+             st.executeQuery();
+             con.close();
+             return true;
+            }
+          catch(Exception e)
+          {
+              System.out.println("CreateUser procedure error="+e);
+              return false;
+          }
+           
+           
+       
+      
+   }
+    public boolean createUser_ole(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb )
    {
        System.out.println("In User_Tbl_JDBCTemplate> createUser");
         /* Code for User_Store */
@@ -118,16 +185,16 @@ public class User_TblJDBCTemplate {
           
        
            System.out.println("In catch");
-           SQL = "insert into login_tbl(fb,email) values(?,?)";// Inserting into login_tbl
+           SQL = "insert into login_tbl(fb,email,handle) values(?,?,?)";// Inserting into login_tbl
            try{
-           jdbcTemplateObject.update( SQL, fb,email);// adding email in login_tbl
+           jdbcTemplateObject.update( SQL, fb,email,handle);// adding email in login_tbl
             SQL="select uid from login_tbl where email=?";// fetchin the uid for newly entered row
             int uid=jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, Integer.class);
             
             
            
             int rs1=0,rs2=0;
-            try{SQL="insert into user_detail(uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+            try{SQL="insert into user_detail(uid,handle,username,country,state,city,zip,religion,sex,dob,phone,profile_pic) values(?,?,?,?,?,?,?,?,?,?,?,?)";
              rs1=jdbcTemplateObject.update( SQL, uid,handle,name,country,state,city,zip,religion,sex,dob,phone,profile_pic);
             }
             catch(DataAccessException f)
@@ -166,7 +233,7 @@ public class User_TblJDBCTemplate {
     public User_Detail get_profile(String handle)
     {
          User_Detail profile=null;
-        SQL="select A.uid,A.followers,A.following,A.fb,A.email, B.handle,B.name,B.city,B.country,B.dob,B.sex,B.state,B.profile_pic,B.phone,B.religion,B.zip ,C.exp_json,C.category_list_json,C.lc,C.fish from login_tbl A, user_detail B, user_store C where A.uid=(select uid from user_detail where handle=?) and B.handle=? and C.uid=A.uid;";
+        SQL="select A.uid,A.followers,A.following,A.fb,A.email, B.handle,B.username,B.city,B.country,B.dob,B.sex,B.state,B.profile_pic,B.phone,B.religion,B.zip ,C.exp_json,C.category_list_json,C.lc,C.fish from login_tbl A, user_detail B, user_store C where A.uid=(select uid from user_detail where handle=?) and B.handle=? and C.uid=A.uid;";
         try
         {
             profile=jdbcTemplateObject.queryForObject(SQL, new Object[]{handle,handle}, new User_Detail_Mapper(2));
@@ -183,7 +250,7 @@ public class User_TblJDBCTemplate {
     public User_Detail get_profile(int uid)
     {
          User_Detail profile=null;
-        SQL="select A.uid, B.handle,B.name,B.profile_pic,A.followers, A.following from login_tbl A, user_detail B where A.uid=? and B.uid=?";
+        SQL="select A.uid, B.handle,B.username,B.profile_pic,A.followers, A.following from login_tbl A, user_detail B where A.uid=? and B.uid=?";
         try
         {
             profile=jdbcTemplateObject.queryForObject(SQL, new Object[]{uid,uid}, new User_Detail_Mapper(3));
@@ -289,10 +356,7 @@ public class User_TblJDBCTemplate {
        try
         {
        String cid_split[]= cid_JSON.split(",");
-        for(int i=0;i<cid_split.length;i++)
-          {
-              System.out.println(cid_split[i]);
-          }
+       
        
         int count=0;
         for(int i=0;i<cid_split.length;i++)

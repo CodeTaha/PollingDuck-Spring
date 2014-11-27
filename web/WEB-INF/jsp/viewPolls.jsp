@@ -1,58 +1,60 @@
 <%@include file="header.jspf" %>
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="home"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    
-                    <li class="active">
-                        <a href="viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a>
-                    </li>
-                    <li>
-                        <a href="createPoll"><i class="fa fa-fw fa-edit"></i> Create Poll</a>
-                    </li>
-                    <!--<li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
-                    </li>
-                    <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
-                    </li>
-                    <li>
-                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
-                    </li>-->
-                </ul>
-            </div>
-    </nav>
+  
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
-
-            <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Available Polls
-                        </h1>
-                      <div id="pollList" style="float:left">
+                <div class="container-fluid" id="pollList">
+                <div class='row'>
+                    <div class='col-sm-4'>
+                           <div class='panel panel-primary'>
+                                <div class='panel-heading'>
+                                    <h3 class='panel-title'>Panel title</h3>
+                                </div>
+                                <div class='panel-body'>
+                                    Panel content
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-sm-4'>
+                           <div class='panel panel-primary'>
+                                <div class='panel-heading'>
+                                    <div class='row'>
+                                        <div class='col-sm-8'>
+                                            <h3 class='panel-title'>Poll Title</h3>
+                                        </div>
+                                        <div class='col-sm-4'>
+                                            <img style='width:10px;height:auto' src='pages/resources/images/pollicoins.png'> 50 
+                                            <img style='width:10px;height:auto' src='pages/resources/images/bulb.png'> 50
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class='panel-body'>
+                                    <div class='row'>
+                                        <a href='#' target='blank'> <img class='img-thumbnail' style='width:50px;height:50px' src='https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/p100x100/10171238_729237357164686_2553226577218477225_n.jpg?oh=4c5334a13282b6f4053a79281a24df74&oe=5505DC4E&__gda__=1427521192_72cd9638add4d69b1f792361e7cdbbd7' alt=''>
+                                            username @ handle</a>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-sm-7'>
+                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: Java,PHP
+                                        </div>
+                                        <div class='col-sm-5'>
+                                            <button type='button' class='btn btn-sm btn-primary'>Solve</button>
+                                            <button type='button' class='btn btn-sm btn-success'>Report</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            </div>
             
-        </div>
+               
+                   
+                    
         
-        <div id="loading">Loading polls..</div>
         
      <!--   <div id="dialog-modal" title="Solve Poll" style="float:right">   -->
             <div id="selector1">
@@ -61,9 +63,9 @@
                 </div>
             </div>
      <div id="NoMoreData" style="padding-bottom: 3px;">Sorry No More Polls!</div>
-                    </div>
-                </div>
-            </div>
+                   
+                
+           
             </div>
 </div>       
   
@@ -75,8 +77,7 @@
     //var dialog=  $("#selector1").dialog({autoOpen: true,height: 550,width: 830,modal: true});
     var dialog;
     $(document).ready(function(){
-                $('#loading').hide();
-                $('#NoMoreData').hide();
+                
                  loadData();
                dialog=$( "#selector1").dialog({autoOpen: false,show: {effect: "clip",duration: 10},hide: {effect: "fade",duration: 1000},close : function() {
            $( "#dialog-modal" ).empty();
@@ -84,7 +85,7 @@
        }});
             });
             function loadData()
-            {$('#loading').show();
+            {
                 if(canLoadMore)
                 {
                 $.ajax({
@@ -92,7 +93,7 @@
            url: "viewPollsData",
            data: {ts:ts },
            success: function(data){
-               $('#loading').hide();
+               
                console.log(data);
                pollJSONtemp=null;
                pollJSONtemp=JSON.parse(data);
@@ -102,7 +103,7 @@
                {
                    console.log("end of data reached");
                    canLoadMore=false;
-                   $('#NoMoreData').show();
+                   
                    
                }
                else
@@ -130,9 +131,47 @@
             function createPollDivs()
             {
                 for(var i=0; i<pollJSONtemp.length;i++)
-                     { 
+                     { var tags=pollJSONtemp[i]["cat_list"][0]["category_name"];
                          pollJSONvp.push(pollJSONtemp[i]);
-                      $("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
+                         for(var j=1;j<pollJSONtemp[i]["cat_list"].length;j++)
+                         {
+                           tags=tags+", "+pollJSONtemp[i]["cat_list"][j]["category_name"];
+                         }
+                        
+                         $("#pollList").append("<div class='row'>\n\
+                    <div class='col-sm-4'>\n\
+                           <div class='panel panel-primary'>\n\
+                                <div class='panel-heading'>\n\
+                                    <div class='row'>\n\
+                                        <div class='col-sm-8'>\n\
+                                            <h3 class='panel-title'>"+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+"</h3>\n\
+                                        </div>\n\
+                                        <div class='col-sm-4'>\n\
+                                            <img style='width:10px;height:auto' src='pages/resources/images/pollicoins.png'> "+pollJSONtemp[i]["reward"]+" \n\
+                                            <img style='width:10px;height:auto' src='pages/resources/images/bulb.png'> "+pollJSONtemp[i]["reward"]+"\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                               \n\
+                                <div class='panel-body'>\n\
+                                    <div class='row'>\n\
+                                        <a href='profile/"+pollJSONtemp[i]["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+pollJSONtemp[i]["user"]["profile_pic"]+"' alt='"+pollJSONtemp[i]["user"]["handle"]+"'>\n\
+                                            "+pollJSONtemp[i]["user"]["name"]+" @ "+pollJSONtemp[i]["user"]["handle"]+"</a>\n\
+                                    </div>\n\
+                                    <div class='row'>\n\
+                                        <div class='col-sm-7'>\n\
+                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
+                                        </div>\n\
+                                        <div class='col-sm-5'>\n\
+                                            <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(pollJSONtemp[i]["pid"])+")'>Solve</button>\n\
+                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                    </div>\n\
+                </div>");
+                      /*$("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
                       <h3>'+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+'</h3>\n\
                          \n\<a href="/Pollican/profile/'+pollJSONtemp[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSONtemp[i]["user"]["profile_pic"]+"></a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'>"+pollJSONtemp[i]["user"]["name"]+"</a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'  >@"+pollJSONtemp[i]["user"]["handle"]+'</a>\n\
                           \n\<h4>'+pollJSONtemp[i]["description"] +'</h4><h5>REWARD :'+pollJSONtemp[i]["reward"]+'</h5></div>'
@@ -142,7 +181,7 @@
                            $("#pid"+pollJSONtemp[i]["pid"]).append('<b>'+pollJSONtemp[i]["cat_list"][j]["category_name"]+"</b> ");
                          $("#pid"+pollJSONtemp[i]["pid"]).append('<br><button onclick="openPoll('+parseInt(pollJSONtemp[i]["pid"])+')">Take Poll</button>');
                          $("#pid"+pollJSONtemp[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSONtemp[i]["pid"])+')">Results</button>');
-                      
+                      */
                          
                      }
             }
