@@ -419,7 +419,13 @@ public class AjaxController extends Parent_Controller{
         
        
    }
-  
-   
+    @RequestMapping(value = "/getCategories", method = RequestMethod.POST)
+   public void getCategories(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+            PrintWriter out = response.getWriter();
+            Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
+            List<Category> category=cat.Category_list();
+            String cat_json=gson.toJson(category);
+            out.println(cat_json);
+   }
 }
 

@@ -9,35 +9,84 @@
 
                 <!-- Page Heading -->
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 form-horizontal">
                         <h1 class="page-header">
                             Create Poll
                         </h1>
+                        <!-- <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="Enter your FullName">
+            </div>
+        </div>-->
                         <div id='d1'>
- Title:<input type="text" name="t1" id="title"><br/> 
- Description:<textarea name="t1" id="desc"></textarea><br/>
- 
-</div>
-Category :<select id="category" multiple="multiple" style="width:300px;" tabindex="-1" class="select2-offscreen"></select>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="name">Title:</label>
+                                <div class="col-sm-6">
+                                <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="name">Description:</label>
+                                <div class="col-sm-6">
+                                <textarea class="form-control" id="desc" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="name">Tag Categories:</label>
+                                <div class="col-sm-6">
+                                <select id="category" multiple="multiple" tabindex="-1" class="select2-offscreen"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="name">Start Time:</label>
+                                <div class="col-sm-2">
+                                <input type="text" class="form-control" id="sd" name="sd"/>
+                                </div>
+                                <label class="control-label col-sm-2" for="name">End Time:</label>
+                                <div class="col-sm-2">
+                                <input type="text" class="form-control" id="ed" name="ed"/>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div id='d2'>
 
-<!--Category:<select id="category"><option value="1">Java</option><option value="2">Java</option><option value="3">Java</option></select>-->
-<div id="datetimediv">
-     Start Date  : <input type="text" id="sd" name="sd"/> 
-     End Date  : <input type="text" id="ed" name="ed"/>
-</div>
-<div id='d2'>
 
+                        </div>
+                        <div id='d3'>
+                            <!--<div class='panel panel-info'>
+                                <div class='panel-heading'>
+                                        <h3 class='panel-title'>Add Question</h3>
+                                </div>
+                                <div class='panel-body'>
+                                    <div class='form-group'>
+                                        <label class='control-label col-sm-2' for='name'>Question:</label>
+                                        <div class='col-sm-6'>
+                                        <input type='text' class='form-control' name='question' id='qtnid' placeholder='Type a Question'>
+                                        </div>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label class='control-label col-sm-2' for='name'>Question Type:</label>
+                                        <div class='col-sm-6'>
+                                        <select id='' onchange='' class='form-control'>
+                                            <option value='no_questiontype'>Select One</option>
+                                            <option value='mcss'>Multiple choice Single select</option>
+                                            <option value='mcms'>Multiple choice Multiple select</option>
+                                            <option value='tb'>TextBox</option>
+                                            <option value='moc'>Matrix of choices</option>
+                                            <option value='momc'>Matrix of Multiple choices</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="addQuestion()" id="addQuestion">Add Question</button>
 
-</div>
-<div id='d3'>
-
-
-</div>
-<div id='d1'>
-    <button onclick="addQuestion()" id="addQuestion">Add Question</button>
-    
-    <input type='button'onclick="send()" value='Submit Survey' id='Submit'>
-</div>
+                            <input class="btn btn-success" type='button'onclick="send()" value='Submit Survey' id='Submit'>
+                        </div>
                     </div>
                 </div>
                 
@@ -97,7 +146,33 @@ $(document).ready(function(){
          qtypes="Qtype"+iq;
         $("#addQuestion").prop("disabled", true);
         $("#d3").append('<div id="'+divqid+'"></div>');
-        $("#"+divqid).append('Question: <input type="text" name="question" id="'+questions+'"/><br/>Question Type: <select id="'+qtypes+'" onchange="selector()"><option value="no_questiontype">Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
+        $("#"+divqid).append("<div class='panel panel-info'>\n\
+                                <div class='panel-heading'>\n\
+                                        <h3 class='panel-title'>Add Question</h3>\n\
+                                </div>\n\
+                                <div class='panel-body'>\n\
+                                    <div class='form-group'>\n\
+                                        <label class='control-label col-sm-2' for='name'>Question:</label>\n\
+                                        <div class='col-sm-6'>\n\
+                                        <input type='text' class='form-control' name='question' id='"+questions+"' placeholder='Type a Question'>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class='form-group'>\n\
+                                        <label class='control-label col-sm-2' for='name'>Question Type:</label>\n\
+                                        <div class='col-sm-6'>\n\
+                                        <select id='"+qtypes+"' onchange='selector();' class='form-control' placeholder='Select One'>\n\
+                                            <option value='no_questiontype'>Select One</option>\n\
+                                            <option value='mcss'>Multiple choice Single select</option>\n\
+                                            <option value='mcms'>Multiple choice Multiple select</option>\n\
+                                            <option value='tb'>TextBox</option>\n\
+                                            <option value='moc'>Matrix of choices</option>\n\
+                                            <option value='momc'>Matrix of Multiple choices</option>\n\
+                                        </select>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>");
+                //append('Question: <input type="text" name="question" id="'+questions+'"/><br/>Question Type: <select id="'+qtypes+'" onchange="selector()"><option value="no_questiontype">Select One</option><option value="mcss">Multiple choice Single select</option><option value="mcms">Multiple choice Multiple select</option><option value="tb">Textbox</option><option value="moc">Matrix of choices</option><option value="momc">Matrix of Multiple choices</option></select>');
     }
     
     function selector()

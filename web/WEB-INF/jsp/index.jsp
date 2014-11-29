@@ -37,6 +37,7 @@ var birthdate;
 var profile_pic;
 var gender;
  var cat_json="";
+ var fb;
  var cat_list=new Array();// maintains list for categories
  var red_url=window.location.search.replace("?", "").toString();
  var cat_list=new Array();
@@ -71,7 +72,7 @@ var gender;
 	{
  	 if (response.status === 'connected') 
   	{
-  		getUserInfo();
+  		//getUserInfo();
   		
   	}	 
 	else if (response.status === 'not_authorized') 
@@ -129,6 +130,7 @@ function Logout()
  link = response.link; 
  birthdate = response.birthday;
  gender=response.gender;
+ fb=username;
  //profile_pic=response.data.url;
  FB.api('/me/picture?type=normal', function(response) {
                   profile_pic=response.data.url;
@@ -208,6 +210,7 @@ function Logout()
                array3[cat_json[i]['group']].push(cat_json[i]);   
           }  
         }
+        console.log('arrays');
         console.log(array2);
         console.log(array3);
     $("#accordion").empty();
@@ -220,7 +223,7 @@ function Logout()
         }
           
        }
-        $( "#accordion" ).accordion({
+        $("#accordion").accordion({
       heightStyle: "fill"
     });
     $( "#accordion-resizer" ).resizable({
@@ -282,7 +285,7 @@ function Logout()
     {
        handle=$("#handle").val();
        name=$("#name").val();
-       email_i=email;
+       email_i=$("#email").val();;
        country="";//$("#country").val();
        state="";//$("#state").val();
        city="";//$("#city").val();
@@ -313,7 +316,7 @@ function Logout()
           category=category+","+cat_list[i];
       }
       }
-      var fb=username;// Enter fb username here//it was testfb earlier
+      fb=username;// Enter fb username here//it was testfb earlier
       
       category=JSON.stringify(category+"]");
       category=JSON.stringify(cat_list);
@@ -339,9 +342,21 @@ function Logout()
   }
   function SignUp()
   {
-      
-    //$("#alert_box").append("<div class='bs-example' ><div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Sorry for the inconvenience!</strong>As we are currently developing our system and we want to keep scamters away. Please use <strong>Facebook login</strong></div></div>").show();
-      Alerts('alert-warning','<strong>Sorry for the inconvenience!</strong>As we are currently developing our system and we want to keep scamters away. Please use <strong>Facebook login</strong>');
+      fb="";
+      profile_pic="pages/profile_pics/egg.jpg";
+    $("#SignUp").show();
+      $.ajax({
+                                type: "POST",       // the dNodeNameefault
+                                url: "getCategories",
+                                data: {},
+                                success: function(data){
+                                    console.log(data);
+                                    cat_json=JSON.parse(data);
+                                    get_accordion();
+                                }});
+                                          
+                                
+      //Alerts('alert-warning','<strong>Sorry for the inconvenience!</strong>As we are currently developing our system and we want to keep scamters away. Please use <strong>Facebook login</strong>');
   }
   function Alerts(alert_type,alert_mesg)
   {
