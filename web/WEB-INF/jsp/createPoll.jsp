@@ -21,29 +21,29 @@
         </div>-->
                         <div id='d1'>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Title:</label>
+                                <label class="control-label col-sm-2" for="title">Title:</label>
                                 <div class="col-sm-6">
                                 <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Description:</label>
+                                <label class="control-label col-sm-2" for="desc">Description:</label>
                                 <div class="col-sm-6">
                                 <textarea class="form-control" id="desc" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Tag Categories:</label>
-                                <div class="col-sm-6">
-                                <select id="category" multiple="multiple" tabindex="-1" class="select2-offscreen"></select>
+                                <label class="control-label col-sm-2" for="category">Tag Categories:</label>
+                                <div class="col-sm-6" >
+                                    <select id="category" multiple="multiple"  tabindex="-1" class="select2-offscreen"></select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Start Time:</label>
+                                <label class="control-label col-sm-2" for="sd">Start Time:</label>
                                 <div class="col-sm-2">
                                 <input type="text" class="form-control" id="sd" name="sd"/>
                                 </div>
-                                <label class="control-label col-sm-2" for="name">End Time:</label>
+                                <label class="control-label col-sm-2" for="ed">End Time:</label>
                                 <div class="col-sm-2">
                                 <input type="text" class="form-control" id="ed" name="ed"/>
                                 </div>
@@ -83,7 +83,7 @@
                             </div>-->
                         </div>
                         <div>
-                            <button class="btn btn-primary" onclick="addQuestion()" id="addQuestion">Add Question</button>
+                            <br><br><button class="btn btn-primary btn-group-sm" onclick="addQuestion()" id="addQuestion">Add Question</button>
 
                             <input class="btn btn-success" type='button'onclick="send()" value='Submit Survey' id='Submit'>
                         </div>
@@ -120,8 +120,9 @@ $(document).ready(function(){
     $("#category").select2({
        // multiple: true,
   placeholder:"tag poll categories",
-  maximumSelectionSize:5
-  //allowClear: true,
+  maximumSelectionSize:5,
+  
+  
   //tags: cat_list//[{id: 0, text: 'story'},{id: 1, text: 'bug'},{id: 2, text: 'task'}]
 });
      $("#sd").datetimepicker(
@@ -145,8 +146,8 @@ $(document).ready(function(){
          questions="question"+iq;
          qtypes="Qtype"+iq;
         $("#addQuestion").prop("disabled", true);
-        $("#d3").append('<div id="'+divqid+'"></div>');
-        $("#"+divqid).append("<div class='panel panel-info'>\n\
+        $("#d3").append('<div id="'+divqid+'" class="form-group"></div>');
+        $("#"+divqid).append("<p></p><p></p><div class='panel panel-info'>\n\
                                 <div class='panel-heading'>\n\
                                         <h3 class='panel-title'>Add Question</h3>\n\
                                 </div>\n\
@@ -216,17 +217,17 @@ $(document).ready(function(){
            {      
            switch(qtype)
            {
-            case 'mcss':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'mcms':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'tb':      {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'moc':     {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'momc':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcss':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'"  class="form-group" > <label class="control-label col-sm-2" for="'+answer+'">Answer choices:</label><div class="col-sm-6"><textarea id="'+answer+'" class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcms':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'" class="form-group" > <label class="control-label col-sm-2" for="'+answer+'">Answer choices:</label><div class="col-sm-6"><textarea id="'+answer+'" class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'tb':      {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'" class="form-group" > <label class="control-label col-sm-2" for="'+answer+'">A textbox will be created for the user to fill in the answer</label> <div class="col-sm-6"><input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'moc':     {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'" class="form-group" > <label class="control-label col-sm-2" for="'+row+'">Enter columns and rows</label> <div class="col-sm-3"><textarea id="'+column+'" class="form-control"></textarea></div><div class="col-sm-3"><textarea id="'+row+'" class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'momc':    {$("#t1").remove();$("#"+te).remove();$("#divq"+selectbutton).append('<div id="'+te+'" class="form-group" > <label class="control-label col-sm-2" for="'+row+'">Enter columns and rows</label> <div class="col-sm-3"><textarea id="'+column+'" class="form-control"></textarea></div><div class="col-sm-3"><textarea id="'+row+'" class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
             case 'no_questiontype' :  {$("#t1").remove();$("#"+te).remove();alert("please select a question type");$("#submitqtn").prop("disabled",true);}break;
            }   
            if(qtype!='no_questiontype')
            { 
                
-             $("#"+te).append('<button id="submitqtn" onclick="submitQtn()">Submit Question</button>');  
+             $("#"+te).append('<button class="btn btn-primary" id="submitqtn" onclick="submitQtn()">Submit Question</button>');  
            }
                 
            }
@@ -237,17 +238,17 @@ $(document).ready(function(){
           {       
          switch(qtype)
         {
-            case 'mcss':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'mcms':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'tb':      {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'moc':     {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'momc':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcss':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+answer+'">Answer choices:</label><div class="col-sm-6"><textarea id="'+answer+'"  class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcms':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+answer+'">Answer choices:</label><div class="col-sm-6"><textarea id="'+answer+'"  class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'tb':      {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-6" for="'+answer+'">A textbox will be created for the user to fill in the answer </label><input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'moc':     {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group" ><label class="control-label col-sm-2" for="'+row+'">Enter columns and rows </label><div class="col-sm-3"><textarea id="'+column+'"  class="form-control"></textarea></div><div class="col-sm-3"><textarea  class="form-control" id="'+row+'" ></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'momc':    {$("#t1").remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+row+'">Enter columns and rows </label><div class="col-sm-3"><textarea id="'+column+'" class="form-control"></textarea></div><div class="col-sm-3"><textarea class="form-control" id="'+row+'" ></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
              case 'no_questiontype' :  {$("#t1").remove();alert("please select a question type");$("#submitqtn").prop("disabled",true);}break;
          }
          if(qtype!='no_questiontype')
            { 
              
-          $("#"+tt).append('<button id="submitqtn" onclick="submitQtn()">Submit Question</button>');
+          $("#"+tt).append('<button class="btn btn-primary" id="submitqtn" onclick="submitQtn()">Submit Question</button>');
            } 
                 
          }
@@ -256,11 +257,11 @@ $(document).ready(function(){
          
          switch(qtype)
         {
-            case 'mcss':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'mcms':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Answer choices:<textarea id="'+answer+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'tb':      {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">A textbox will be created for the user to fill in the answer <input type="hidden" id="'+answer+'"/></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'moc':     {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
-            case 'momc':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'">Enter columns and rows <textarea id="'+column+'" ></textarea><textarea id="'+row+'" ></textarea></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcss':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+answer+'">Answer choices:</label><div class="col-sm-6"><textarea id="'+answer+'" class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'mcms':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+answer+'">Answer choices:</label><div class="col-sm-6"><textarea id="'+answer+'" class="form-control"></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'tb':      {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-6" for="'+answer+'">A textbox will be created for the user to fill in the answer</label> <div class="col-sm-6"><input type="hidden" id="'+answer+'"/></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'moc':     {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+row+'">Enter columns and rows</label><div class="col-sm-3"> <textarea id="'+column+'" class="form-control"></textarea></div><div class="col-sm-3"><textarea id="'+row+'" class="form-control" ></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
+            case 'momc':    {$("#t1").remove();$("#"+tt).remove();$("#"+divqid).append('<div id="'+tt+'" class="form-group"><label class="control-label col-sm-2" for="'+row+'">Enter columns and rows</label><div class="col-sm-3"> <textarea id="'+column+'" class="form-control"></textarea></div><div class="col-sm-3"><textarea id="'+row+'" class="form-control" ></textarea></div></div>');$("#submitqtn").prop("disabled",false);}break;
              case 'no_questiontype' :  {$("#t1").remove();$("#"+tt).remove();alert("please select a question type");$("#submitqtn").prop("disabled",true);}break;
                 
         } 
@@ -268,7 +269,7 @@ $(document).ready(function(){
            {  
                
            
-                $("#"+tt).append('<button id="submitqtn" onclick="submitQtn()">Submit Question</button>');
+                $("#"+tt).append('<button class="btn btn-primary" id="submitqtn" onclick="submitQtn()">Submit Question</button>');
            } 
                 
                 
@@ -330,7 +331,7 @@ $(document).ready(function(){
         qtnArray2[2]=qtype;
         qtnArray2[3]=question;
         
-        $("#d2").append('<div id="'+divsqid+'"></div>');
+        $("#d2").append('<div id="'+divsqid+'" ></div>');
         if(qtype==="moc" || qtype==="momc")
         {
            if(flag===1)
@@ -345,7 +346,22 @@ $(document).ready(function(){
         
         
   
-        $("#divsq"+selectbutton).append("Question:"+question+"<br/>Type: "+qtype+"<br>Columns: "+columns+"<br>rows:"+rows);
+        $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-info'>\n\
+                                <div class='panel-heading'>\n\
+                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                </div>\n\
+                                <div class='panel-body'>\n\
+                                    <div class='form-group'>\n\
+                                        <label class='control-label col-sm-2' for='name'>Question: <small>"+question+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtype+"</small></label>\n\
+                                </div>\n\
+                      <div class='form-group'>\n\
+                                         <label class='control-label col-sm-2' for='name'>Columns : <small>"+columns+"</small></label>\n\
+                                          <label class='control-label col-sm-2' for='name'>Rows : <small>"+rows+"</small></label>\n\
+                                    </div>\n\
+                                    </div> \n\
+                                  </div>\n\
+                                    ");
            }
            
             
@@ -360,7 +376,22 @@ $(document).ready(function(){
         
         
   
-        $("#"+divsqid).append("Question:"+question+"<br/>Type: "+qtype+"<br>Columns: "+columns+"<br>rows:"+rows);
+        $("#"+divsqid).append("<p><p><br></p></p><div class='panel panel-info'>\n\
+                                <div class='panel-heading'>\n\
+                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                </div>\n\
+                                <div class='panel-body'>\n\
+                                    <div class='form-group'>\n\
+                                        <label class='control-label col-sm-2' for='name'>Question:<small>"+question+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type:<small>"+qtype+"</small></label>\n\
+                                </div>\n\
+                      <div class='form-group'>\n\
+                                         <label class='control-label col-sm-2' for='name'>Columns :<small>"+columns+"</small></label>\n\
+                                          <label class='control-label col-sm-2' for='name'>Rows :<small>"+rows+"</small></label>\n\
+                                  </div> \n\
+                                  </div>\n\
+                                  </div>\n\
+                                           ");
         
             } 
         }
@@ -374,7 +405,21 @@ $(document).ready(function(){
               qtnArray2[4]=JSON.stringify(answers.split("\n"));
         qtnArray2[5]="";
         
-        $("#divsq"+selectbutton).append("Question:"+question+"<br/>Type: "+qtype+"<br>Options:"+answers);
+        $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-info'>\n\
+                                <div class='panel-heading'>\n\
+                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                </div>\n\
+                                <div class='panel-body'>\n\
+                                    <div class='form-group'>\n\
+                                        <label class='control-label col-sm-2' for='name'>Question: <small>"+question+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtype+"</small></label>\n\
+                                </div>\n\
+                      <div class='form-group'>\n\
+                                         <label class='control-label col-sm-2' for='name'>Options : <small>"+answers+"</small></label>\n\
+                                  </div> \n\
+                                  </div>\n\
+                                  </div>\n\
+                                     ");
            }
             
             else
@@ -383,7 +428,21 @@ $(document).ready(function(){
                 qtnArray2[4]=JSON.stringify(answers.split("\n"));
                  qtnArray2[5]="";
         
-               $("#"+divsqid).append("Question:"+question+"<br/>Type: "+qtype+"<br>Options:"+answers);
+               $("#"+divsqid).append("<p><p><br></p></p> <div class='panel panel-info'>\n\
+                                <div class='panel-heading'>\n\
+                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                </div>\n\
+                                <div class='panel-body'>\n\
+                                    <div class='form-group'>\n\
+                                        <label class='control-label col-sm-2' for='name'>Question: <small>"+question+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtype+"</small></label>\n\
+                                    </div>\n\
+                                    <div class='form-group'>\n\
+                                <label class='control-label col-sm-2' for='name'>Options : <small>"+answers+"</small></label>\n\
+                                     </div>\n\
+                                  </div>\n\
+                                  </div>\n\
+                                    ");
         
             }
             
@@ -424,8 +483,8 @@ $(document).ready(function(){
         if(flag===1)
         {
             //var butn="buttons"+selectbutton;
-            $("#divsq"+selectbutton).append('<button id="'+buttonid+'" value="'+buttonval+'" onclick="editQtn(id)">edit Question</button>');
-            $("#divsq"+selectbutton).append('<button id="'+buttondelid+'" value="'+buttondelval+'" onclick="deleteQtn(id)">delete Question</button>');
+            $("#divsq"+selectbutton).append('<button id="'+buttonid+'" value="'+buttonval+'" onclick="editQtn(id)"><span class="glyphicon glyphicon-pencil" > EDIT </span></button>&nbsp;&nbsp;');
+            $("#divsq"+selectbutton).append('<button id="'+buttondelid+'" value="'+buttondelval+'" onclick="deleteQtn(id)"><span class="glyphicon glyphicon-trash"> DELETE </span></button><p></p>');
             flag=0
            
             for(var i=1;i<=iq;i++)
@@ -438,8 +497,8 @@ $(document).ready(function(){
         }
         else
         {
-        $("#"+divsqid).append('<button id="'+buttonid+'" value="'+buttonval+'" onclick="editQtn(id)">edit Question</button>');
-        $("#"+divsqid).append('<button id="'+buttondelid+'" value="'+buttondelval+'" onclick="deleteQtn(id)">delete Question</button>');
+        $("#"+divsqid).append('<button id="'+buttonid+'" value="'+buttonval+'" onclick="editQtn(id)"><span class="glyphicon glyphicon-pencil"> EDIT </span></button>&nbsp;&nbsp;');
+        $("#"+divsqid).append('<button id="'+buttondelid+'" value="'+buttondelval+'" onclick="deleteQtn(id)"><span class="glyphicon glyphicon-trash"> DELETE </span></button><p></p>');
         flag=0;
         var edit = "divedit"+ie;
          $("#d2").append('<div id="'+edit+'"></div>');
