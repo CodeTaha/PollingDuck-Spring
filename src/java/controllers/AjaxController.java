@@ -119,14 +119,16 @@ public class AjaxController extends Parent_Controller{
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
         connectivity conn=(connectivity)context.getBean("connectivity");
         int cansolve=conn.solvable(pid,uid);
+        User_Detail ud=get_UserDetails(request);
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
         model.addAttribute("pid", pid);
         model.addAttribute("obj", poll_tbl);
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "");//used to load source files properly
         
-         model.addAttribute("uid",uid);
         model.addAttribute("redirect",false);
-        
+        model.addAttribute("page", "solvePoll");
 	   return "solvePoll";
   
    }
@@ -135,15 +137,17 @@ public class AjaxController extends Parent_Controller{
    {
     
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-       if(!checklogin(request))
+       if(checkSetCookie(request)!=2)
        {
         model.addAttribute("uid",0);
+        model.addAttribute("handle","");
         model.addAttribute("redirect",true);
         model.addAttribute("red_url",request.getRequestURI());
         model.addAttribute("pid", pid);
         model.addAttribute("obj", "null");
         model.addAttribute("solvable", false);
         model.addAttribute("delimiter", "../../");
+        
 	 
        }
        else
@@ -157,14 +161,19 @@ public class AjaxController extends Parent_Controller{
                 response.sendRedirect(poll_tbl.getPoll_link());
                return "error";
             }
-        model.addAttribute("uid",uid);
+        User_Detail ud=get_UserDetails(request);
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
         model.addAttribute("redirect",false);
+        
         model.addAttribute("pid", pid);
         model.addAttribute("obj", gson.toJson(poll_tbl));
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "../../");
+        
 	
    }
+       model.addAttribute("page", "solvePoll");
           return "solvePoll";
    }
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
@@ -230,9 +239,30 @@ public class AjaxController extends Parent_Controller{
         
        
        
-    boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
-
- out.println(rslt);
+            boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
+            if(rslt)
+            {
+              User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();  
+        if(fb!=null)// if registration through fb
+        {
+        
+        user_detail=user.authenticate(fb,email,2);
+       
+       
+        }
+        else// if direct registration.
+        {
+            user_detail=user.authenticate(handle,email,1);
+        
+        }
+        System.out.println("Adding cookie handle"+user_detail.getHandle());
+        Cookie cookie=set_Cookie("handle",user_detail.getHandle(),24);
+        response.addCookie(cookie); 
+        System.out.println("Adding cookie uid"+user_detail.getUid());
+        cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
+        response.addCookie(cookie);
+            }
+            out.println(rslt);
       
    }
    
@@ -270,8 +300,7 @@ public class AjaxController extends Parent_Controller{
             Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
             List<Category> category=cat.Category_list();
             String cat_json=gson.toJson(category);
-          //System.out.println("cat list "+cat_json);
-//            model.addAttribute("cat_list", cat_json);
+          
             out.println(cat_json);
         }
    

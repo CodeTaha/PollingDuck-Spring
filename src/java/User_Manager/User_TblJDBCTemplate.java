@@ -7,11 +7,21 @@
 package User_Manager;
 
 import com.google.gson.Gson;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -106,11 +116,32 @@ public class User_TblJDBCTemplate {
                 FileOutputStream fos = new FileOutputStream("C:/Users/Taha/Documents/GitHub/PollingDuck-Spring/PollingDuck-Spring/web/WEB-INF/pages/profile_pics/"+profile_pic1);
                 fos.write(response1);
                 fos.close();*/
-    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb ) throws SQLException
+    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb ) throws SQLException, FileNotFoundException, IOException
    {
        System.out.println("In User_Tbl_JDBCTemplate> createUser");
         /* Code for User_Store */
-            
+            URL url = new URL(profile_pic);
+            ByteArrayOutputStream out1;
+       try (InputStream in = new BufferedInputStream(url.openStream())) {
+           out1 = new ByteArrayOutputStream();
+           byte[] buf = new byte[1024];
+           int n = 0;
+           while (-1!=(n=in.read(buf)))
+           {
+               out1.write(buf, 0, n);
+           }
+           out1.close();
+       }
+                byte[] response1 = out1.toByteArray();
+                 java.util.Date date= new java.util.Date();
+                Timestamp ts=new Timestamp(date.getTime());
+                String profile_pic1=handle+".jpg";
+                
+       try (
+               FileOutputStream fos = new FileOutputStream("C:/Users/Taha/Documents/GitHub/PollingDuck-Spring/PollingDuck-Spring/web/WEB-INF/pages/profile_pics/"+profile_pic1)) {
+           fos.write(response1);
+           fos.close();
+       }
             String category_list_json=Arrays.toString(category);
             System.out.println("Category list="+category_list_json);
             List<Exp_Json> exp = new ArrayList();
@@ -135,7 +166,7 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
             try{
                
              con=conn.getDataSource().getConnection();
-                st=con.prepareCall("call createUser('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
+               st=con.prepareCall("call createUser('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
                     + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+")");
              st.executeQuery();
              con.close();

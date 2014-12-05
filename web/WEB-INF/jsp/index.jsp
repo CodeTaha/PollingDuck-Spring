@@ -325,7 +325,7 @@ function Logout()
       $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "SignUpReg",
-                                data: {handle:handle,name:name,email:email,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
+                                data: {handle:handle,name:name,email:email_i,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
                                 success: function(data){
                                        if(red_url!=="" && red_url.indexOf("red_url")!==-1)
                                                 {

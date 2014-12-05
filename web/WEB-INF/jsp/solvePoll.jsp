@@ -11,39 +11,33 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="User_Manager.User_Detail"%>
-<% 
-   /*
-    Parent_Controller pc=new Parent_Controller();
-    boolean foundCookie = false;
-    foundCookie=pc.checklogin(request);
-    String handle="";
-    int uid=0;
-    String t;
-    if(foundCookie)
-    {
-        handle=pc.getHandle();
-        uid=pc.getUid();
-    }
-    else
-    {
-        Gson gson=new Gson();
-        String ref_url=request.getRequestURI();
-        response.sendRedirect("../../index?refurl="+ ref_url);
-    }
-   */     
-%>
-<!DOCTYPE html>
-<html>
-    <head>
-            <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.css">
-            <script src="${delimiter}pages/resources/js/jquery.min.js"></script>
-            <script src="${delimiter}pages/resources/js/jquery-ui.js"></script>
-            <script src="${delimiter}pages/resources/js/ui.core.js"></script>
-            <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
-            <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
-       
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@include file="header.jspf" %>
         
+        <div id="page-wrapper">
+
+            <div class="container-fluid" >
+                
+               
+                <div class='row' >
+                  
+                    <div class='col-sm-12 col-md-8 col-lg-6 col-sm-offset-0 col-md-offset-2 col-lg-offset-3' id="pollArea">
+                       <input type="checkbox" id="anonymous"/>Solve Anonymously
+                        
+                    </div>
+                     
+                </div>
+                <div class='row'>
+                     <div class='col-sm-12 col-md-8 col-lg-6 col-sm-offset-0 col-md-offset-2 col-lg-offset-3' id='submitSurvey'>
+                        <button class="btn btn-primary" onclick="submitAns();" id="submitAns">Submit Survey</button>
+                    </div>
+                </div>
+                   
+              
+                                        
+            </div>
+                
+            </div>
+</div>       
         <script>
                 //console.log("In solvePoll");
                // var pollJSON;
@@ -79,9 +73,10 @@
                                     // $this will contain a reference to the checkbox   
                                     if ($this.is(':checked')) {
                                         anonymous=1;
-                                        alert("You wont get the rewarded fish if you solve the poll anonymously and your name wont be displayed on the result page.");
+                                        Alerts("alert-warning","You wont get the rewarded if you solve the poll anonymously, but your name wont be displayed on the report page of this survey.");
                                     } else {
                                         anonymous=0;
+                                        $("#alert_box").empty();
                                         // the checkbox was unchecked
                                     }
                                 });
@@ -89,7 +84,7 @@
               
                 if(redirect)
                  {
-                     
+                     alert();
                      window.location.assign("${delimiter}index?red_url=${red_url}");
                      return;
                  } 
@@ -97,7 +92,7 @@
                 fish=pollJSON['reward'];
                 set_metadata(pollJSON['title'],pollJSON['description'],pollJSON['cat_list'],pollJSON['user']['name']);
                  
-                   
+                  
         
                 if(solvable===1)
                  {
@@ -110,30 +105,68 @@
                //console.log(qtnJSON);
                //ansJSON=JSON.parse(pollJSON['ans_json']);
                  //alert(data);
-                 
-              $("#pollArea").append('<h1>'+pollJSON['title']+'</h1><h2>'+pollJSON['description']+'</h2>');
+                 /*
+                  *
+                    <div class='panel panel-primary'>
+                                <div class='panel-heading'>
+                                    <div class='row'>
+                                        <div class='col-sm-8'>
+                                            <h3 class='panel-title'>Question</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class='panel-body'>
+                                    <div class='row'>
+                                        <div class='col-sm-5'>
+                                            <button type='button' class='btn btn-sm btn-primary'>Solve</button>
+                                            <button type='button' class='btn btn-sm btn-success'>Report</button>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+              
+                  */
+              
+              //$("#pollArea").append('<h1>'+pollJSON['title']+'</h1><h2>'+pollJSON['description']+'</h2>');
                   for(var i=0; i<qtnJSON.length; i++)
                   {
-                      $("#pollArea").append("<p>Qtn "+qtnJSON[i]['qtn_id']+":"+qtnJSON[i]['qtn']+"</p>");
-                     
+                      //$("#pollArea").append("<p>Qtn "+qtnJSON[i]['qtn_id']+":"+qtnJSON[i]['qtn']+"</p>");
+                      $("#pollArea").append("<div class='panel panel-primary'>\n\
+                                                <div class='panel-heading'>\n\
+                                                    <div class='row'>\n\
+                                                        <div class='col-sm-8'>\n\
+                                                            <h3 class='panel-title'>"+qtnJSON[i]['qtn_id']+":"+qtnJSON[i]['qtn']+"</h3>\n\
+                                                        </div>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                              <div class='panel-body'>\n\
+                                                <div class='row'>\n\
+                                                    <div class='col-sm-8' id='qtndiv_"+i+"'>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>");
                       switch(qtnJSON[i]['qtn_type'])
                       {
                           case "mcss":{
                                         var answers=qtnJSON[i]['rows'];
+                                      
                                         for (var j=0; j<answers.length;j++)
-                                            {
-                                                $("#pollArea").append('<input type="radio" name="qtn'+(i+1)+'" value="'+(j+1)+'"/>'+answers[j]+'<br/>');
+                                            {//<div class='radio'><label><input type='radio' name='optionsRadios' id='optionsRadios1' value='option1' checked=''>Radio 1</label></div>
+                                                //$("#pollArea").append('<input type="radio" name="qtn'+(i+1)+'" value="'+(j+1)+'"/>'+answers[j]+'<br/>');
+                                                $("#qtndiv_"+i).append("<label class='col-sm-6 col-lg-6'><input type='radio' name='qtn"+(i+1)+"' value='"+(j+1)+"' checked=''>"+answers[j]+"</label>");
                                             }
+                                          
                                       }break;
                           case "mcms":{//console.log(ansJSON[i][1]);
                                         var answers=qtnJSON[i]['rows'];
                                        
-                                        $("#pollArea").append('<select multiple id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></select>');
+                                        //$("#pollArea").append('<select multiple id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></select>');
+                                        $("#qtndiv_"+i).append("<select multiple id='qtn"+(i+1)+"' name='qtn"+(i+1)+"'></select>");
                                         for (var j=0; j<answers.length;j++)
                                             {//console.log(answers[j]);
-                                                $("#qtn"+(i+1)).append('<option value="'+(j+1)+'">'+answers[j]+'</option>');
-                                                //$("#qtn"+(i+1)).append('<option>Hello</option>');
-                                                
+                                                $("#qtn"+(i+1)).append('<option value="'+(j+1)+'">'+answers[j]+'</option>'); 
                                             }
                                             //$("#pollArea").append('</select>');
                                             $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,width:100,emptyText: "select"});
@@ -141,42 +174,87 @@
                                       }break;
                            case "tb":{
                                        //console.log(ansJSON[i]);
-                                       $("#pollArea").append('Enter your answer here. If you have multiple answers then separate them with enter<br/><textarea id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></textarea>');
+                                       
+                                       //$("#pollArea").append('Enter your answer here. If you have multiple answers then separate them with enter<br/><textarea id="qtn'+(i+1)+'" name="qtn'+(i+1)+'"></textarea>');
+                                       $("#qtndiv_"+i).append(" <div class='form-group'>\n\
+                                                                    <label>Enter your answer here. If you have multiple answers then separate them with enter</label>\n\
+                                                                    <textarea class='form-control' rows='2' id='qtn"+(i+1)+"' name='qtn"+(i+1)+"'></textarea>\n\
+                                                                </div>");
                                       }break;
                             case "moc":{
-                                          
+                                          /* 
+                                          <table class='table table-hover table-striped'>
+                                <thead>
+                                    <tr>
+                                        <th>Page</th>
+                                        <th>Visits</th>
+                                        <th>% New Visits</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>/index.html</td>
+                                        <td>1265</td>
+                                        <td>32.3%</td>
+                                        <td>$321.33</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                                           */
                                            var rows=qtnJSON[i]['rows'];
                                            var columns=qtnJSON[i]['columns'];
-                                           
+                                          
                                            var tableid="moc"+(i+1);
                                          
-                                           $("#pollArea").append('<table id="'+tableid+'"></table>');
+                                           $("#qtndiv_"+i).append("<div class='table-responsive'><table id='"+tableid+"' class='table table-bordered table-hover table-striped col-sm-12'></table><div>");
+                                           $("#"+tableid).append("<thead id='thead_"+tableid+"'></thead>");
+                                           $("#"+tableid).append("<tbody id='tbody_"+tableid+"'></tbody>");
                                            for(var k=0; k<=rows.length; k++)
                                            {
                                                var row_id="moctr"+k1;
                                                k1++;
-                                               $("#"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               //$("#"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               if(k==0)
+                                               {
+                                                   $("#thead_"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               }
+                                               else
+                                               {
+                                                   $("#tbody_"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               }
                                                for(var l=0; l<=columns.length; l++)
                                                {
                                                    if(k==0)
                                                    {
+                                                       
                                                        if(l==0)
                                                        {
-                                                           $("#"+row_id).append("<th><center>Rows\Columns</center></th>");// top right corner cell
+                                                          
+                                                           $("#"+row_id).append("<th></th>");// top right corner cell
+                                                           //$("#thead_"+row_id).append("<th>Rows\Columns</th>");// top right corner cell
                                                        }
                                                        else
                                                        {
-                                                           $("#"+row_id).append("<th><center>"+columns[l-1]+"</center></th>");// naming columns
+                                                          $("#"+row_id).append("<th><center>"+columns[l-1]+"</center></th>");// naming columns
+                                                           //$("#thead_"+row_id).append("<th>"+columns[l-1]+"</th>");// naming columns
                                                        }
-                                                   }
-                                                   else if(l==0)
-                                                   {
-                                                       $("#"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
                                                    }
                                                    else
                                                    {
-                                                       $("#"+row_id).append("<td><center><input type='radio' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'/></center></td>");
+                                                       
+                                                  if(l==0)
+                                                   {
+                                                       
+                                                       $("#"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
+                                                       //$("#tbody_"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
                                                    }
+                                                   else
+                                                   {
+                                                       $("#"+row_id).append("<td><center><input type='radio' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'></label></center></td>");
+                                                       //$("#tbody_"+row_id).append("<td><input type='radio' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'></label></td>");
+                                                   }
+                                                    }
                                                }
                                            }
                                            
@@ -191,31 +269,46 @@
                                            var columns=qtnJSON[i]['columns'];
                                            
                                            var tableid="momc"+(i+1);
-                                           $("#pollArea").append('<table id="'+tableid+'"></table>');
+                                           //$("#pollArea").append('<table id="'+tableid+'"></table>');
+                                           $("#qtndiv_"+i).append("<div class='table-responsive'><table id='"+tableid+"' class='table table-bordered table-hover table-striped'></table></div>");
+                                           $("#"+tableid).append("<thead id='thead_"+tableid+"'></thead>");
+                                           $("#"+tableid).append("<tbody id='tbody_"+tableid+"'></tbody>");
                                            for(var k=0; k<=rows.length; k++)
                                            {
                                                var row_id="momctr"+k2;
                                                k2++;
-                                               $("#"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               if(k==0)
+                                               {
+                                                   $("#thead_"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               }
+                                               else
+                                               {
+                                                   $("#tbody_"+tableid).append('<tr id="'+row_id+'"></tr>');
+                                               }
+                                               //$("#"+tableid).append('<tr id="'+row_id+'"></tr>');
                                                for(var l=0; l<=columns.length; l++)
                                                {
                                                    if(k==0)
                                                    {
                                                        if(l==0)
                                                        {
-                                                           $("#"+row_id).append("<th><center>Rows\Columns</center></th>");// top right corner cell
+                                                           //$("#"+row_id).append("<th><center>Rows\Columns</center></th>");// top right corner cell
+                                                           $("#"+row_id).append("<th></th>");// top right corner cell
                                                        }
                                                        else
                                                        {
+                                                           //$("#"+row_id).append("<th><center>"+columns[l-1]+"</center></th>");// naming columns
                                                            $("#"+row_id).append("<th><center>"+columns[l-1]+"</center></th>");// naming columns
                                                        }
                                                    }
                                                    else if(l==0)
                                                    {
+                                                       //$("#"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
                                                        $("#"+row_id).append("<th><center>"+rows[k-1]+"</center></th>");//naming rows
                                                    }
                                                    else
                                                    {
+                                                       //$("#"+row_id).append("<td><center><input type='checkbox' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'/></center></td>");
                                                        $("#"+row_id).append("<td><center><input type='checkbox' name='qtn"+(i+1)+" "+(k-1)+"' value='"+(k-1)+","+(l-1)+"'/></center></td>");
                                                    }
                                                }
@@ -313,25 +406,19 @@
                                 type: "POST",       // the dNodeNameefault
                                 url: "${delimiter}submitPollAns",
                                 data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish, poll_uid:pollJSON["uid"], poll_title:pollJSON["poll_title"],poll_link:pollJSON["poll_link"],poll_cat:pollJSON["cid_json"]},
-                                success: function(data){alert(data);
+                                success: function(data){
+                                        console.log("op")
+                                        console.log(data);
                                         if(data)
                                         {
-                                            $("#submitSurvey").empty().append('<button onclick="pollResult('+pid+');">View Result</button>')
+                                            $("#pollArea").empty();
+                                            $("#submitSurvey").empty().append("<a href='${delimiter}result/"+pid+"/pollican' style=' text-decoration: none;'><button class='btn btn-success'>View Result</button></a>")
                                         }
-                                                location.reload(true);
+                                                //location.reload(true);
                                 }
                         });
               
             }
         </script>
-    </head>
-    <body>
-        <div id="pollArea">
-            <input type="checkbox" id="anonymous"/>Solve Anonymously
-            
-        </div>
-        <div id='submitSurvey'>
-            <button onclick="submitAns();" id="submitAns">Submit Survey</button>
-        </div>
     </body>
 </html>
