@@ -241,17 +241,18 @@ public class UrlController extends Parent_Controller{
             List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
            
             rslt=gson.toJson(poll_ans_tbl_list);
-             
+             model.addAttribute("delimiter", "../../");
             model.addAttribute("result", rslt);
-            model.addAttribute("page", "result");
-           if(checklogin(request))
+            model.addAttribute("page", "report");
+            int cs= checkSetCookie(request);
+            if(cs==2)
                model.addAttribute("logged", 1);
            else
                model.addAttribute("logged", 0);
            
             
             
-	   return "result";
+	   return "report";
    } 
    @RequestMapping(value = "/profile/{handle}", method = RequestMethod.GET)
    public String profile(@PathVariable String handle, ModelMap model,HttpServletRequest request) throws SQLException, IOException {
