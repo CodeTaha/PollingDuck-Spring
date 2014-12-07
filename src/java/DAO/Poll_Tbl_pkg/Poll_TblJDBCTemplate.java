@@ -68,7 +68,7 @@ public class Poll_TblJDBCTemplate  {
         {System.out.println("in listPolls() if");
            //SQL ="SELECT * FROM pollingduck.poll_tbl where start_ts<=? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
            // SQL ="SELECT * FROM pollingduck.poll_tbl where pid NOT IN (select pid from poll_ans_tbl where uid=?) and start_ts<? and end_ts>=? Order by start_ts desc limit 5"; //"select * from poll_tbl";
-            SQL ="SELECT * FROM poll_tbl where (cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)) and (start_ts<=? and end_ts>=?) Order by start_ts desc limit 5;"; //"select * from poll_tbl";
+            SQL ="SELECT * FROM poll_tbl where (cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)) and (start_ts<=? and end_ts>=?) Order by start_ts desc limit 10;"; //"select * from poll_tbl";
             poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid,dateFormat.format(date),dateFormat.format(date)}, new Poll_Tbl_Mapper(conn));
         }
         else
@@ -121,6 +121,7 @@ public class Poll_TblJDBCTemplate  {
         System.out.println("in Poll_tblJDBCTemplate >listPolls()");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
+        String final_date=dateFormat.format(date);
         System.out.println("Todays date="+dateFormat.format(date)+" ts="+ts);
         String SQL;
         System.out.println("arr2"+Arrays.toString(following));
@@ -138,16 +139,17 @@ public class Poll_TblJDBCTemplate  {
             fp="0";
         }
         List <Poll_Tbl> poll_tbl;
+        
         //"SELECT * FROM poll_tbl where (cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)) and (start_ts<=? and end_ts>=?) Order by start_ts desc limit 5;"; //"select * from poll_tbl";
         if(ts.equals(""))
         {System.out.println("in listPolls() if");
-            SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 5"; //"select * from poll_tbl";
-            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{date,date,uid}, new Poll_Tbl_Mapper(conn));
+            SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 10"; //"select * from poll_tbl";
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{dateFormat.format(date),dateFormat.format(date),uid}, new Poll_Tbl_Mapper(conn));
         }
         else
         { System.out.println("in listPolls() else");
             SQL ="SELECT * FROM poll_tbl where start_ts<? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 5"; //"select * from poll_tbl";
-            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,date,uid}, new Poll_Tbl_Mapper(conn));
+            poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,dateFormat.format(date),uid}, new Poll_Tbl_Mapper(conn));
         }
       
       return poll_tbl;

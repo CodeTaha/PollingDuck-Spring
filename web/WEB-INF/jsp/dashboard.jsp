@@ -15,18 +15,8 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
             <div id="page-wrapper">
 
             <div class="container-fluid" id="pollList">
-                <div class='row'>
-                    <div class='col-sm-4'>
-                           <div class='panel panel-primary'>
-                                <div class='panel-heading'>
-                                    <h3 class='panel-title'>Panel title</h3>
-                                </div>
-                                <div class='panel-body'>
-                                    Panel content
-                                </div>
-                            </div>
-                    </div>
-                </div>
+               
+                <!-- model for boxes
                 <div class='row'>
                     <div class='col-sm-4'>
                            <div class='panel panel-primary'>
@@ -59,11 +49,11 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
                                 </div>
                             </div>
                     </div>
-                </div>
+                </div>-->
             </div>
+                
             </div>
 </div>       
-        
      <script>
     var pollJSONtemp;   
     var pollJSON=new Array();
@@ -135,7 +125,7 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
                          }
                          pollJSON.push(pollJSONtemp[i]);
                          $("#pollList").append("<div class='row'>\n\
-                    <div class='col-sm-4'>\n\
+                    <div class='col-sm-8 col-md-6 col-lg-4 col-md-offset-1 col-lg-offset-1'>\n\
                            <div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                     <div class='row'>\n\

@@ -80,7 +80,7 @@ public class UrlController extends Parent_Controller{
         for (Cookie cookie : cookies2) {
             
                 cookie.setValue(null);
-                cookie.setMaxAge(-1);
+                cookie.setMaxAge(0);
                 
                 response.addCookie(cookie);
             
@@ -91,12 +91,17 @@ public class UrlController extends Parent_Controller{
    
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
    public String dashboard(ModelMap model,HttpServletRequest request) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
+            
+            model.addAttribute("uid",ud.getUid());
+            model.addAttribute("handle",ud.getHandle());
            model.addAttribute("delimiter", "");
            model.addAttribute("dashboard_active", "active");
            model.addAttribute("viewpoll_active", "");
            model.addAttribute("createpoll_active", "");
+            model.addAttribute("page", "dashboard");
            model.addAttribute("user",gson.toJson(get_UserDetails(request)));
            return "dashboard";
        }
@@ -115,11 +120,15 @@ public class UrlController extends Parent_Controller{
             Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
             List<Category> category=cat.Category_list();
             String cat_json=gson.toJson(category);
+            User_Detail ud=get_UserDetails(request);
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
             System.out.println("cat list "+cat_json);
             model.addAttribute("cat_list", cat_json);
             model.addAttribute("dashboard_active", "");
            model.addAttribute("viewpoll_active", "");
            model.addAttribute("createpoll_active", "active");
+            model.addAttribute("page", "createPoll");
             return "createPoll";
             }
             else
@@ -135,12 +144,16 @@ public class UrlController extends Parent_Controller{
            }
    }
    @RequestMapping(value = "/viewPolls", method = RequestMethod.GET)
-   public String viewPolls(ModelMap model,HttpServletRequest request){
+   public String viewPolls(ModelMap model,HttpServletRequest request) throws SQLException{
        if(checklogin(request))
        {
+           User_Detail ud=get_UserDetails(request);
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
            model.addAttribute("dashboard_active", "");
            model.addAttribute("viewpoll_active", "active");
            model.addAttribute("createpoll_active", "");
+            model.addAttribute("page", "viewPoll");
            return "viewPolls";
        }
        else
@@ -193,6 +206,7 @@ public class UrlController extends Parent_Controller{
             rslt=gson.toJson(poll_ans_tbl_list);
              
             model.addAttribute("result", rslt);
+            model.addAttribute("page", "result");
            if(checklogin(request))
                model.addAttribute("logged", 1);
            else
@@ -209,7 +223,36 @@ public class UrlController extends Parent_Controller{
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
 	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
    } 
-   
+   @RequestMapping(value = "/report/{pid}/{ref_url}",method = RequestMethod.GET)
+   public String report(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            System.out.println("In UrlController>result ");
+            
+            Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
+            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+            if(!poll_tbl.getPoll_link().equals(ref_url))
+            {
+                response.sendRedirect(poll_tbl.getPoll_link());
+               return "error";
+            }
+            String rslt=gson.toJson(poll_tbl);
+            model.addAttribute("poll", rslt);
+            
+            List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
+           
+            rslt=gson.toJson(poll_ans_tbl_list);
+             
+            model.addAttribute("result", rslt);
+            model.addAttribute("page", "result");
+           if(checklogin(request))
+               model.addAttribute("logged", 1);
+           else
+               model.addAttribute("logged", 0);
+           
+            
+            
+	   return "result";
+   } 
    @RequestMapping(value = "/profile/{handle}", method = RequestMethod.GET)
    public String profile(@PathVariable String handle, ModelMap model,HttpServletRequest request) throws SQLException, IOException {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
@@ -232,6 +275,9 @@ public class UrlController extends Parent_Controller{
           Follow follow=ud.getFollow();
            String foll=gson.toJson(follow.getFollowers());
            System.out.println("fol="+foll);
+          
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
            model.addAttribute("followers", gson.toJson(follow.getFollowers()));
            model.addAttribute("following", gson.toJson(follow.getFollowing()));
            model.addAttribute("loggedin", true);
@@ -244,8 +290,11 @@ public class UrlController extends Parent_Controller{
        else
        {
            model.addAttribute("loggedin", false);
+          
+        model.addAttribute("uid",0);
+        model.addAttribute("handle","");
        }
-       
+       model.addAttribute("page", "profile");
 	   return "profile";
    }
   @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
@@ -261,6 +310,10 @@ public class UrlController extends Parent_Controller{
            model.addAttribute("dashboard_active", "active");
            model.addAttribute("viewpoll_active", "");
            model.addAttribute("createpoll_active", "");
+           model.addAttribute("page", "dashboard");
+           User_Detail ud=get_UserDetails(request);
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
            return "dashboard";
        }
        else

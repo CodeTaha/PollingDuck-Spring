@@ -23,7 +23,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="title">Title:</label>
                                 <div class="col-sm-6">
-                                <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title">
+                                <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -35,11 +35,11 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="category">Tag Categories:</label>
                                 <div class="col-sm-6" >
-                                    <select id="category" multiple="multiple"  tabindex="-1" class="select2-offscreen"></select>
+                                    <select id="category" multiple="multiple"  tabindex="-1" class="select2-offscreen" required></select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="sd">Start Time:</label>
+                                <label class="control-label col-sm-2" for="sd">Start Time <small>Poll will start on this time</small>:</label>
                                 <div class="col-sm-2">
                                 <input type="text" class="form-control" id="sd" name="sd"/>
                                 </div>
@@ -107,7 +107,7 @@ var qtnArray= new Array();
 var ansArray= new Array();
 var deltrackArray= new Array();
 var count=0;
-var uid=<%=uid%>;
+var uid=${uid};
 console.log(${cat_list});
 var cat_json=${cat_list};
 var cat_list=new Array();
@@ -306,6 +306,7 @@ $(document).ready(function(){
        }
     console.log("buttonval");
           console.log(buttonval);
+          
        // diveditid="diveditid"+iq;
        if(flag===1)
        {
@@ -330,7 +331,15 @@ $(document).ready(function(){
         qtnArray2[1]=count+1;
         qtnArray2[2]=qtype;
         qtnArray2[3]=question;
-        
+         var qtnTypeforDisplay;
+        switch(qtype)
+        {
+            case 'mcss':{qtnTypeforDisplay='Multiple Choice Single Select';}break;
+            case 'mcms':{qtnTypeforDisplay='Multiple Choice Multiple Select';}break;
+            case 'tb':{qtnTypeforDisplay='TextBox';}break;
+            case 'moc':{qtnTypeforDisplay='Matrix of Choices';}break;
+            case 'momc':{qtnTypeforDisplay='Matrix of Multiple Choices';}break;
+        }
         $("#d2").append('<div id="'+divsqid+'" ></div>');
         if(qtype==="moc" || qtype==="momc")
         {
@@ -346,14 +355,13 @@ $(document).ready(function(){
         
         
   
-        $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-info'>\n\
+        $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
-                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                        <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                        <label class='control-label col-sm-2' for='name'>Question: <small>"+question+"</small></label>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtype+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
                                 </div>\n\
                       <div class='form-group'>\n\
                                          <label class='control-label col-sm-2' for='name'>Columns : <small>"+columns+"</small></label>\n\
@@ -376,14 +384,13 @@ $(document).ready(function(){
         
         
   
-        $("#"+divsqid).append("<p><p><br></p></p><div class='panel panel-info'>\n\
+        $("#"+divsqid).append("<p><p><br></p></p><div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
-                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                        <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                        <label class='control-label col-sm-2' for='name'>Question:<small>"+question+"</small></label>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type:<small>"+qtype+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type:<small>"+qtnTypeforDisplay+"</small></label>\n\
                                 </div>\n\
                       <div class='form-group'>\n\
                                          <label class='control-label col-sm-2' for='name'>Columns :<small>"+columns+"</small></label>\n\
@@ -405,14 +412,13 @@ $(document).ready(function(){
               qtnArray2[4]=JSON.stringify(answers.split("\n"));
         qtnArray2[5]="";
         
-        $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-info'>\n\
+        $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
-                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                        <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                        <label class='control-label col-sm-2' for='name'>Question: <small>"+question+"</small></label>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtype+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
                                 </div>\n\
                       <div class='form-group'>\n\
                                          <label class='control-label col-sm-2' for='name'>Options : <small>"+answers+"</small></label>\n\
@@ -427,15 +433,14 @@ $(document).ready(function(){
               var answers=$("#"+answer).val();
                 qtnArray2[4]=JSON.stringify(answers.split("\n"));
                  qtnArray2[5]="";
-        
-               $("#"+divsqid).append("<p><p><br></p></p> <div class='panel panel-info'>\n\
+                
+               $("#"+divsqid).append("<p><p><br></p></p> <div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
-                                        <h3 class='panel-title'>Added Question</h3>\n\
+                                        <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                        <label class='control-label col-sm-2' for='name'>Question: <small>"+question+"</small></label>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtype+"</small></label>\n\
+                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
                                     </div>\n\
                                     <div class='form-group'>\n\
                                 <label class='control-label col-sm-2' for='name'>Options : <small>"+answers+"</small></label>\n\

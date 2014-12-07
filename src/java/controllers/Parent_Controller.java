@@ -121,14 +121,16 @@ public class Parent_Controller {
                    break;
             }
            }
-        if(countcookies==2)
+        if(countcookies==0)
         {
-            cookiesSet=true;
-            return 2;
+            
+            return 0;
         }
         else
         {
-            return 0;
+            cookiesSet=true;
+            return 2;
+            
         }
     }
     

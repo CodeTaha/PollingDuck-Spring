@@ -15,51 +15,7 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
                 <div class="container-fluid" id="pollList">
-                <div class='row'>
-                    <div class='col-sm-4'>
-                           <div class='panel panel-primary'>
-                                <div class='panel-heading'>
-                                    <h3 class='panel-title'>Panel title</h3>
-                                </div>
-                                <div class='panel-body'>
-                                    Panel content
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <div class='row'>
-                    <div class='col-sm-4'>
-                           <div class='panel panel-primary'>
-                                <div class='panel-heading'>
-                                    <div class='row'>
-                                        <div class='col-sm-8'>
-                                            <h3 class='panel-title'>Poll Title</h3>
-                                        </div>
-                                        <div class='col-sm-4'>
-                                            <img style='width:10px;height:auto' src='pages/resources/images/pollicoins.png'> 50 
-                                            <img style='width:10px;height:auto' src='pages/resources/images/bulb.png'> 50
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                <div class='panel-body'>
-                                    <div class='row'>
-                                        <a href='#' target='blank'> <img class='img-thumbnail' style='width:50px;height:50px' src='https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/p100x100/10171238_729237357164686_2553226577218477225_n.jpg?oh=4c5334a13282b6f4053a79281a24df74&oe=5505DC4E&__gda__=1427521192_72cd9638add4d69b1f792361e7cdbbd7' alt=''>
-                                            username @ handle</a>
-                                    </div>
-                                    <div class='row'>
-                                        <div class='col-sm-7'>
-                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: Java,PHP
-                                        </div>
-                                        <div class='col-sm-5'>
-                                            <button type='button' class='btn btn-sm btn-primary'>Solve</button>
-                                            <button type='button' class='btn btn-sm btn-success'>Report</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
+              
             </div>
             </div>
             
@@ -151,7 +107,7 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
                          }
                         
                          $("#pollList").append("<div class='row'>\n\
-                    <div class='col-sm-4'>\n\
+                    <div class='col-sm-8 col-md-6 col-lg-4 col-md-offset-1 col-lg-offset-1'>\n\
                            <div class='panel panel-primary'>\n\
                                 <div class='panel-heading' >\n\
                                     <div class='row'>\n\
