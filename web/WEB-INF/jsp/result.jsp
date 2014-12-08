@@ -727,9 +727,9 @@
      qtn_div_pie="#"+qtn_div_pie;
      var svg_id="svg_"+p;
      //console.log("in");
-var margin = {top: 20, right: 20, bottom: 15+bot*7, left: 40},
+var margin = {top: 20, right: 20, bottom: 15+bot*1, left: 40},
 width = document.body.offsetWidth*0.29- margin.left - margin.right,
-height = document.body.offsetWidth*0.24 - margin.top - margin.bottom;
+height = document.body.offsetWidth*0.24 - margin.top - margin.bottom+bot;
 // Parse the label / time
 //var parseDate = d3.time.format("%Y-%m").parse;
 var animheight=height;
@@ -748,12 +748,13 @@ var yAxis = d3.svg.axis()
 .scale(y)
 .orient("left")
 .ticks(maxticks);
+width=width + margin.left + margin.right+bot*3.5;
 
 var svg = d3.select(qtn_div_pie).append("svg")
 .attr("id", "svg_"+p)
 .attr("style","background-color:white")
-.attr("width", width + margin.left + margin.right+10 )
-.attr("height", height + margin.top + margin.bottom+10 )
+.attr("width", width  )
+.attr("height", height + margin.top + margin.bottom+30-bot )
 .append("g")
 .attr("transform",
 "translate(" + width + "," + margin.top + ") rotate (90) ");
@@ -777,16 +778,23 @@ svg.append("g")
 .attr("dx", "-.8em")
 .attr("dy", "-.55em")
 .attr("transform", "rotate(-90)" );
+
 svg.append("g")
 .attr("class", "y axis")
 .call(yAxis)
-.append("text")
+
+.selectAll("text")  // select all the text elements for the xaxis
+          .attr("transform", function(d) {
+             return "translate(" + this.getBBox().width*-2 + "," + this.getBBox().width*-1.5 + ")rotate(-90)";
+         });
+
+svg.append("text")
 .attr("transform", "rotate(-90)")
 .attr("y", 6)
-//Bar Charts 254
 .attr("dy", ".71em")
 .style("text-anchor", "end")
 .text("no of votes");
+
 svg.selectAll("bar")
 .data(data)
 .enter().append("rect")
