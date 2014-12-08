@@ -1,17 +1,5 @@
 <%@include file="header.jspf" %>
-          <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=812070948808604";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){
-js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-</script>
-</body>  <!-- /.navbar-collapse do not change uptil here-->
+            <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
 
             <div class="container-fluid" id="pollList">
@@ -150,9 +138,7 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
                                         </div>\n\
                                         <div class='col-sm-5'>\n\
                                             <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(pollJSONtemp[i]["pid"])+")'>Solve</button>\n\
-                                            <div class='fb-share-button' data-href='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' data-layout='button'></div>  \n\
-<a href='twitter.com/share' data-text='Solve this awesome Poll!!!' data-url='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' class='twitter-share-button' data-via='pollican' data-lang='en' >Tweet</a>\n\
- <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
+                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
                                         </div>\n\
                                     </div>\n\
                                 </div>\n\
