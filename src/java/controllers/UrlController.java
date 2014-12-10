@@ -145,22 +145,25 @@ public class UrlController extends Parent_Controller{
    }
    @RequestMapping(value = "/viewPolls", method = RequestMethod.GET)
    public String viewPolls(ModelMap model,HttpServletRequest request) throws SQLException{
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-           User_Detail ud=get_UserDetails(request);
+           
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
+        model.addAttribute("delimiter", "");
            model.addAttribute("dashboard_active", "");
            model.addAttribute("viewpoll_active", "active");
            model.addAttribute("createpoll_active", "");
             model.addAttribute("page", "viewPoll");
+            model.addAttribute("user",gson.toJson(get_UserDetails(request)));
            return "viewPolls";
        }
        else
        {
            return "redirect:index";
        }
-	  
+      
    }
    
    

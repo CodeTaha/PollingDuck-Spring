@@ -220,16 +220,7 @@ function Alerts(alert_type,alert_mesg)
                     </ul>
                 </li>
           </ul>
-                        <ul class="nav navbar-nav navbar-right notlogged">
-              <li>
-                  
-                    <img src="${delimiter}pages/resources/img/fbconnect.png" style="cursor:pointer; width: 130px;height: 40px;margin-top: 5px;" onclick="Login()" id='fb_login_btn'/>
-              </li>
-              <li>
-                    <button type="button" class="btn btn-primary" style="margin-top: 9px;" onclick="SignUp()">Sign-up</button>
-              </li>
-              
-          </ul>
+                     
         </div>
       </div>
     </nav>

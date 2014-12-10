@@ -18,7 +18,7 @@ aside,
 details,
 figcaption,
 figure,
-footer,
+footer,.navbar
 header,
 hgroup,
 main,
@@ -4290,8 +4290,8 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #000207;
-  border-color: #080808;
+  background-color: #403467;
+  //border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
   color: #9d9d9d;
