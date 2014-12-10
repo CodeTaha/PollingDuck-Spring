@@ -1,17 +1,5 @@
 <%@include file="header.jspf" %>
-<body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=555702664544677&version=v2.0";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){
-js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-</script>
-</body>
+  
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
                 <div class="container-fluid" id="pollList">
@@ -109,7 +97,7 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
                          $("#pollList").append("<div class='row'>\n\
                     <div class='col-sm-8 col-md-6 col-lg-4 col-md-offset-1 col-lg-offset-1'>\n\
                            <div class='panel panel-primary'>\n\
-                                <div class='panel-heading' >\n\
+                                <div class='panel-heading'>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-8'>\n\
                                             <h3 class='panel-title'>"+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+"</h3>\n\
@@ -121,30 +109,25 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
                                     </div>\n\
                                 </div>\n\
                                \n\
-                                <div class='panel-body' >\n\
+                                <div class='panel-body'>\n\
                                     <div class='row'>\n\
                                         <a href='profile/"+pollJSONtemp[i]["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+pollJSONtemp[i]["user"]["profile_pic"]+"' alt='"+pollJSONtemp[i]["user"]["handle"]+"'>\n\
                                             "+pollJSONtemp[i]["user"]["name"]+" @ "+pollJSONtemp[i]["user"]["handle"]+"</a>\n\
                                     </div>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-7'>\n\
-                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"<p><br></p>\n\
+                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
                                         </div>\n\
-                                        <div class='col-sm-10'>\n\
-                                        <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(pollJSONtemp[i]["pid"])+")'>Solve</button>\n\
-                                        <div class='fb-share-button' data-href='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' data-layout='button'></div>  \n\
-<a href='twitter.com/share' data-text='Solve this awesome Poll!!!' data-url='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' class='twitter-share-button' data-via='pollican' data-lang='en' >Tweet</a>\n\
- <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
+                                        <div class='col-sm-5'>\n\
+                                            <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(pollJSONtemp[i]["pid"])+")'>Solve</button>\n\
+                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
                                         </div>\n\
                                     </div>\n\
                                 </div>\n\
                             </div>\n\
                     </div>\n\
                 </div>");
-            //    <button type='button' class='btn btn-sm btn-info' onclick='share("+parseInt(pollJSONtemp[i]["pid"])+")'>Share</button>\n\
-                                    
-                     //localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"
-                    /*$("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
+                      /*$("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
                       <h3>'+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+'</h3>\n\
                          \n\<a href="/Pollican/profile/'+pollJSONtemp[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSONtemp[i]["user"]["profile_pic"]+"></a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'>"+pollJSONtemp[i]["user"]["name"]+"</a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'  >@"+pollJSONtemp[i]["user"]["handle"]+'</a>\n\
                           \n\<h4>'+pollJSONtemp[i]["description"] +'</h4><h5>REWARD :'+pollJSONtemp[i]["reward"]+'</h5></div>'
@@ -187,7 +170,8 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
        
    
    pollJSONvp=poll_js;
-            }
+   }
+          
            function pollResult(pid)
            {
                 var win = window.open("result/"+pid, '_blank');
@@ -199,6 +183,7 @@ js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
             }
            
         </script>
-           
-    
+ 
+        
+    </body>
 </html>
