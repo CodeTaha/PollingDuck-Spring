@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="controllers.Parent_Controller"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,6 +11,7 @@
         response.sendRedirect("dashboard");
         //request.getRequestDispatcher("dashboard").forward(request, response);
     }
+    
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -45,16 +47,16 @@ var gender;
             var array3 = new Object();
     $(document).ready(function(){
         
-        
+      
        
-        $("#SignUp").hide();
+    //    $("#SignUp").hide();
         $("#alert_box").hide();
         /*$("#dob").datepicker({
           
            dateFormat:"mm/dd/yy" 
                    });*/
    
-        $('#dob').datepicker();
+      //  $('#dob').datepicker();
           
                                                      
     
@@ -116,7 +118,9 @@ function Logout()
      js.src = "//connect.facebook.net/en_US/all.js";
      ref.parentNode.insertBefore(js, ref);
    }(document));
-  function getUserInfo() {
+  
+    
+    function getUserInfo() {
 	    FB.api('/me', function(response) {
   
  
@@ -132,10 +136,11 @@ function Logout()
  gender=response.gender;
  fb=username;
  //profile_pic=response.data.url;
+ 
  FB.api('/me/picture?type=normal', function(response) {
                   profile_pic=response.data.url;
                
-                  $("#dp").empty().append("<img src='"+profile_pic+"'/>");
+               //   $("#dp").empty().append("<img src='"+profile_pic+"'/>");
     });
 
   	$.ajax({
@@ -162,23 +167,29 @@ function Logout()
                                      
                                         else
                                         {
-                                            $("#SignUp").show();
-                                            cat_json=JSON.parse(data);
-                                            document.getElementById("email").value =email;
+                                           // $("#SignUp").show();
+                                          //  cat_json=JSON.parse(data);
+                                            /*document.getElementById("email").value =email;
                                             document.getElementById("email").readOnly = true;
                                             document.getElementById("dob").value =birthdate;
-                                            document.getElementById("email").readOnly = true;
-                                            document.getElementById("name").value=name;
-                                            if(gender=='female')
+                                            document.getElementById("dob").readOnly = true;  */
+                                           // document.getElementById("name").value=name; 
+                                          //  document.getElementById("name").readOnly=true;
+                                          /*  if(gender=='female')
                                             {
                                                 $("#sex_f").attr('checked', 'checked');
+                                                
                                                 
                                             }
                                             else
                                             {
                                                 $("#sex_m").attr('checked', 'checked');
+                                                
                                             }
-                                            console.log(cat_json);
+                                           // document.getElementById("gender").readOnly=true;
+                                            $("#sex_f").attr('disabled', 'disabled');
+                                            $("#sex_m").attr('disabled', 'disabled'); */
+                                            //console.log(cat_json);
                                            
                                           /*    for(var i=0; i<cat_json.length; i++)
                                                         {
@@ -187,9 +198,17 @@ function Logout()
                                                         }
                                                        
                                            */
-                                             get_accordion();
-                                                         
-                                            
+                                            // get_accordion();
+                                          //     window.location.assign("signUp1");      
+                                          document.getElementById("resname").value=response.name;
+                                          document.getElementById("resusername").value=response.username;
+                                          document.getElementById("resuserid").value=response.id;
+                                          document.getElementById("resemail").value=response.email;
+                                          document.getElementById("reslink").value=response.link;
+                                          document.getElementById("resbirthdate").value=response.birthday;
+                                          document.getElementById("resgender").value=response.gender;
+                                          document.getElementById("resdp").value=profile_pic;
+                                            document.f1.submit();
                                         }
                                         
                                 }
@@ -270,17 +289,7 @@ function Logout()
         }
         
     }
-     var handle;
-      var name;
-      var email_i;
-      var country;
-      var state;
-      var city;
-      var zip;
-      var religion;
-      var sex;
-      var dob;
-      var phone;
+    
     function select_categories()
     {
        handle=$("#handle").val();
@@ -362,6 +371,8 @@ function Logout()
   {
        $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
+ // document.getElementById()
+
 </script>
         <style>
              #accordion-resizer {
@@ -374,6 +385,7 @@ function Logout()
     </head>
 
     <body>
+        
         <div id='alert_box'>
         
         </div>
@@ -395,10 +407,11 @@ function Logout()
                   
                     <img src="pages/resources/img/fbconnect.png" style="cursor:pointer; width: 130px;height: 40px;margin-top: 5px;" onclick="Login()" id='fb_login_btn'/>
               </li>
+            <!--  
               <li>
                     <button type="button" class="btn btn-primary" style="margin-top: 9px;" onclick="SignUp()">Sign-up</button>
               </li>
-              
+            -->  
           </ul>
         </div>
       </div>
@@ -432,7 +445,7 @@ function Logout()
 </div>   
 
         <div class="col-sm-8 col-md-5 col-lg-4">
-
+    <!--        
 <div id="SignUp">
     <div id="signUpForm" class="form-horizontal">
         <div class="form-group">
@@ -445,12 +458,28 @@ function Logout()
             
             </div>
         </div>
-        <div class="form-group">
+       <div class="form-group">
             <label class="control-label col-sm-2" for="name">Name:</label>
             <div class="col-sm-10">
             <input type="text" class="form-control" id="name" placeholder="Enter your FullName">
             </div>
         </div>
+       <div class="form-group">
+            <label class="control-label col-sm-2" for="pwd">Pollican Password:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="pwd" placeholder="Enter a strong password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="c_pwd">Confirm Password:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="c_pwd">
+            </div>
+            <div class="col-sm-10" id="showMatch">
+                
+            </div>
+        </div>  
+        
         <div class="form-group">
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-10">
@@ -467,11 +496,13 @@ function Logout()
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="DOB">Date of Birth:</label>
-            <div class="well col-sm-10">
-            <!--<button id="btn2" style="float: right">manual set to 03/17/12</button>-->
-            <input type="text" name="dob" class="span2" data-date-format="mm/dd/yy" id="dob">
-            </div>
-        </div>
+            <div class="well col-sm-10">  
+            <button id="btn2" style="float: right">manual set to 03/17/12</button>
+            <input type="text" name="dob" class="span2" data-date-format="mm/dd/yy" id="dob"> 
+            </div> 
+        </div> 
+        
+            
             
                 
              <button class="btn btn-default" onclick="select_categories()">Next</button>
@@ -484,17 +515,22 @@ function Logout()
 <button class="btn btn-default" onclick="validate()">Register</button>
 </div>
 </div>
-
-        <!--<form action="login" method="post">
-            User id <input type="text" name="username"><br>
-            password <input type="password" name="password">
-            <input type="submit"/>
-        </form>-->
-        
-       
-        </div>
+            -->
+  </div>
 </div><!--row -->
 
 </div><!--container -->
+<form name="f1" style="visibility: hidden" method="get" action="signUp1.html" id="f1">
+            <input type="text" id="resname" name="response_name" >
+            <input type="text" id="resusername" name="response_username" >
+            <input type="text" id="resuserid" name="response_userid" >
+               <input type="text" id="resdp" name="response_dp" >
+         
+            <input type="text" id="resemail" name="response_email" >
+            <input type="text" id="reslink" name="response_link" >
+            <input type="text" id="resbirthdate" name="response_birthdate" >
+            <input type="text" id="resgender" name="response_gender" >
+            <input type="submit" value="submit"  style="font-size:18px; " />
+        </form>
     </body>
 </html>

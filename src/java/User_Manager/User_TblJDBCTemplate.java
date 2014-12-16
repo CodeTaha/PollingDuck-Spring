@@ -116,32 +116,43 @@ public class User_TblJDBCTemplate {
                 FileOutputStream fos = new FileOutputStream("C:/Users/Taha/Documents/GitHub/PollingDuck-Spring/PollingDuck-Spring/web/WEB-INF/pages/profile_pics/"+profile_pic1);
                 fos.write(response1);
                 fos.close();*/
-    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb ) throws SQLException, FileNotFoundException, IOException
+    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb, String hashedpassword ) throws SQLException, FileNotFoundException, IOException
    {
        System.out.println("In User_Tbl_JDBCTemplate> createUser");
+        System.out.println(" Handle "+handle +" name "+name+" email "+email+" country "+country+" state "+state+" city "+city+" zip "+zip+" religion "+ religion+" sex "+sex+" dob "+dob+" phone "+phone+" profile_pic "+profile_pic+" categ "+ category +" fb "+fb+"hashed password "+hashedpassword);
+        
         /* Code for User_Store */
             URL url = new URL(profile_pic);
             ByteArrayOutputStream out1;
-       try (InputStream in = new BufferedInputStream(url.openStream())) {
-           out1 = new ByteArrayOutputStream();
-           byte[] buf = new byte[1024];
-           int n = 0;
-           while (-1!=(n=in.read(buf)))
-           {
-               out1.write(buf, 0, n);
-           }
-           out1.close();
-       }
-                byte[] response1 = out1.toByteArray();
-                 java.util.Date date= new java.util.Date();
-                Timestamp ts=new Timestamp(date.getTime());
-                String profile_pic1=handle+".jpg";
-                
-       try (
-               FileOutputStream fos = new FileOutputStream("C:/Users/Taha/Documents/GitHub/PollingDuck-Spring/PollingDuck-Spring/web/WEB-INF/pages/profile_pics/"+profile_pic1)) {
-           fos.write(response1);
-           fos.close();
-       }
+       try (InputStream in = new BufferedInputStream(url.openStream())) 
+            {
+                out1 = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                int n = 0;
+                while (-1!=(n=in.read(buf)))
+                {
+                    out1.write(buf, 0, n);
+                }
+                System.out.println("In try 1");
+                out1.close();
+            }
+                    byte[] response1 = out1.toByteArray();
+                    java.util.Date date= new java.util.Date();
+                    Timestamp ts=new Timestamp(date.getTime());
+                    String profile_pic1=handle+".jpg";
+                    System.out.println("out of try1. image .jpg is:"+profile_pic1);   
+       try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Rishi\\Documents\\GitHub\\PollingDuck-Spring\\web\\WEB-INF\\pages\\profile_pics"+profile_pic1))
+            {
+                fos.write(response1);
+                fos.close();
+                System.out.println("In try 2");
+            }
+        
+            System.out.println("out of try 2");
+           
+            
+            
+            
             String category_list_json=Arrays.toString(category);
             System.out.println("Category list="+category_list_json);
             List<Exp_Json> exp = new ArrayList();
@@ -157,7 +168,7 @@ public class User_TblJDBCTemplate {
                 }
                 
             }
-            //System.out.println("reached3");
+            System.out.println("next up is callablestatement");
             String exp_json=gson.toJson(exp);
              CallableStatement st;
        /* (IN handle_i varchar(45),IN username_i varchar(45),IN email_i varchar(45),IN country_i varchar(45),
@@ -166,15 +177,17 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
             try{
                
              con=conn.getDataSource().getConnection();
-               st=con.prepareCall("call createUser('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
-                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+")");
+             System.out.println("10 dec 4pm"); 
+             st=con.prepareCall("call createUser2('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
+                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+",'"+hashedpassword+"')");
              st.executeQuery();
              con.close();
+             System.out.println("11 dec 2am");
              return true;
             }
           catch(Exception e)
           {
-              System.out.println("CreateUser procedure error="+e);
+              System.out.println("CreateUser2 procedure error="+e);
               return false;
           }
            
@@ -438,5 +451,17 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
     {
         
     }
-    
+    public int handleCount (String handle)
+    {  int count = 1;
+        String SQL="select count(*) from user_detail where handle=?";
+        try
+        {
+            count  = jdbcTemplateObject.queryForObject(SQL, new Object[]{handle}, Integer.class);
+        }
+        catch(DataAccessException e)
+        {   
+            System.out.println(e.getMessage());
+        }
+        return count;
+    }
 }

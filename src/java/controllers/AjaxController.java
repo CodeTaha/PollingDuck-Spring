@@ -83,11 +83,14 @@ public class AjaxController extends Parent_Controller{
         int fishes=10;
         int uid=Integer.parseInt(request.getParameter("uid"));
         String poll_type="free";
-        boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),","+detail[3]+",",detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
-        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,0);
+          int rslt=poll_tblJDBCTemplate.create2(Integer.parseInt(detail[0]),","+detail[3]+",",detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
         
-	if(rslt==true && rslt2==true) out.println(true);
+    //    boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),","+detail[3]+",",detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
+        boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,0);
       
+	//if(rslt==true && rslt2==true) out.println(true);
+      if(rslt>0 && rslt2 == true) out.println(rslt);
+      else out.println(0);
    }
      
    @RequestMapping(value = "/viewPollsData", method = RequestMethod.POST)
@@ -233,13 +236,14 @@ public class AjaxController extends Parent_Controller{
         String phone= request.getParameter("phone");
         String profile_pic= request.getParameter("profile_pic");
         String fb= request.getParameter("fb");
-        int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
+         int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
         //System.out.println("cat list= "+Arrays.toString(category));
         
         
+       String hashedpassword= request.getParameter("password");
        
        
-            boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb);
+            boolean rslt=user_tblJDBCTemplate.createUser(handle,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb,hashedpassword);
             if(rslt)
             {
               User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();  
@@ -456,5 +460,155 @@ public class AjaxController extends Parent_Controller{
             String cat_json=gson.toJson(category);
             out.println(cat_json);
    }
+      @RequestMapping(value = "/checkHandle", method = RequestMethod.POST)
+   public void checkHandle(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+        
+      User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String check_handle=request.getParameter("currHandle");
+        int count =user_tblJDBCTemplate.handleCount(check_handle);
+         out.println(count);
+        
+   }
+   
+   @RequestMapping(value = "/viewFollowings", method = RequestMethod.POST)
+   public void viewFollowings(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+        System.out.println("in AjaxConnt > viewFollowings");
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+      
+        String  followersString = request.getParameter("uidfollowings");
+        System.out.print("Uid Followings received : "+followersString);
+        
+        if(followersString.equalsIgnoreCase("[]"))
+        { out.println(""); 
+        
+        }     
+        else 
+        { 
+            
+        
+        followersString = followersString.substring(1,followersString.length()-1);
+        int l1;
+        System.out.print("Uid Followings received : "+followersString);
+        
+        if(followersString.contains(","))
+        {  String followersArr[] = followersString.split(",");
+         
+        System.out.print("FollowersArr is : "+Arrays.toString(followersArr));
+        
+        
+        
+       User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+          
+         l1=followersArr.length;
+         int i,j;
+        User_Detail ud ;
+        String temp = null;
+        String followersProfile[]=new String[followersArr.length];
+             for( i=0;i<l1;i++)
+             { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
+               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               temp = temp + ud; 
+              }
+           for( i=0;i<l1;i++)
+                System.out.print("Profile of Follower #"+ (i+1) + ":"+followersProfile[i]);
+           
+           out.println(Arrays.toString(followersProfile));
+         }
+        else {
+            String followersArr[] = new String[1];
+            followersArr[0]=followersString;
+            User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+        
+         l1=followersArr.length;
+         int i,j;
+        User_Detail ud ;
+        String temp = null;
+        String followersProfile[]=new String[followersArr.length];
+             for( i=0;i<l1;i++)
+             { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
+               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               temp = temp + ud; 
+              }
+           for( i=0;i<l1;i++)
+                System.out.print("Profile of Follower #"+ (i+1) + ":"+followersProfile[i]);
+           
+           out.println(Arrays.toString(followersProfile));
+             }    
+        } 
+        
+   }
+   @RequestMapping(value = "/viewFollowers", method = RequestMethod.POST)
+   public void viewFollowers(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+        System.out.println("in AjaxConnt > viewFollowers");
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+      
+        String  followersString = request.getParameter("uidfollowings");
+         System.out.print("Uid Followings received : "+followersString);
+       
+         if (followersString.equalsIgnoreCase("[]"))
+         {
+             out.println("");
+         }
+         else 
+        {
+        
+        followersString = followersString.substring(1,followersString.length()-1);
+        int l1;
+        System.out.print("Uid Followings received : "+followersString);
+        
+        if(followersString.contains(","))
+        {  String followersArr[] = followersString.split(",");
+         
+        System.out.print("FollowersArr is : "+Arrays.toString(followersArr));
+        
+        
+        
+       User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+         
+         l1=followersArr.length;
+         int i,j;
+        User_Detail ud ;
+        String temp = null;
+        String followersProfile[]=new String[followersArr.length];
+             for( i=0;i<l1;i++)
+             { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
+               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               temp = temp + ud; 
+              }
+           for( i=0;i<l1;i++)
+                System.out.print("Profile of Follower #"+ (i+1) + ":"+followersProfile[i]);
+           
+           out.println(Arrays.toString(followersProfile));
+         }
+        else {
+            String followersArr[] = new String[1];
+            followersArr[0]=followersString;
+            User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+       
+         l1=followersArr.length;
+         int i,j;
+        User_Detail ud ;
+        String temp = null;
+        String followersProfile[]=new String[followersArr.length];
+             for( i=0;i<l1;i++)
+             { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
+               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               temp = temp + ud; 
+              }
+           for( i=0;i<l1;i++)
+                System.out.print("Profile of Follower #"+ (i+1) + ":"+followersProfile[i]);
+           
+           out.println(Arrays.toString(followersProfile));
+        }  
+            
+        }
+   }
+
 }
 
