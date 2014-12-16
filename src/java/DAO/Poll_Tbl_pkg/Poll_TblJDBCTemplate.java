@@ -6,6 +6,9 @@
 
 package DAO.Poll_Tbl_pkg;
 import com.google.gson.Gson;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +29,10 @@ public class Poll_TblJDBCTemplate  {
    private DataSource dataSource;
    private JdbcTemplate jdbcTemplateObject;
    Gson gson=new Gson();
-   connectivity conn;
+    String SQL="";
+   connectivity conn=null;
+   private Connection con=null;
+   
     public Poll_TblJDBCTemplate() throws SQLException
     {
     ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
@@ -45,13 +51,85 @@ public class Poll_TblJDBCTemplate  {
   
    public boolean create(int uid, String cid_json, String title, String description, String qtn_json, String ans_json, String poll_link, String start_ts,String end_ts,int reward, String poll_type)
    {
-       String SQL = "insert into poll_tbl(uid,cid_json,title,description,qtn_json,ans_json,poll_link,start_ts,end_ts,reward,poll_type) values(?,?,?,?,?,?,?,?,?,?,?)";
+     //  String SQL = "insert into poll_tbl(uid,cid_json,title,description,qtn_json,ans_json,poll_link,start_ts,end_ts,reward,poll_type) values(?,?,?,?,?,?,?,?,?,?,?)";
      
-     int ty=jdbcTemplateObject.update( SQL, uid, cid_json,title,description, qtn_json, ans_json,poll_link,start_ts,end_ts, reward, poll_type);
+   //  int ty=jdbcTemplateObject.update( SQL, uid, cid_json,title,description, qtn_json, ans_json,poll_link,start_ts,end_ts, reward, poll_type);
         
-     return true;
+    // return true;
+       System.out.println("reached3");
+             CallableStatement st;
+       /* (IN handle_i varchar(45),IN username_i varchar(45),IN email_i varchar(45),IN country_i varchar(45),
+IN state_i varchar(45),IN city_i varchar(45),IN zip_i varchar(45),IN religion_i varchar(45),IN sex_i varchar(45),IN dob_i varchar(45),IN phone_i varchar(45),
+IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varchar(1000),IN exp_json_i varchar(1000),IN fish_i int)*/
+            try{
+               
+             con=conn.getDataSource().getConnection();
+             System.out.println("10 dec 4pm"); 
+             st=con.prepareCall("call createPoll('"+uid+"','"+cid_json+"','"+title+"','"+description+"','"+qtn_json+"','"+ans_json+"','"+poll_link+"','"+start_ts+"','"+end_ts+"',"+reward+",'"+poll_type+"')");
+             st.executeQuery();
+             con.close();
+             System.out.println("15 dec 12:07am");
+             return true;
+            }
+          catch(Exception e)
+          {
+              System.out.println("createPoll procedure error="+e);
+              return false;
+          }
+           
+           
+       
+      
+
    }
-   
+    public int create2(int uid, String cid_json, String title, String description, String qtn_json, String ans_json, String poll_link, String start_ts,String end_ts,int reward, String poll_type)
+   {
+             System.out.println("reached create2");
+             CallableStatement st;
+             int pid=0;
+       try{
+               
+            con=conn.getDataSource().getConnection();
+            System.out.println("15 dec 10am"); 
+            String sql = "{call createPoll2 (?, ? , ? , ? ,? ,? ,? ,? ,? ,? ,? ,?)}";
+            st = con.prepareCall(sql);
+      
+            //Bind IN parameter first, then bind OUT parameter
+            st.setInt(1, uid); 
+            st.setString(2,cid_json);
+            st.setString(3,title);
+            st.setString(4,description);
+            st.setString(5,qtn_json);
+            st.setString(6,ans_json);
+            st.setString(7,poll_link);
+            st.setString(8,start_ts);
+            st.setString(9,end_ts);
+            st.setInt(10,reward);
+            st.setString(11, poll_type);
+            st.registerOutParameter(12, java.sql.Types.INTEGER);
+      
+            //Use execute method to run stored procedure.
+            System.out.println("Executing stored procedure..." );
+            st.execute();
+
+            pid = st.getInt(12);
+            System.out.println("PID mila balle balle"+pid);
+
+            con.close();
+               
+             return pid;
+            }
+          catch(Exception e)
+          {
+              System.out.println("createPoll2 procedure error="+e);
+              return pid;
+          }
+           
+           
+       
+      
+
+   }
    public List<Poll_Tbl> listPolls(String ts, int uid, int[] user_cat_list) {
        
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
