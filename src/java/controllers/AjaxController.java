@@ -238,7 +238,6 @@ public class AjaxController extends Parent_Controller{
         String fb= request.getParameter("fb");
         String red= request.getParameter("red");
         int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
-
         //System.out.println("cat list= "+Arrays.toString(category));
         
         
