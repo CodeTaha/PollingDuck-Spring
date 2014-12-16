@@ -53,7 +53,7 @@
                 var redirect=${redirect}
                 var uid=${uid};
               //  var profile=${profile};
-                
+                 
                 function set_metadata(title,description,catl,author)
                 {
                     var keywords="PollingDuck, Polls, Surveys";
@@ -62,13 +62,14 @@
                         keywords=keywords+", "+catl[i]['category_name'];
                     }
                     //console.log(catl);
-                  $("head").append("<title>"+title+"</title>")
-                            .append("<meta name='keywords' content='"+keywords+"'>")
+                  $("title").empty().append(title);
+                    $("head").append("<meta name='keywords' content='"+keywords+"'>")
                             .append("<meta name='description' content='"+description+"'>")
                             .append("<meta name='author' content='"+author+"'>");  
                 }
                 
                 $('#anonymous').click(function() {
+                    
                                     var $this = $(this);
                                     // $this will contain a reference to the checkbox   
                                     if ($this.is(':checked')) {
@@ -84,10 +85,11 @@
               
                 if(redirect)
                  {
-                     alert();
+                     
                      window.location.assign("${delimiter}index?red_url=${red_url}");
                      return;
-                 } 
+                 }
+                
                 pollJSON=${obj};
                 fish=pollJSON['reward'];
                 set_metadata(pollJSON['title'],pollJSON['description'],pollJSON['cat_list'],pollJSON['user']['name']);

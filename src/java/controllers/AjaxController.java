@@ -126,7 +126,7 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("obj", poll_tbl);
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "");//used to load source files properly
-        
+        model.addAttribute("profile_pic",ud.getProfile_pic());
         model.addAttribute("redirect",false);
         model.addAttribute("page", "solvePoll");
 	   return "solvePoll";
@@ -170,7 +170,7 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("obj", gson.toJson(poll_tbl));
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "../../");
-        
+        model.addAttribute("profile_pic",ud.getProfile_pic());
 	
    }
        model.addAttribute("page", "solvePoll");
@@ -233,6 +233,7 @@ public class AjaxController extends Parent_Controller{
         String phone= request.getParameter("phone");
         String profile_pic= request.getParameter("profile_pic");
         String fb= request.getParameter("fb");
+        String red= request.getParameter("red");
         int category[]=gson.fromJson(request.getParameter("category"), int[].class); ;
         //System.out.println("cat list= "+Arrays.toString(category));
         
@@ -262,7 +263,11 @@ public class AjaxController extends Parent_Controller{
         cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
         response.addCookie(cookie);
             }
-            out.println(rslt);
+           // out.println(rslt);
+            
+          
+                response.sendRedirect(red);
+            
       
    }
    

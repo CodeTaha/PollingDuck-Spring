@@ -102,6 +102,7 @@ public class UrlController extends Parent_Controller{
            model.addAttribute("viewpoll_active", "");
            model.addAttribute("createpoll_active", "");
             model.addAttribute("page", "dashboard");
+            model.addAttribute("profile_pic",ud.getProfile_pic());
            model.addAttribute("user",gson.toJson(get_UserDetails(request)));
            return "dashboard";
        }
@@ -129,6 +130,7 @@ public class UrlController extends Parent_Controller{
            model.addAttribute("viewpoll_active", "");
            model.addAttribute("createpoll_active", "active");
             model.addAttribute("page", "createPoll");
+            model.addAttribute("profile_pic",ud.getProfile_pic());
             return "createPoll";
             }
             else
@@ -156,6 +158,7 @@ public class UrlController extends Parent_Controller{
            model.addAttribute("viewpoll_active", "active");
            model.addAttribute("createpoll_active", "");
             model.addAttribute("page", "viewPoll");
+            model.addAttribute("profile_pic",ud.getProfile_pic());
             model.addAttribute("user",gson.toJson(get_UserDetails(request)));
            return "viewPolls";
        }
@@ -318,6 +321,7 @@ public class UrlController extends Parent_Controller{
            User_Detail ud=get_UserDetails(request);
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
+        model.addAttribute("profile_pic",ud.getProfile_pic());
            return "dashboard";
        }
        else

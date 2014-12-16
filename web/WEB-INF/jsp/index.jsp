@@ -321,8 +321,39 @@ function Logout()
       category=JSON.stringify(category+"]");
       category=JSON.stringify(cat_list);
       console.log(category);
-     
-      $.ajax({
+      var tmp1;
+      if(red_url!=="" && red_url.indexOf("red_url")!==-1)
+                                                {
+
+                                                    var tmp=red_url.split("=");
+                                                   tmp1=tmp[1];
+                                                }
+                                            else
+                                                {
+                                                    tmp1='dashboard';
+                                                }
+      
+     $("body").append("<form id='final_form' action='SignUpReg' method='POST'>\n\
+                        <input type='hidden' name='handle' value='"+handle+"'/>\n\\n\
+        <input type='hidden' name='name' value='"+name+"'/>\n\\n\
+        <input type='hidden' name='email' value='"+email_i+"'/>\n\\n\
+        <input type='hidden' name='country' value='"+country+"'/>\n\\n\
+        <input type='hidden' name='state' value='"+state+"'/>\n\\n\
+        <input type='hidden' name='city' value='"+city+"'/>\n\\n\
+        <input type='hidden' name='zip' value='"+zip+"'/>\n\\n\
+        <input type='hidden' name='religion' value='"+religion+"'/>\n\\n\
+        <input type='hidden' name='sex' value='"+sex+"'/>\n\
+        <input type='hidden' name='dob' value='"+dob+"'/>\n\
+        <input type='hidden' name='phone' value='0'/>\n\
+        <input type='hidden' name='category' value='"+category+"'/>\n\
+        <input type='hidden' name='profile_pic' value='"+profile_pic+"'/>\n\\n\
+        <input type='hidden' name='fb' value='"+fb+"'/>\n\\n\\n\
+        <input type='hidden' name='red' value='"+tmp1+"'/>\n\
+        <input type='submit' id='final_submit'/>\n\
+                        </form>");
+        $("#final_form").hide();
+        $("#final_submit").click();
+      /*$.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "SignUpReg",
                                 data: {handle:handle,name:name,email:email_i,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
@@ -338,7 +369,7 @@ function Logout()
                                                     window.location.assign("dashboard");
                                                 }
                                 }
-                        });
+                        });*/
   }
   function SignUp()
   {
