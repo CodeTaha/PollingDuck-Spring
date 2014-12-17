@@ -175,9 +175,12 @@ public class UrlController extends Parent_Controller{
 	   return "index";
    }
   
-    @RequestMapping(value = "/signUp1", method = RequestMethod.GET)
-   public String signUp1(){
-           return "signUp1";
+    @RequestMapping(value = "/register1", method = RequestMethod.POST)
+   public String signUp1(ModelMap model,HttpServletRequest request){
+     
+       //model.addAttribute("response",request.getParameter("resp"));
+      //System.out.println(gson.toJson(request.getParameter("resp")));
+           return "register1";
        }
        
    

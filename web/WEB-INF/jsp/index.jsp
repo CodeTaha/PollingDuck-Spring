@@ -208,6 +208,8 @@ function Logout()
                                           document.getElementById("resbirthdate").value=response.birthday;
                                           document.getElementById("resgender").value=response.gender;
                                           document.getElementById("resdp").value=profile_pic;
+                                           // $("#f1").append("<input type='hidden' name='response' value='"+response+"'");
+                                           document.getElementById("resp").value=JSON.stringify(response);
                                             document.f1.submit();
                                         }
                                         
@@ -551,7 +553,8 @@ function Logout()
 </div><!--row -->
 
 </div><!--container -->
-<form name="f1" style="visibility: hidden" method="get" action="signUp1.html" id="f1">
+<form name="f1" style="visibility: hidden" method="post" action="register1" id="f1">
+    <input type="hidden" id="resp" name="resp" >
             <input type="text" id="resname" name="response_name" >
             <input type="text" id="resusername" name="response_username" >
             <input type="text" id="resuserid" name="response_userid" >
@@ -560,7 +563,7 @@ function Logout()
             <input type="text" id="resemail" name="response_email" >
             <input type="text" id="reslink" name="response_link" >
             <input type="text" id="resbirthdate" name="response_birthdate" >
-            <input type="text" id="resgender" name="response_gender" >
+            <input type="text" id="resgender" name="response_gender" >-->
             <input type="submit" value="submit"  style="font-size:18px; " />
         </form>
     </body>
