@@ -22,6 +22,9 @@
  <script type="text/javascript" charset="utf8" src="../../pages/resources/js/canvg.js"></script>
 
 
+  <script src="../../pages/resources/bootstrap/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="../../pages/resources/bootstrap/css/bootstrap.css">
+  
  
         
               <title>JSP Page</title>
@@ -78,9 +81,28 @@
     
         </script>
     </head>
-    <body>
-        <button onclick="createpdf()" style="float: right">whole page as pdf</button>
-        <div id="whole" style="background-color:white">
+    <body style='background-color:whitesmoke;'>
+        
+        <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+         <img src="../../pages/resources/img/logo.png" style="width: 45px;height: 45px;margin-left: 35px;padding-top: 5px;"/>
+                <a class="navbar-brand" href="index"  style="width:45px; height:45px;">Pollican</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+         
+         
+        </div>
+      </div>
+    </nav>
+        
+        <button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>
+        <div id="whole" style="background-color:whitesmoke">
         <script src="../../pages/resources/js/d3.min.js"></script> 
         <script src="../../pages/resources/js/jspdf.js"></script>
         <script src="../../pages/resources/js/canvg.js"></script>
@@ -94,20 +116,33 @@
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/zlib.js"></script>
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/FileSaver.js"></script>
     <!--    <script type="text/javascript"  src="/.../WEB-INF/pages/resources/js/d3/d3.min.js"</script>  -->
-        <h1>Poll Result!</h1>
+      
+    
         <script>
-                    if(logged==0)
+                    
+   
+                    if(logged===0)
                         $("#whole").append("<p>still not a member..hurry..<a href='../../index'>sign up nw</a></p>");
   // $(document).ready(function(){       
-                $("#whole").append("<h1><center>TITLE : <b>"+poll['title']+"</b></center></h1>");
-                $("#whole").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'><img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a> <i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i></b></h2>");
+                $("#whole").append("<div class='container'><div class='row' ><h1><center>TITLE : "+poll['title']+"</center></h1></div></div>");
+                $("#whole").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'>\n\
+                                    <img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> \n\
+                                   <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a>\n\
+                           <i><a href='../../profile/"+poll['user']['handle']+"'>\n\
+                             @"+poll['user']['handle']+"</a></i></b></center></h2>");
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
                      var bot=0;
                      var colmax=0;
                     var q_id=poll['qtn_json'][jw]['qtn_id'];
                     var qtn_div="qtn_div_"+jw;
-                     $("#whole").append("<b>Question : "+poll['qtn_json'][jw]['qtn']+"</b>");
+                     $("#whole").append("<div class='row'>\n\
+                        <div class='panel panel-info'>\n\
+                            <div class='panel-heading'>\n\
+                            <b>Question : "+poll['qtn_json'][jw]['qtn']+"</b>\n\
+                            </div>\n\
+                        </div>\n\
+                </div>");
                     $("#whole").append("<div id='"+qtn_div+"'></div>");
                     
                 var choice=poll['qtn_json'][jw]['qtn_type'];    
@@ -478,7 +513,9 @@
                     for(var ii=0;ii<ans.length;ii++)
                     {
                         //console.log(ans[0][0]+"poi"+ans[0][2]);
-                        count[ans[ii][0]][ans[ii][2]]++;
+                        if((count[ans[ii][0]][ans[ii][2]]++) ===null);
+                        else
+                            count[ans[ii][0]][ans[ii][2]]++;
                     }
                 }
                 }
@@ -748,16 +785,15 @@ var yAxis = d3.svg.axis()
 .scale(y)
 .orient("left")
 .ticks(maxticks);
-width=width + margin.left + margin.right+bot*3.5;
-
+width=width + margin.left + margin.right;
 var svg = d3.select(qtn_div_pie).append("svg")
 .attr("id", "svg_"+p)
-.attr("style","background-color:white")
-.attr("width", width  )
-.attr("height", height + margin.top + margin.bottom+30-bot )
+.attr("style","background-color:whitesmoke")
+.attr("width", width)
+.attr("height", height + margin.top + margin.bottom+30+bot*3)
 .append("g")
 .attr("transform",
-"translate(" + width + "," + margin.top + ") rotate (90) ");
+"translate(" + margin.left + "," + margin.top + ")");
 
 //d3.json("bars", function() {
   
@@ -778,23 +814,16 @@ svg.append("g")
 .attr("dx", "-.8em")
 .attr("dy", "-.55em")
 .attr("transform", "rotate(-90)" );
-
 svg.append("g")
 .attr("class", "y axis")
 .call(yAxis)
-
-.selectAll("text")  // select all the text elements for the xaxis
-          .attr("transform", function(d) {
-             return "translate(" + this.getBBox().width*-2 + "," + this.getBBox().width*-1.5 + ")rotate(-90)";
-         });
-
-svg.append("text")
+.append("text")
 .attr("transform", "rotate(-90)")
 .attr("y", 6)
+//Bar Charts 254
 .attr("dy", ".71em")
 .style("text-anchor", "end")
 .text("no of votes");
-
 svg.selectAll("bar")
 .data(data)
 .enter().append("rect")
@@ -803,6 +832,8 @@ svg.selectAll("bar")
 .attr("width", x.rangeBand())
 .attr("y", function(d) { return height; })
 .attr("height", function(d) { return 0; })
+.on("mouseover", function(){d3.select(this).style("fill", "green")})
+            .on("mouseout", function(){d3.select(this).style("fill", function(d) { return color(d.n*6/colmax); })})
 
 .transition().delay(function (d,i){ return i * 300;})
  .duration(3000)
@@ -817,8 +848,9 @@ var canvasvar="canvas_"+p;
 console.log(canvasvar);
 var mylink="myALink_"+p;
 var imgname="qtn"+p+".png";
- $("#qtn_div_"+p).append('<br> <a id="myALink_'+p+'">Download as image</a><br> ');
- $("#qtn_div_"+p).append('<div  id="can" style="background-color:white" ><canvas id="canvas_'+p+'" width="300" height="320" style="background-color:white"></canvas> </div>');
+ $("#qtn_div_"+p).append('<br><a id="myALink_'+p+'" class="btn btn-success" role="button">Download as image</a></br>');
+ //<a href="#" class="btn btn-info" role="button">Link Button</a>
+ $("#qtn_div_"+p).append('<div  id="can" style="background-color:whitesmoke" ><canvas id="canvas_'+p+'" width="300" height="320" style="background-color:white"></canvas> </div>');
  
         document.getElementById(mylink).addEventListener('click', function() {
     downloadCanvas(this, canvasvar, imgname); // <- this can be a dynamic name
@@ -880,7 +912,7 @@ var svg = d3.select(qtn_div)
 .attr("id", "svg_pie_"+p)
     .attr("width", width)
     .attr("height", height)
-    .attr("style","background-color:white")
+    .attr("style","background-color:whitesmoke")
   .append("g")
     .style("visibility", "visible")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
@@ -922,11 +954,12 @@ var imgname="qtn"+p+".png";
  }
  
     function tablegen(qtn_div, p)
- {
+ 
+{
       
         var tbl_id='#tbl_'+p;
         var btn_id='#btn_'+p;
-     $("#"+qtn_div).append("<table id='tbl_"+p+"'></table>");
+     $("#"+qtn_div).append("<table id='tbl_"+p+"' class='display col-md-12 col-lg-12 col-sm-12 col-xs-12' width='100%' ></table>");
  //var tbl2=$("<table/>").attr("id","mytable26");
        //$(tbl_id).append("<tr></tr>");
       
@@ -1431,9 +1464,10 @@ var relist=new Array();
     "bFilter": true,
     "bSort": true,
     "bInfo": true,
-    "bAutoWidth": true,
+    "bAutoWidth": false,
     "asStripClasses": null , 
       "aoColumnDefs":Tcolumns ,
+     // "aoColumnDefs":980 ,
         "sDom": 'T<"H"fr>t<"F"ip>',
                       "oTableTools": { "sSwfPath": "../../pages/resources/media/swf/eightpixel.swf", 
                                        "aButtons": [ 
